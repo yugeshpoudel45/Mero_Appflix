@@ -10,6 +10,7 @@ class AppCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return Checkbox(
+      visualDensity: VisualDensity.comfortable,
       side: BorderSide(color: myColorScheme.onTertiary, width: 2),
       checkColor: Colors.white,
       activeColor: myColorScheme.onTertiary,

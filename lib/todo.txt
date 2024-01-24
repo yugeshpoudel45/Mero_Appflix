@@ -6,3 +6,4 @@ Splash Screen (Create it later)
 Onboarding Screen
 -Add background image in it
 
+--UI garisakepaxi CI/CD grne

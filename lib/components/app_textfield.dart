@@ -11,7 +11,7 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         fillColor: myColorScheme.onInverseSurface,
-        hintText: "Email",
+        hintText: hintText,
         hintStyle: TextStyle(
           fontSize: 14,
           color: Colors.grey.shade400,

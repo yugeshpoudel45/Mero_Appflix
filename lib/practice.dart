@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/buttons/primary_long_button.dart';
-import 'package:netflix/components/buttons/primary_short_button.dart';
-import 'package:netflix/components/buttons/secondary_button.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,13 +13,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Color red = Colors.red;
 
   //!----------------CheckBox part here-------------
-  bool checkBox = false;
-  void onPressedCheckBox() {
-    setState(() {
-      checkBox = !checkBox;
-    });
+  // bool checkBox = false;
+  // void _onPressedCheckBox() {
+  //   setState(() {
+  //     checkBox = !checkBox;
+  //   });
+  // }
     //!--------------CheckBox part here--------------
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   checkBox: checkBox,
             //   func: onPressedCheckBox,
             // ),
-            //!-----------One Button--------------
+            //!-----------Buttons--------------
             // PrimaryLongButton(text: "Sign in", func: () {}),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -57,51 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
             //     PrimaryShortButton(text: "Sign in", func: () {}),
             //   ],
             // ),
-            // Padding(
-            //   padding: const EdgeInsets.all(12.0),
-            //   child: AppButton(
-            //     isFilled: true,
-            //     text: "Sign in with password",
-            //     height: mySize.height / 14,
-            //     width: mySize.width,
-            //     func: () {},
-            //   ),
-            // ),
-            //!-----------------Two Buttons-------------
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 12),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       AppButton(
-            //         isFilled: false,
-            //         text: "Skip",
-            //         height: mySize.height / 14,
-            //         width: mySize.width / 2.2,
-            //         func: () {},
-            //       ),
-            //       AppButton(
-            //         isFilled: true,
-            //         text: "Continue",
-            //         height: mySize.height / 14,
-            //         width: mySize.width / 2.2,
-            //         func: () {},
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            //!-----------------------------------------
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   // tooltip: 'Increment',
-      //   child: Icon(
-      //     Icons.add,
-      //     size: mySize.height,
-      //   ),
-      // ),
     );
   }
 }
