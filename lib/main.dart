@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/pages/4.choose_Interest_page/screen.dart';
-import 'package:netflix/pages/5.fill_your_profile_page/fill_your_profile.dart';
+import 'package:netflix/pages/3.login_pages/profile_details.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -21,8 +21,7 @@ class MyApp extends StatelessWidget {
       title: AppConstants.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
-      // home: const ChooseInterestScreen(),
-      home: const FillYourProfile(),
+      home: const ProfileDetails(),
     );
   }
 }

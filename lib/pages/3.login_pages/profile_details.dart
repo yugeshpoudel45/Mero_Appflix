@@ -6,14 +6,14 @@ import 'package:netflix/config/app_local_assets.dart';
 
 import '../../components/buttons/other_buttons/bottom_sheet_buttons.dart';
 
-class FillYourProfile extends StatefulWidget {
-  const FillYourProfile({super.key});
+class ProfileDetails extends StatefulWidget {
+  const ProfileDetails({super.key});
 
   @override
-  State<FillYourProfile> createState() => _FillYourProfileState();
+  State<ProfileDetails> createState() => _ProfileDetailsState();
 }
 
-class _FillYourProfileState extends State<FillYourProfile> {
+class _ProfileDetailsState extends State<ProfileDetails> {
   Uint8List? image;
 
   @override
@@ -92,7 +92,49 @@ class _FillYourProfileState extends State<FillYourProfile> {
         buttonText1: "Skip",
         buttonText2: "Continue",
         func1: () {},
-        func2: () {},
+        func2: () {
+          onTapShowDialog(
+            context,
+            mySize,
+            myColorScheme,
+            myTextTheme,
+          );
+        },
+      ),
+    );
+  }
+
+  Future<dynamic> onTapShowDialog(
+    BuildContext context,
+    Size mySize,
+    ColorScheme myColorScheme,
+    TextTheme myTextTheme,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        icon: Icon(
+          Icons.person,
+          size: mySize.height / 16,
+        ),
+        iconColor: myColorScheme.primary,
+        title: const Text("Congratulations!"),
+        titleTextStyle: myTextTheme.headlineMedium!.copyWith(
+          color: myColorScheme.onTertiary,
+          fontWeight: FontWeight.bold,
+        ),
+        content: const Text(
+          "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          SizedBox(
+            height: mySize.height / 8,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
       ),
     );
   }
