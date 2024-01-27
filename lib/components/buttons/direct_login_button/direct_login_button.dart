@@ -5,12 +5,18 @@ class DirectLoginButton extends StatelessWidget {
   final VoidCallback func;
   final String text;
   final bool haveText;
+  final bool isImage;
+  final IconData myicon;
+  final Color iconColor;
   const DirectLoginButton({
     super.key,
     required this.func,
-    required this.logo,
-    required this.haveText,
-    required this.text,
+    this.myicon = Icons.no_accounts,
+    this.haveText = false,
+    this.logo = "",
+    this.isImage = false,
+    this.text = "",
+    this.iconColor = Colors.black,
   });
 
   @override
@@ -20,7 +26,6 @@ class DirectLoginButton extends StatelessWidget {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return SizedBox(
       height: mySize.height / 14,
-      // width: haveText ? mySize.width : mySize.width / 6,
       child: OutlinedButton(
         onPressed: func,
         style: OutlinedButton.styleFrom(
@@ -39,11 +44,17 @@ class DirectLoginButton extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    logo,
-                    height: 32,
-                    width: 32,
-                  ),
+                  isImage
+                      ? Image.asset(
+                          logo,
+                          height: mySize.height / 20,
+                          width: mySize.width / 12,
+                        )
+                      : Icon(
+                          myicon,
+                          color: iconColor,
+                          size: mySize.height / 20,
+                        ),
                   SizedBox(
                     width: mySize.width / 32,
                   ),
@@ -55,10 +66,17 @@ class DirectLoginButton extends StatelessWidget {
                   ),
                 ],
               )
-            : Image.asset(
-                logo,
-                height: 24,
-              ),
+            : isImage
+                ? Image.asset(
+                    logo,
+                    height: mySize.height / 24,
+                    width: mySize.width / 12,
+                  )
+                : Icon(
+                    myicon,
+                    color: iconColor,
+                    size: mySize.height / 20,
+                  ),
       ),
     );
   }

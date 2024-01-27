@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/buttons/app_button.dart';
+import 'package:netflix/components/buttons/direct_login_button/direct_login_app_button.dart';
 
 class SecondaryButton extends StatelessWidget {
-  const SecondaryButton
-({super.key, required this.text, required this.func});
+  const SecondaryButton({super.key, required this.text, required this.func});
 
   final String text;
   final VoidCallback func;
@@ -15,7 +14,7 @@ class SecondaryButton extends StatelessWidget {
       isFilled: false,
       text: text,
       height: mySize.height / 14,
-      width: mySize.width / 2.2,
+      width: mySize.width / 2.3,
       func: func,
     );
   }

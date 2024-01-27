@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/buttons/app_button.dart';
+import 'package:netflix/components/buttons/direct_login_button/direct_login_app_button.dart';
 
 class PrimaryShortButton extends StatelessWidget {
   const PrimaryShortButton({super.key, required this.text, required this.func});
@@ -14,7 +14,7 @@ class PrimaryShortButton extends StatelessWidget {
       isFilled: true,
       text: text,
       height: mySize.height / 14,
-      width: mySize.width / 2.2,
+      width: mySize.width / 2.3,
       func: func,
     );
   }

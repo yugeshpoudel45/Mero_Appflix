@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/app_checkbox.dart';
-import 'package:netflix/components/app_textfield.dart';
-import 'package:netflix/components/buttons/direct_login_button.dart';
-import 'package:netflix/components/buttons/primary_long_button.dart';
+import 'package:netflix/components/checkbox/app_checkbox.dart';
+import 'package:netflix/components/textfields/app_textfield.dart';
+import 'package:netflix/components/buttons/direct_login_button/direct_login_button.dart';
+import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
 
 import '../../config/app_local_assets.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _checkBox = false;
   void _onPressedCheckBox() {
     setState(() {
@@ -25,29 +25,30 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
+    ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              SizedBox(height: mySize.height / 20),
+              // SizedBox(height: mySize.height / 12),
               Image.asset(
                 AppAssets.appLogo,
                 height: mySize.height / 6,
               ),
               SizedBox(height: mySize.height / 64),
               Text(
-                "Login to Your Account",
+                "Create Your Account",
                 style: myTextTheme.headlineLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: mySize.height / 24),
+              SizedBox(height: mySize.height / 64),
               const AppTextField(hintText: "Email"),
               SizedBox(height: mySize.height / 32),
               const AppTextField(hintText: "Password"),
-              SizedBox(height: mySize.height / 80),
               Row(
                 children: [
                   AppCheckBox(
@@ -58,16 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               SizedBox(height: mySize.height / 80),
-              PrimaryLongButton(text: "Sign in", func: () {}),
+              PrimaryLongButton(text: "Sign up", func: () {}),
               SizedBox(height: mySize.height / 40),
-              Text(
-                "Forgot the password?",
-                style: myTextTheme.bodyMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-              SizedBox(height: mySize.height / 48),
               Row(children: <Widget>[
                 const Expanded(child: Divider()),
                 Padding(
@@ -89,32 +82,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   DirectLoginButton(
                     func: () {},
-                    logo: AppAssets.facebook,
-                    haveText: false,
-                    text: "Facebook",
+                    myicon: Icons.facebook,
+                    iconColor: Colors.lightBlue,
                   ),
                   SizedBox(width: mySize.width / 12),
                   DirectLoginButton(
                     func: () {},
+                    isImage: true,
                     logo: AppAssets.google,
-                    haveText: false,
-                    text: "Google",
                   ),
                   SizedBox(width: mySize.width / 12),
                   DirectLoginButton(
                     func: () {},
-                    logo: AppAssets.apple,
-                    haveText: false,
-                    text: "Apple",
+                    myicon: Icons.apple,
+                    iconColor: myColorScheme.onSurface,
                   ),
                 ],
               ),
-              SizedBox(height: mySize.height / 48),
+              SizedBox(height: mySize.height / 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account? ",
+                    "Already have an account? ",
                     style: myTextTheme.bodyMedium!.copyWith(
                       color: Colors.grey,
                     ),
@@ -124,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //TODO Add your button logic here
                     },
                     child: Text(
-                      "Sign up",
+                      "Sign in",
                       style: myTextTheme.bodyMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.red,

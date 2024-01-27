@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/login_pages/direct_login.dart';
-import 'package:netflix/pages/login_pages/login_screen.dart';
-import 'package:netflix/pages/login_pages/register_screen.dart';
-import 'package:netflix/pages/onboarding_screen/pages.dart';
+import 'package:netflix/pages/4.choose_Interest_page/screen.dart';
+import 'package:netflix/pages/5.fill_your_profile_page/fill_your_profile.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -23,11 +21,13 @@ class MyApp extends StatelessWidget {
       title: AppConstants.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const LoginScreen(),
+      // home: const ChooseInterestScreen(),
+      home: const FillYourProfile(),
     );
   }
 }
+ 
+//padding: const EdgeInsets.symmetric(horizontal: 16),
 
 //Red Color
 //Ff0000

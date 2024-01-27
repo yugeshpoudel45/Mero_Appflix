@@ -6,7 +6,7 @@ class AppButton extends StatelessWidget {
     required this.isFilled,
     required this.text,
     required this.height,
-    required this.width, 
+    required this.width,
     required this.func,
   });
 
@@ -23,7 +23,7 @@ class AppButton extends StatelessWidget {
     return SizedBox(
       height: height,
       width: width,
-      child: Material( 
+      child: Material(
         type: MaterialType.button,
         elevation: 2,
         shadowColor: myColorScheme.onBackground,

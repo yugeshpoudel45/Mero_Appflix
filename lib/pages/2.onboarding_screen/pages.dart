@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/buttons/primary_long_button.dart';
-import 'package:netflix/pages/onboarding_screen/datas.dart';
+import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
+import 'package:netflix/pages/2.onboarding_screen/datas.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});

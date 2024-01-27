@@ -1,5 +1,5 @@
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/onboarding_screen/model.dart';
+import 'package:netflix/pages/2.onboarding_screen/model.dart';
 
 import '../../config/app_local_assets.dart';
 

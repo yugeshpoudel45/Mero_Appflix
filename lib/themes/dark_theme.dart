@@ -6,7 +6,10 @@ ThemeData darkTheme = ThemeData(
   useMaterial3: true,
   textTheme: myTextTheme,
   fontFamily: GoogleFonts.inter().fontFamily!,
-  appBarTheme: const AppBarTheme(elevation: 0),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+  ),
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.red,
     onTertiary: Colors.red,
