@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/4.choose_Interest_page/screen.dart';
-import 'package:netflix/pages/3.login_pages/profile_details.dart';
+import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -18,14 +17,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.dark,
       title: AppConstants.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const ProfileDetails(),
+      home: const MainPage(),
     );
   }
 }
- 
+
 //padding: const EdgeInsets.symmetric(horizontal: 16),
 
 //Red Color

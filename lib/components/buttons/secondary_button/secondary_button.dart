@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/components/buttons/direct_login_button/direct_login_app_button.dart';
+import 'package:netflix/components/buttons/main_button_template/app_button.dart';
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({super.key, required this.text, required this.func});
