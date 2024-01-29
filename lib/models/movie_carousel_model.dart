@@ -20,7 +20,7 @@ class MovieCarouselModel extends StatelessWidget {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     Size mySize = MediaQuery.sizeOf(context);
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(right: 8, bottom: 8),
       child: Container(
         height: height,
         width: width,
@@ -44,7 +44,7 @@ class MovieCarouselModel extends StatelessWidget {
             ),
             child: SizedBox(
               height: mySize.height / 32,
-              width: mySize.width / 8,
+              width: mySize.width / 8.5,
               child: TextButton(
                 style: TextButton.styleFrom(
                   visualDensity: const VisualDensity(

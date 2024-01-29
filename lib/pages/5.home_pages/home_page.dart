@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/config/app_local_assets.dart';
-import 'package:netflix/pages/5.home_pages/movie_carousel/data.dart';
 
 import '../../components/buttons/play_button/play_button.dart';
-import 'movie_carousel/model.dart';
+import '../../data/movie_carousel_data.dart';
+import '../../models/movie_carousel_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

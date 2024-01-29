@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/5.home_pages/main_page.dart';
+import 'package:netflix/pages/6.Inside_home_pages/new_releases_page.dart';
+import 'package:netflix/pages/6.Inside_home_pages/notification_page.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       title: AppConstants.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const MainPage(),
+      // home: const NewReleasesPage(),
+      home: const NotificationPage(),
     );
   }
 }
