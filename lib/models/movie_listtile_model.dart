@@ -53,15 +53,17 @@ class MovieListTileModel extends StatelessWidget {
                 width: mySize.width / 3.5,
                 child: Text(
                   movieName,
-                  style: myTextTheme.titleLarge!.copyWith(
+                  style: myTextTheme.titleMedium!.copyWith(
                     fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+                    fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
               ),
-              Text(
+              Text( 
                 "$episodes Episodes",
+                style: myTextTheme.bodySmall,
               ),
               InfoButton(
                 text: tag,

@@ -12,7 +12,7 @@ class NotificationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "New Releases",
+          "Notification",
           style: myTextTheme.headlineSmall,
         ),
         actions: [
@@ -24,7 +24,7 @@ class NotificationPage extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(
                 Icons.pending_outlined,
-                size: 32,
+                size: 28,
               ),
             ),
           ),

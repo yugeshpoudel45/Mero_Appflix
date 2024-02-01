@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
     Size mySize = MediaQuery.sizeOf(context);
     return SingleChildScrollView(
       child: Column(
-        children: [
+        children: [ 
           Container(
             height: mySize.height / 2.5,
             decoration: const BoxDecoration(
