@@ -6,6 +6,8 @@ import '../../models/movie_carousel_model.dart';
 class SelectedCastMovies extends StatelessWidget {
   const SelectedCastMovies({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;

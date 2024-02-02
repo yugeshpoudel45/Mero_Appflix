@@ -29,4 +29,8 @@ List<Map<String, dynamic>> movieCarouselData = [
     "image": AppAssets.onBoard1,
     "rating": "4.3",
   },
+  {
+    "image": AppAssets.onBoard1,
+    "rating": "4.3",
+  },
 ];

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/7.movie_details/hello.dart';
 import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
-import 'package:netflix/pages/7.movie_details/selected_cast_movies.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       home: const MovieDetailsScreen(),
-      // home: HelloPage(),
+      // home: const HelloPage(),
     );
   }
 }
