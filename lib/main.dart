@@ -1,12 +1,17 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/demo_starting_page.dart';
 import 'package:netflix/pages/5.home_pages/home_page.dart';
+import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/practice.dart';
+import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
+
+import 'blocs/cubit/home_page_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,14 +23,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      // themeMode: ThemeMode.dark,
-      title: AppConstants.appName,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      home: const HomePage(),
+    return BlocProvider(
+      create: (context) => HomePageCubit(TrendingRepo()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.light,
+        // themeMode: ThemeMode.dark,
+        title: AppConstants.appName,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        // home: const HomePage(),
+        home: const MainPage(),
+      ),
     );
   }
 }

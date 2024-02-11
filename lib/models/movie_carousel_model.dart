@@ -30,9 +30,9 @@ class MovieCarouselModel extends StatelessWidget {
             Radius.circular(8),
           ),
           image: DecorationImage(
-            image: AssetImage(image),
+            image: NetworkImage("https://image.tmdb.org/t/p/original/$image"),
             fit: BoxFit.cover,
-            opacity: 0.9,
+            // opacity: 0.9,
           ),
         ),
         child: Align(
@@ -40,28 +40,23 @@ class MovieCarouselModel extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(
               left: 8,
-              top: 12,
+              top: 8,
             ),
-            child: SizedBox(
-              height: mySize.height / 32,
-              width: mySize.width / 8.5,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  visualDensity: const VisualDensity(
-                    vertical: VisualDensity.minimumDensity,
-                    horizontal: VisualDensity.minimumDensity,
-                  ),
-                  backgroundColor: myColorScheme.onTertiary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+            child: Opacity(
+              opacity: 0.8,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: myColorScheme.onTertiary,
                 ),
-                onPressed: () {},
-                child: Text(
-                  rating,
-                  style: myTextTheme.labelSmall!.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                height: mySize.height / 32,
+                width: mySize.width / 12,
+                child: Center(
+                  child: Text(
+                    rating.substring(0, 3),
+                    style: myTextTheme.labelSmall!.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
