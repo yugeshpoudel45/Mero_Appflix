@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
+import 'package:netflix/demo_starting_page.dart';
+import 'package:netflix/pages/5.home_pages/home_page.dart';
+import 'package:netflix/practice.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
@@ -21,11 +25,11 @@ class MyApp extends StatelessWidget {
       title: AppConstants.appName,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const MovieDetailsScreen(),
-      // home: const HelloPage(),
+      home: const HomePage(),
     );
   }
 }
+
 
 //padding: const EdgeInsets.symmetric(horizontal: 16),
 
