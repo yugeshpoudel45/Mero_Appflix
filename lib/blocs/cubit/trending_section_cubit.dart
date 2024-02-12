@@ -5,28 +5,28 @@ import 'package:netflix/models/trending_people_model.dart';
 import 'package:netflix/models/trending_tv_show.dart';
 import 'package:netflix/repo/trending_repo.dart';
 
-part 'home_page_state.dart';
+part 'trending_section_state.dart';
 
-class HomePageCubit extends Cubit<HomePageState> {
-  HomePageCubit(this.trendingRepo) : super(HomePageInitial());
+class TrendingSectionCubit extends Cubit<TrendingSectionState> {
+  TrendingSectionCubit(this.trendingRepo) : super(TrendingSectionInitial());
 
   final TrendingRepo trendingRepo;
 
   void onFetchingTrendingSection() async {
-    emit(HomePageLoadingState());
+    emit(TrendingSectionLoadingState());
     try {
       final trendingMovieModel = await trendingRepo.fetchTrendingMovies();
-      // final trendingPeopleModel = await trendingRepo.fetchTrendingPeople();
-      // final trendingTvShowModel = await trendingRepo.fetchTrendingTvShows();
+      final trendingPeopleModel = await trendingRepo.fetchTrendingPeople();
+      final trendingTvShowModel = await trendingRepo.fetchTrendingTvShows();
       emit(
-        HomePageLoadedState(
-          // trendingPeopleModel: trendingPeopleModel,
-          // trendingTvShowModel: trendingTvShowModel,
+        TrendingSectionLoadedState(
+          trendingPeopleModel: trendingPeopleModel,
+          trendingTvShowModel: trendingTvShowModel,
           trendingMovieModel: trendingMovieModel,
         ),
       );
     } catch (e) {
-      emit(HomePageErrorState(errorMessage: e.toString()));
+      emit(TrendingSectionErrorState(errorMessage: e.toString()));
     }
   }
 }

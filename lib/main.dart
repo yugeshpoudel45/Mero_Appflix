@@ -7,7 +7,8 @@ import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
 
-import 'blocs/cubit/home_page_cubit.dart';
+import 'blocs/cubit/trending_section_cubit.dart';
+import 'pages/6.Inside_home_pages/trending_movies_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,18 +19,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomePageCubit(TrendingRepo()),
+      create: (context) => TrendingSectionCubit(TrendingRepo()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        // themeMode: ThemeMode.light,
         themeMode: ThemeMode.light,
-        // themeMode: ThemeMode.dark,
         title: AppConstants.appName,
         theme: lightTheme,
         darkTheme: darkTheme,
         // home: const HomePage(),
-        home: const MainPage(),
+        // home: const MainPage(),
+        home: const TrendingMoviesPage(),
       ),
     );
   }

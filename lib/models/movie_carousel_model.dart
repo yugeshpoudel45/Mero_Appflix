@@ -10,7 +10,7 @@ class MovieCarouselModel extends StatelessWidget {
   });
 
   final String image;
-  final String rating;
+  final double rating;
   final double height;
   final double width;
 
@@ -53,7 +53,7 @@ class MovieCarouselModel extends StatelessWidget {
                 width: mySize.width / 12,
                 child: Center(
                   child: Text(
-                    rating.substring(0, 3),
+                    rating.toString().substring(0, 3),
                     style: myTextTheme.labelSmall!.copyWith(
                       color: Colors.white,
                     ),

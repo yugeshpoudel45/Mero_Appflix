@@ -210,16 +210,16 @@ enum KnownForMediaType { MOVIE, TV }
 final knownForMediaTypeValues =
     EnumValues({"movie": KnownForMediaType.MOVIE, "tv": KnownForMediaType.TV});
 
-enum OriginalLanguage { CN, EN, JA, KO, ML, TA, TL }
+enum OriginalLanguage { EN, JA, KO, ML, TA, TL, ZH }
 
 final originalLanguageValues = EnumValues({
-  "cn": OriginalLanguage.CN,
   "en": OriginalLanguage.EN,
   "ja": OriginalLanguage.JA,
   "ko": OriginalLanguage.KO,
   "ml": OriginalLanguage.ML,
   "ta": OriginalLanguage.TA,
-  "tl": OriginalLanguage.TL
+  "tl": OriginalLanguage.TL,
+  "zh": OriginalLanguage.ZH
 });
 
 enum KnownForDepartment { ACTING, DIRECTING }
