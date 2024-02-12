@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/demo_starting_page.dart';
-import 'package:netflix/pages/5.home_pages/home_page.dart';
 import 'package:netflix/pages/5.home_pages/main_page.dart';
-import 'package:netflix/practice.dart';
+
 import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
@@ -22,7 +18,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return BlocProvider(
       create: (context) => HomePageCubit(TrendingRepo()),
       child: MaterialApp(

@@ -1,23 +1,14 @@
-// class ProductsRepo {
-//   Future<List<ProductModel>> getProducts() async {
-//     var response =
-//         await http.get(Uri.parse("https://fakestoreapi.com/products"));
-
-//     if (response.statusCode == 200) {
-//       return productModelFromJson(response.body);
-//     } else {
-//       throw Exception("Failed to Load Products");
-//     }
-//   }
-// }
-
 import 'dart:developer';
 
+import 'package:netflix/models/trending_people_model.dart';
+import 'package:netflix/models/trending_tv_show.dart';
+
 import '../config/app_constants.dart';
-import '../models/trending_people_model.dart';
+import '../models/trending_movie_model.dart';
 import 'package:http/http.dart' as http;
 
 class TrendingRepo {
+  //------------------------------------------Trending Movie Fetching--------------------------------------------
   Future<TrendingMovieModel> fetchTrendingMovies() async {
     Map<String, String> headers = {
       'accept': 'application/json',
@@ -30,16 +21,68 @@ class TrendingRepo {
         headers: headers,
       );
 
+      log(response.statusCode.toString());
       if (response.statusCode == 200) {
-        final trendingMovieModel =
+        TrendingMovieModel trendingMovieModel =
             trendingMovieModelFromJson(response.body.toString());
         return trendingMovieModel;
       } else {
-        throw Exception("Failed to Load Trending Movies");
+        throw Exception("Failed to Load Trending Movies");  
       }
     } catch (e) {
       log("Exception caught: $e");
     }
     throw Exception("Outer Exception: Failed to Load Trending Movies");
   }
+
+// //------------------------------------------Trending People Fetching--------------------------------------------
+//   Future<TrendingPeopleModel> fetchTrendingPeople() async {
+//     Map<String, String> headers = {
+//       'accept': 'application/json',
+//       "Authorization": "Bearer $accessToken",
+//     };
+//     try {
+//       http.Response response = await http.get(
+//         Uri.parse(
+//             "https://api.themoviedb.org/3/trending/person/day?language=en-US"),
+//         headers: headers,
+//       );
+//       if (response.statusCode == 200) {
+//         TrendingPeopleModel trendingPeopleModel =
+//             trendingPeopleModelFromJson(response.body.toString());
+//         return trendingPeopleModel;
+//       } else {
+//         throw Exception("Failed to Load Trending People");
+//       }
+//     } catch (e) {
+//       log("Exception caught: $e");
+//     }
+//     throw Exception("Outer Exception: Failed to Load Trending People");
+//   }
+
+// //------------------------------------------Trending Tv Shows Fetching--------------------------------------------
+//   Future<TrendingTvShowModel> fetchTrendingTvShows() async {
+//     Map<String, String> headers = {
+//       'accept': 'application/json',
+//       "Authorization": "Bearer $accessToken",
+//     };
+//     try {
+//       http.Response response = await http.get(
+//         Uri.parse(
+//             "https://api.themoviedb.org/3/trending/tv/day?language=en-US"),
+//         headers: headers,
+//       );
+
+//       if (response.statusCode == 200) {
+//         TrendingTvShowModel trendingTvShowModel =
+//             trendingTvShowModelFromJson(response.body.toString());
+//         return trendingTvShowModel;
+//       } else {
+//         throw Exception("Failed to Load Trending TV Shows");
+//       }
+//     } catch (e) {
+//       log("Exception caught: $e");
+//     }
+//     throw Exception("Outer Exception: Failed to Load Trending TV Shows");
+//   }
 }
