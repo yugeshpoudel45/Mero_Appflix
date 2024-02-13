@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/config/app_local_assets.dart';
+import 'package:netflix/routes/app_route_constant.dart';
 
 import '../../blocs/cubit/trending_section_cubit.dart';
 import '../../components/buttons/play_button/play_button.dart';
@@ -126,17 +128,27 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Trending Movies",
+                          "Trending Movies Today",
                           style: myTextTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
                           ),
                         ),
-                        Text(
-                          "See all",
-                          style: myTextTheme.titleSmall!.copyWith(
-                            color: myColorScheme.onTertiary,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(
+                              MyAppRouteConstants.trendingMoviesPage,
+                              extra: {
+                                "state": state,
+                              },
+                            );
+                          },
+                          child: Text(
+                            "See all",
+                            style: myTextTheme.titleSmall!.copyWith(
+                              color: myColorScheme.onTertiary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
@@ -173,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Trending Shows",
+                          "Trending Shows Today",
                           style: myTextTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
@@ -224,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Trending Celebrities",
+                          "Trending Celebrities Today",
                           style: myTextTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.bold,
                             fontFamily: GoogleFonts.balsamiqSans().fontFamily!,

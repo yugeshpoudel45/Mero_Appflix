@@ -17,7 +17,7 @@ class TrendingRepo {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "https://api.themoviedb.org/3/trending/movie/day?language=en-US"),
+            "https://api.themoviedb.org/3/trending/movie/week?language=en-US"),
         headers: headers,
       );
       if (response.statusCode == 200) {
@@ -41,7 +41,7 @@ class TrendingRepo {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "https://api.themoviedb.org/3/trending/person/day?language=en-US"),
+            "https://api.themoviedb.org/3/trending/person/week?language=en-US"),
         headers: headers,
       );
       if (response.statusCode == 200) {
@@ -66,7 +66,7 @@ class TrendingRepo {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "https://api.themoviedb.org/3/trending/tv/day?language=en-US"),
+            "https://api.themoviedb.org/3/trending/tv/week?language=en-US"),
         headers: headers,
       );
 
