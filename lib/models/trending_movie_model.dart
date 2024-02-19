@@ -13,14 +13,10 @@ String trendingMovieModelToJson(TrendingMovieModel data) =>
 class TrendingMovieModel {
   int? page;
   List<Result>? results;
-  int? totalPages;
-  int? totalResults;
 
   TrendingMovieModel({
     this.page,
     this.results,
-    this.totalPages,
-    this.totalResults,
   });
 
   factory TrendingMovieModel.fromJson(Map<String, dynamic> json) =>
@@ -30,8 +26,6 @@ class TrendingMovieModel {
             ? []
             : List<Result>.from(
                 json["results"]!.map((x) => Result.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,8 +33,6 @@ class TrendingMovieModel {
         "results": results == null
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
-        "total_pages": totalPages,
-        "total_results": totalResults,
       };
 }
 
@@ -60,6 +52,7 @@ class Result {
   bool? video;
   double? voteAverage;
   int? voteCount;
+  String? martialLawHasBeenDeclaredACoupD;
 
   Result({
     this.adult,
@@ -77,29 +70,51 @@ class Result {
     this.video,
     this.voteAverage,
     this.voteCount,
+    this.martialLawHasBeenDeclaredACoupD,
   });
 
+  // factory Result.fromJson(Map<String, dynamic> json) => Result(
+  //     adult: json["adult"],
+  //     backdropPath: json["backdrop_path"],
+  //     id: json["id"],
+  //     title: json["title"],
+  //     originalLanguage: originalLanguageValues.map[json["original_language"]]!,
+  //     originalTitle: json["original_title"],
+  //     overview: json["overview"],
+  //     posterPath: json["poster_path"],
+  //     mediaType: mediaTypeValues.map[json["media_type"]]!,
+  //     genreIds: json["genre_ids"] == null ? [] : List<int>.from(json["genre_ids"]!.map((x) => x)),
+  //     popularity: json["popularity"]?.toDouble(),
+  //     releaseDate: json["release_date"] == null ? null : DateTime.parse(json["release_date"]),
+  //     video: json["video"],
+  //     voteAverage: json["vote_average"]?.toDouble(),
+  //     voteCount: json["vote_count"],
+  //     martialLawHasBeenDeclaredACoupD: json["martial law has been declared. A coup d"],
+  // );
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        adult: json["adult"],
-        backdropPath: json["backdrop_path"],
-        id: json["id"],
-        title: json["title"],
+        adult: json["adult"] ?? false,
+        backdropPath: json["backdrop_path"] ?? "Not available",
+        id: json["id"] ?? 45,
+        title: json["title"] ?? "Not available",
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
-        originalTitle: json["original_title"],
-        overview: json["overview"],
-        posterPath: json["poster_path"],
-        mediaType: mediaTypeValues.map[json["media_type"]]!,
+            originalLanguageValues.map[json["original_language"]] ??
+                OriginalLanguage.en,
+        originalTitle: json["original_title"] ?? "Not available",
+        overview: json["overview"] ?? "Not available",
+        posterPath: json["poster_path"] ?? "Not available",
+        mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.movie,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
-        popularity: json["popularity"]?.toDouble(),
+        popularity: json["popularity"]?.toDouble() ?? 45.0,
         releaseDate: json["release_date"] == null
             ? null
             : DateTime.parse(json["release_date"]),
-        video: json["video"],
-        voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        video: json["video"] ?? false,
+        voteAverage: json["vote_average"]?.toDouble() ?? 45.0,
+        voteCount: json["vote_count"] ?? 45,
+        martialLawHasBeenDeclaredACoupD:
+            json["martial law has been declared. A coup d"] ?? "Not available",
       );
 
   Map<String, dynamic> toJson() => {
@@ -120,20 +135,19 @@ class Result {
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
+        "martial law has been declared. A coup d":
+            martialLawHasBeenDeclaredACoupD,
       };
 }
 
-enum MediaType { MOVIE }
+enum MediaType { movie }
 
-final mediaTypeValues = EnumValues({"movie": MediaType.MOVIE});
+final mediaTypeValues = EnumValues({"movie": MediaType.movie});
 
-enum OriginalLanguage { EN, FR, KO }
+enum OriginalLanguage { en, ko }
 
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "fr": OriginalLanguage.FR,
-  "ko": OriginalLanguage.KO
-});
+final originalLanguageValues =
+    EnumValues({"en": OriginalLanguage.en, "ko": OriginalLanguage.ko});
 
 class EnumValues<T> {
   Map<String, T> map;

@@ -138,9 +138,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: () {
                             GoRouter.of(context).pushNamed(
                               MyAppRouteConstants.trendingMoviesPage,
-                              extra: {
-                                "state": state,
-                              },
+                              extra: state,
                             );
                           },
                           child: Text(
@@ -191,11 +189,19 @@ class _HomePageState extends State<HomePage> {
                             fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
                           ),
                         ),
-                        Text(
-                          "See all",
-                          style: myTextTheme.titleSmall!.copyWith(
-                            color: myColorScheme.onTertiary,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(
+                              MyAppRouteConstants.trendingTvShowsPage,
+                              extra: state,
+                            );
+                          },
+                          child: Text(
+                            "See all",
+                            style: myTextTheme.titleSmall!.copyWith(
+                              color: myColorScheme.onTertiary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
@@ -242,11 +248,19 @@ class _HomePageState extends State<HomePage> {
                             fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
                           ),
                         ),
-                        Text(
-                          "See all",
-                          style: myTextTheme.titleSmall!.copyWith(
-                            color: myColorScheme.onTertiary,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(
+                              MyAppRouteConstants.trendingPeoplePage,
+                              extra: state,
+                            );
+                          },
+                          child: Text(
+                            "See all",
+                            style: myTextTheme.titleSmall!.copyWith(
+                              color: myColorScheme.onTertiary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],

@@ -13,10 +13,14 @@ String trendingPeopleModelToJson(TrendingPeopleModel data) =>
 class TrendingPeopleModel {
   int? page;
   List<Result>? results;
+  int? totalPages;
+  int? totalResults;
 
   TrendingPeopleModel({
     this.page,
     this.results,
+    this.totalPages,
+    this.totalResults,
   });
 
   factory TrendingPeopleModel.fromJson(Map<String, dynamic> json) =>
@@ -26,6 +30,8 @@ class TrendingPeopleModel {
             ? []
             : List<Result>.from(
                 json["results"]!.map((x) => Result.fromJson(x))),
+        totalPages: json["total_pages"],
+        totalResults: json["total_results"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +39,8 @@ class TrendingPeopleModel {
         "results": results == null
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
+        "total_pages": totalPages,
+        "total_results": totalResults,
       };
 }
 
@@ -41,10 +49,10 @@ class Result {
   int? id;
   String? name;
   String? originalName;
-  String? mediaType;
+  ResultMediaType? mediaType;
   double? popularity;
   int? gender;
-  String? knownForDepartment;
+  KnownForDepartment? knownForDepartment;
   String? profilePath;
   List<KnownFor>? knownFor;
 
@@ -62,15 +70,18 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        adult: json["adult"],
-        id: json["id"],
-        name: json["name"],
-        originalName: json["original_name"],
-        mediaType: json["media_type"],
-        popularity: json["popularity"]?.toDouble(),
-        gender: json["gender"],
-        knownForDepartment: json["known_for_department"],
-        profilePath: json["profile_path"],
+        adult: json["adult"] ?? false,
+        id: json["id"] ?? 0,
+        name: json["name"] ?? "Unavailable",
+        originalName: json["original_name"] ?? "Unavailable",
+        mediaType: resultMediaTypeValues.map[json["media_type"]] ??
+            ResultMediaType.PERSON,
+        popularity: json["popularity"]?.toDouble() ?? 0.0,
+        gender: json["gender"] ?? 0,
+        knownForDepartment:
+            knownForDepartmentValues.map[json["known_for_department"]] ??
+                KnownForDepartment.ACTING,
+        profilePath: json["profile_path"] ?? "Unavailable",
         knownFor: json["known_for"] == null
             ? []
             : List<KnownFor>.from(
@@ -82,10 +93,11 @@ class Result {
         "id": id,
         "name": name,
         "original_name": originalName,
-        "media_type": mediaType,
+        "media_type": resultMediaTypeValues.reverse[mediaType],
         "popularity": popularity,
         "gender": gender,
-        "known_for_department": knownForDepartment,
+        "known_for_department":
+            knownForDepartmentValues.reverse[knownForDepartment],
         "profile_path": profilePath,
         "known_for": knownFor == null
             ? []
@@ -102,13 +114,17 @@ class KnownFor {
   String? originalTitle;
   String? overview;
   String? posterPath;
-  MediaType? mediaType;
+  KnownForMediaType? mediaType;
   List<int>? genreIds;
   double? popularity;
   DateTime? releaseDate;
   bool? video;
   double? voteAverage;
   int? voteCount;
+  String? name;
+  String? originalName;
+  DateTime? firstAirDate;
+  List<String>? originCountry;
 
   KnownFor({
     this.adult,
@@ -126,29 +142,43 @@ class KnownFor {
     this.video,
     this.voteAverage,
     this.voteCount,
+    this.name,
+    this.originalName,
+    this.firstAirDate,
+    this.originCountry,
   });
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
-        adult: json["adult"],
-        backdropPath: json["backdrop_path"],
-        id: json["id"],
-        title: json["title"],
+        adult: json["adult"] ?? false,
+        backdropPath: json["backdrop_path"] ?? "Unavailable",
+        id: json["id"] ?? 0,
+        title: json["title"] ?? "Unavailable",
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
-        originalTitle: json["original_title"],
-        overview: json["overview"],
-        posterPath: json["poster_path"],
-        mediaType: mediaTypeValues.map[json["media_type"]]!,
+            originalLanguageValues.map[json["original_language"]] ??
+                OriginalLanguage.EN,
+        originalTitle: json["original_title"] ?? "Unavailable",
+        overview: json["overview"] ?? "Unavailable",
+        posterPath: json["poster_path"] ?? "Unavailable",
+        mediaType: knownForMediaTypeValues.map[json["media_type"]] ??
+            KnownForMediaType.MOVIE,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
-        popularity: json["popularity"]?.toDouble(),
+        popularity: json["popularity"]?.toDouble() ?? 0.0,
         releaseDate: json["release_date"] == null
             ? null
             : DateTime.parse(json["release_date"]),
-        video: json["video"],
-        voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        video: json["video"] ?? false,
+        voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
+        voteCount: json["vote_count"] ?? 0,
+        name: json["name"] ?? "Unavailable",
+        originalName: json["original_name"] ?? "Unavailable",
+        firstAirDate: json["first_air_date"] == null
+            ? null
+            : DateTime.parse(json["first_air_date"]),
+        originCountry: json["origin_country"] == null
+            ? []
+            : List<String>.from(json["origin_country"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -160,29 +190,52 @@ class KnownFor {
         "original_title": originalTitle,
         "overview": overview,
         "poster_path": posterPath,
-        "media_type": mediaTypeValues.reverse[mediaType],
+        "media_type": knownForMediaTypeValues.reverse[mediaType],
         "genre_ids":
             genreIds == null ? [] : List<dynamic>.from(genreIds!.map((x) => x)),
         "popularity": popularity,
-        "release_date":
-            "${releaseDate!.year.toString().padLeft(4, '0')}-${releaseDate!.month.toString().padLeft(2, '0')}-${releaseDate!.day.toString().padLeft(2, '0')}",
+        "release_date": releaseDate != null
+            ? "${releaseDate!.year.toString().padLeft(4, '0')}-${releaseDate!.month.toString().padLeft(2, '0')}-${releaseDate!.day.toString().padLeft(2, '0')}"
+            : null,
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
+        "name": name,
+        "original_name": originalName,
+        "first_air_date": firstAirDate != null
+            ? "${firstAirDate!.year.toString().padLeft(4, '0')}-${firstAirDate!.month.toString().padLeft(2, '0')}-${firstAirDate!.day.toString().padLeft(2, '0')}"
+            : null,
+        "origin_country": originCountry == null
+            ? []
+            : List<dynamic>.from(originCountry!.map((x) => x)),
       };
 }
 
-enum MediaType { MOVIE }
+enum KnownForMediaType { MOVIE, TV }
 
-final mediaTypeValues = EnumValues({"movie": MediaType.MOVIE});
+final knownForMediaTypeValues =
+    EnumValues({"movie": KnownForMediaType.MOVIE, "tv": KnownForMediaType.TV});
 
-enum OriginalLanguage { EN, ML, TA }
+enum OriginalLanguage { EN, KO, TH, TL }
 
 final originalLanguageValues = EnumValues({
   "en": OriginalLanguage.EN,
-  "ml": OriginalLanguage.ML,
-  "ta": OriginalLanguage.TA
+  "ko": OriginalLanguage.KO,
+  "th": OriginalLanguage.TH,
+  "tl": OriginalLanguage.TL
 });
+
+enum KnownForDepartment { ACTING, CREW, DIRECTING }
+
+final knownForDepartmentValues = EnumValues({
+  "Acting": KnownForDepartment.ACTING,
+  "Crew": KnownForDepartment.CREW,
+  "Directing": KnownForDepartment.DIRECTING
+});
+
+enum ResultMediaType { PERSON }
+
+final resultMediaTypeValues = EnumValues({"person": ResultMediaType.PERSON});
 
 class EnumValues<T> {
   Map<String, T> map;

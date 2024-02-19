@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
-import 'package:netflix/pages/5.home_pages/main_page.dart';
 
 import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/routes/app_route_config.dart';

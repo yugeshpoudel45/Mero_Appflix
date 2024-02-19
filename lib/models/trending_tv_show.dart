@@ -59,7 +59,7 @@ class Result {
   DateTime? firstAirDate;
   double? voteAverage;
   int? voteCount;
-  List<OriginCountry>? originCountry;
+  List<String>? originCountry;
 
   Result({
     this.adult,
@@ -80,29 +80,29 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        adult: json["adult"],
-        backdropPath: json["backdrop_path"],
-        id: json["id"],
-        name: json["name"],
+        adult: json["adult"] ?? false,
+        backdropPath: json["backdrop_path"] ?? "Unavailable",
+        id: json["id"] ?? 0,
+        name: json["name"] ?? "Unavailable",
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
-        originalName: json["original_name"],
-        overview: json["overview"],
-        posterPath: json["poster_path"],
-        mediaType: mediaTypeValues.map[json["media_type"]]!,
+            originalLanguageValues.map[json["original_language"]] ??
+                OriginalLanguage.EN,
+        originalName: json["original_name"] ?? "Unavailable",
+        overview: json["overview"] ?? "Unavailable",
+        posterPath: json["poster_path"] ?? "Unavailable",
+        mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.TV,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
-        popularity: json["popularity"]?.toDouble(),
+        popularity: json["popularity"]?.toDouble() ?? 0.0,
         firstAirDate: json["first_air_date"] == null
             ? null
             : DateTime.parse(json["first_air_date"]),
-        voteAverage: json["vote_average"]?.toDouble(),
-        voteCount: json["vote_count"],
+        voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
+        voteCount: json["vote_count"] ?? 0,
         originCountry: json["origin_country"] == null
             ? []
-            : List<OriginCountry>.from(json["origin_country"]!
-                .map((x) => originCountryValues.map[x]!)),
+            : List<String>.from(json["origin_country"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -124,8 +124,7 @@ class Result {
         "vote_count": voteCount,
         "origin_country": originCountry == null
             ? []
-            : List<dynamic>.from(
-                originCountry!.map((x) => originCountryValues.reverse[x])),
+            : List<dynamic>.from(originCountry!.map((x) => x)),
       };
 }
 
@@ -133,21 +132,13 @@ enum MediaType { TV }
 
 final mediaTypeValues = EnumValues({"tv": MediaType.TV});
 
-enum OriginCountry { GB, JP, KR, US }
-
-final originCountryValues = EnumValues({
-  "GB": OriginCountry.GB,
-  "JP": OriginCountry.JP,
-  "KR": OriginCountry.KR,
-  "US": OriginCountry.US
-});
-
-enum OriginalLanguage { EN, JA, KO }
+enum OriginalLanguage { EN, JA, KO, PT }
 
 final originalLanguageValues = EnumValues({
   "en": OriginalLanguage.EN,
   "ja": OriginalLanguage.JA,
-  "ko": OriginalLanguage.KO
+  "ko": OriginalLanguage.KO,
+  "pt": OriginalLanguage.PT
 });
 
 class EnumValues<T> {

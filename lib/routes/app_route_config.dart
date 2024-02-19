@@ -26,25 +26,28 @@ class MyAppRouter {
       ),
       GoRoute(
         name: MyAppRouteConstants.trendingMoviesPage,
-        path: '/trendingMoviesPage/:state',
+        path: '/trendingMoviesPage',
         pageBuilder: (context, state) => MaterialPage(
           child: TrendingMoviesPage(
-            state: state.extra as TrendingSectionLoadedState,
+            loadedState: state.extra as TrendingSectionLoadedState,
           ),
         ),
-        //!Fix this, yo easily fix hunxa, as hamile string pass gareko xum state ko thau ma, so just pass the state here
       ),
       GoRoute(
         name: MyAppRouteConstants.trendingPeoplePage,
         path: '/trendingPeoplePage',
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: TrendingPeoplePage()),
+        pageBuilder: (context, state) => MaterialPage(
+            child: TrendingPeoplePage(
+          loadedState: state.extra as TrendingSectionLoadedState,
+        )),
       ),
       GoRoute(
         name: MyAppRouteConstants.trendingTvShowsPage,
         path: '/trendingTvShowsPage',
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: TrendingTvShowsPage()),
+        pageBuilder: (context, state) => MaterialPage(
+            child: TrendingTvShowsPage(
+          loadedState: state.extra as TrendingSectionLoadedState,
+        )),
       ),
     ],
     errorPageBuilder: (context, state) {
