@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
+import 'package:netflix/models/others/movie_listtile_model.dart';
 
 import '../../components/buttons/play_button/play_button.dart';
 import '../../models/others/movie_carousel_model.dart';
@@ -75,6 +76,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 padding: const EdgeInsets.only(
                                     left: 16, right: 16, top: 16),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       mainAxisAlignment:
@@ -163,13 +165,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                         ],
                                       ),
                                     ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Genre: $genres",
-                                        style: myTextTheme.labelLarge!.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    Text(
+                                      "Genre: $genres",
+                                      style: myTextTheme.labelLarge!.copyWith(
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
@@ -177,11 +176,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       style: myTextTheme.bodySmall,
                                     ),
                                     SizedBox(height: mySize.height / 64),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("Crew",
-                                          style: myTextTheme.titleMedium!),
-                                    ),
+                                    Text("Crew",
+                                        style: myTextTheme.titleMedium!),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: SizedBox(
@@ -209,11 +205,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             }),
                                       ),
                                     ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text("Cast",
-                                          style: myTextTheme.titleMedium!),
-                                    ),
+                                    Text("Cast",
+                                        style: myTextTheme.titleMedium!),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       child: SizedBox(
@@ -266,8 +259,43 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 body: TabBarView(
                   children: <Widget>[
                     //-------------------------------Movie Trailers Section-------------------------------------------
-                    const Center(
-                        child: Text("Trailers Section is yet to be created")),
+
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        top: 16,
+                        right: 16,
+                      ),
+                      child: Column(
+                        children: List.generate(
+                            state.movieDetailsModel.videos!.results!.length,
+                            (index) {
+                          final movieVidoes = state.movieDetailsModel.videos!;
+                          return GestureDetector(
+                            onTap: () {
+                              GoRouter.of(context).pushNamed(
+                                MyAppRouteConstants.moviePlayingPage,
+                                extra: state,
+                                pathParameters: {
+                                  'movieKey': movieVidoes.results![index].key!,
+                                  'name': movieVidoes.results![index].name!,
+                                },
+                              );
+                            },
+                            child: MovieListTileModel(
+                              image: state.movieDetailsModel.backdropPath!,
+                              name: movieVidoes.results![index].name!,
+                              description:
+                                  movieVidoes.results![index].size.toString(),
+                              date: movieVidoes
+                                  .results![index].publishedAt!.year
+                                  .toString(),
+                              tag: movieVidoes.results![index].type!,
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
                     //-------------------------------Similar Movies Section-------------------------------------------
                     Padding(
                       padding: const EdgeInsets.only(

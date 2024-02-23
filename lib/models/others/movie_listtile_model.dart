@@ -7,15 +7,15 @@ class MovieListTileModel extends StatelessWidget {
   const MovieListTileModel({
     super.key,
     required this.image,
-    required this.movieName,
-    required this.episodes,
+    required this.name,
+    required this.description,
     required this.date,
     required this.tag,
   });
 
   final String image;
-  final String movieName;
-  final String episodes;
+  final String name;
+  final String description;
   final String date;
   final String tag;
 
@@ -34,15 +34,21 @@ class MovieListTileModel extends StatelessWidget {
           Container(
             height: mySize.height / 8,
             width: mySize.width / 3,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius: const BorderRadius.all(
                 Radius.circular(8),
               ),
               image: DecorationImage(
-                image: AssetImage(image),
+                image:
+                    NetworkImage("https://image.tmdb.org/t/p/original/$image"),
                 fit: BoxFit.cover,
               ),
+            ),
+            child: const Icon(
+              Icons.play_circle_fill_rounded,
+              color: Colors.white,
             ),
           ),
           SizedBox(width: mySize.width / 24),
@@ -52,7 +58,7 @@ class MovieListTileModel extends StatelessWidget {
               SizedBox(
                 width: mySize.width / 3.5,
                 child: Text(
-                  movieName,
+                  name,
                   style: myTextTheme.titleMedium!.copyWith(
                     fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
                     fontWeight: FontWeight.bold,
@@ -61,8 +67,8 @@ class MovieListTileModel extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
-              Text( 
-                "$episodes Episodes",
+              Text(
+                description,
                 style: myTextTheme.bodySmall,
               ),
               InfoButton(

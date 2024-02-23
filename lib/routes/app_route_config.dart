@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
 import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
+import 'package:netflix/pages/7.movie_details/movie_playing_screen.dart';
 import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
@@ -61,6 +63,17 @@ class MyAppRouter {
         path: '/movieDetailsPage',
         pageBuilder: (context, state) => MaterialPage(
           child: MovieDetailsScreen(movieId: state.extra as int),
+        ),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.moviePlayingPage,
+        path: '/moviePlayingPage/:movieKey/:name',
+        pageBuilder: (context, state) => MaterialPage(
+          child: MoviePlayingScreen(
+            movieKey: state.pathParameters['movieKey']!,
+            name: state.pathParameters['name']!,
+            loadedState: state.extra as MovieDetailsLoadedState,
+          ),
         ),
       ),
     ],

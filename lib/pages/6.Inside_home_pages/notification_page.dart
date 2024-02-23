@@ -39,8 +39,8 @@ class NotificationPage extends StatelessWidget {
                   .map(
                     (e) => MovieListTileModel(
                       image: e['image'],
-                      movieName: e['movieName'],
-                      episodes: e['episodes'],
+                      name: e['name'],
+                      description: e['description'],
                       date: e['date'],
                       tag: e['tag'],
                     ),

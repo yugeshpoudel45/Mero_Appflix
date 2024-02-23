@@ -19,13 +19,20 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
         child: ElevatedButton(
           onPressed: () {
             log("Welcome to the World");
-            GoRouter.of(context).pushNamed(
-              MyAppRouteConstants.practicePage,
-            );
             // GoRouter.of(context).pushNamed(
             //   MyAppRouteConstants.practicePage,
-            //   extra: 500,
             // );
+            GoRouter.of(context).pushNamed(
+              MyAppRouteConstants.movieDetailsPage,
+              extra: 500,
+            );
+              //  GoRouter.of(context).pushNamed(
+              //                   MyAppRouteConstants.moviePlayingPage,
+              //                   extra: movieVidoes.results![index].key,
+              //                   pathParameters: {
+              //                     'movieKey': movieVidoes.results![index].key!
+              //                   },
+              //                 );
           },
           child: const Text('Login'),
         ),
