@@ -17,7 +17,7 @@ final class TrendingSectionLoadedState extends TrendingSectionState {
   final TrendingTvShowModel trendingTvShowModel;
  
   const TrendingSectionLoadedState({
-    required this.trendingPeopleModel,
+    required this.trendingPeopleModel, 
     required this.trendingTvShowModel,
     required this.trendingMovieModel,
   });

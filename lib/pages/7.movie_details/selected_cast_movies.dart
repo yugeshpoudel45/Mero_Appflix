@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/movie_carousel_data.dart';
-import '../../models/movie_carousel_model.dart';
+import '../../models/others/movie_carousel_model.dart';
 
 class SelectedCastMovies extends StatelessWidget {
   const SelectedCastMovies({super.key});

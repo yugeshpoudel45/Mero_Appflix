@@ -1,7 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Practice extends StatefulWidget {
   const Practice({super.key});
@@ -11,147 +13,109 @@ class Practice extends StatefulWidget {
 }
 
 class _PracticeState extends State<Practice> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  String myRequestToken = '';
+  final videoUrl = "https://youtu.be/hjQGq6uytiQ?si=ViPGYruUaEC0Cr4L";
 
-  Future<void> requestToken() async {
-    try {
-      http.Response response = await http.get(
-        Uri.parse('https://api.themoviedb.org/3/authentication/token/new'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization':
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWFjMzQ3MGRjNzg4YmY5MGFkODkyZDQyMjMzNDc2OCIsInN1YiI6IjY1YTBlOGY3Njc4MjU5MDEyZmU4Yzk0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hvJqQiiizeG_FXrBZWOpFA5qloqU8Rf_CtJt7bufJZw"
-        },
-      );
-      if (response.statusCode == 200) {
-        setState(
-          () {
-            myRequestToken =
-                jsonDecode(response.body)["request_token"] as String;
-          },
-        );
-        log('Token: ${response.body}');
-        // log('Request Token: $myRequestToken');
-      } else {
-        log('Failed to get token');
-      }
-    } catch (e) {
-      log('Request Token wala exception$e');
-    }
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
+      flags: const YoutubePlayerFlags(
+        enableCaption: false,
+        controlsVisibleAtStart: true,
+        forceHD: true,
+      ),
+    );
   }
 
-  // Future<void> askPermission() async {
-  //   try {
-  //     http.Response response = await http.post(
-  //       Uri.parse(
-  //           "https://api.themoviedb.org/3/authentication/a1c63ede968b8e1b55b82e9e93207ca882c69494"),
-  //       headers: {
-  //         "accept": "application/json",
-  //         'Authorization':
-  //             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWFjMzQ3MGRjNzg4YmY5MGFkODkyZDQyMjMzNDc2OCIsInN1YiI6IjY1YTBlOGY3Njc4MjU5MDEyZmU4Yzk0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hvJqQiiizeG_FXrBZWOpFA5qloqU8Rf_CtJt7bufJZw"
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       log('Validate Body: ${response.body}');
-  //     } else {
-  //       log('Failed to validate with login');
-  //       log(response.statusCode.toString());
-  //     }
-  //   } catch (e) {
-  //     log('Validate wala exception$e');
-  //   }
-  // }
-
-  Future<void> validateWithLogin() async {
-    try {
-      http.Response response = await http.post(
-          Uri.parse(
-              "https://api.themoviedb.org/3/authentication/token/validate_with_login"),
-          headers: {
-            "accept": "application/json",
-            'Authorization':
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWFjMzQ3MGRjNzg4YmY5MGFkODkyZDQyMjMzNDc2OCIsInN1YiI6IjY1YTBlOGY3Njc4MjU5MDEyZmU4Yzk0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hvJqQiiizeG_FXrBZWOpFA5qloqU8Rf_CtJt7bufJZw"
-          },
-          body: {
-            'username': usernameController.text,
-            'password': passwordController.text,
-            'request_token': myRequestToken,
-          });
-
-      if (response.statusCode == 200) {
-        log('Validate Body: ${response.body}');
-      } else {
-        log('Failed to validate with login');
-        log(response.statusCode.toString());
-      }
-    } catch (e) {
-      log('Validate wala exception$e');
-    }
+  @override
+  void deactivate() {
+    super.deactivate();
+    _controller.pause();
   }
 
-  Future<void> getSessionId() async {
-    try {
-      http.Response response = await http.post(
-          Uri.parse("https://api.themoviedb.org/3//authentication/session/new"),
-          headers: {
-            "accept": "application/json",
-            'Authorization':
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNWFjMzQ3MGRjNzg4YmY5MGFkODkyZDQyMjMzNDc2OCIsInN1YiI6IjY1YTBlOGY3Njc4MjU5MDEyZmU4Yzk0OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hvJqQiiizeG_FXrBZWOpFA5qloqU8Rf_CtJt7bufJZw"
-          },
-          body: {
-            'request_token': "414eb8009bff285f800c10b1363a1209b60e94dd",
-          });
-
-      if (response.statusCode == 200) {
-        log('Validate Body: ${response.body}');
-      } else {
-        log('Failed to validate with login');
-        log(response.statusCode.toString());
-      }
-    } catch (e) {
-      log('Validate wala exception$e');
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Username',
+    return YoutubePlayerBuilder(
+      onExitFullScreen: () {
+        // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
+        SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+      },
+      player: YoutubePlayer(
+        // thumbnail: ,
+        aspectRatio: 16 / 9,
+        topActions: const [
+          SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              // _controller.metadata.title,
+              "Lamba ji madam lamba ",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
-              obscureText: true,
+          ),
+          //!Improve this setting button later on
+          PlaybackSpeedButton(),
+          SizedBox(width: 12.0),
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.settings,
+          //     color: Colors.white,
+          //     size: 25.0,
+          //   ),
+          //   onPressed: () {
+          //     PopupMenuButton(
+
+          //       itemBuilder: (context) {
+          //         return <PopupMenuItem>[
+          //           // const PopupMenuItem(child: PlaybackSpeedButton()),
+          //           const PopupMenuItem(
+          //             child: Text('Quality'),
+          //           ),
+          //         ];
+          //       },
+          //     );
+          //   },
+          // ),
+        ],
+        bottomActions: [
+          CurrentPosition(),
+          const SizedBox(width: 10.0),
+          ProgressBar(
+            isExpanded: true,
+            colors: const ProgressBarColors(
+              playedColor: Colors.red,
+              handleColor: Colors.red,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await requestToken();
-              },
-              child: const Text('Validate'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // await askPermission();
-                // await validateWithLogin();
-                await getSessionId();
-              },
-              child: const Text('User Permission wala validate',),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 10.0),
+          RemainingDuration(),
+          FullScreenButton(),
+        ],
+        controller: _controller,
+        onReady: () {
+          log('Player is ready.');
+        },
       ),
+      builder: (context, player) {
+        return Column(
+          children: [
+            player,
+          ],
+        );
+      },
     );
   }
 }

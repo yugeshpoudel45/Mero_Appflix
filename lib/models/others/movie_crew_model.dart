@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/app_local_assets.dart';
-
 class MovieCrewModel extends StatelessWidget {
   final String image;
   final String name;
@@ -19,18 +17,20 @@ class MovieCrewModel extends StatelessWidget {
     Size mySize = MediaQuery.sizeOf(context);
     return Row(
       children: [
-        const CircleAvatar(
-          backgroundImage: AssetImage(AppAssets.onBoard1),
+        CircleAvatar(
+          backgroundImage:
+              NetworkImage("https://image.tmdb.org/t/p/original/$image"),
         ),
         SizedBox(
           width: mySize.width / 32,
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: mySize.width / 4,
+              width: mySize.width / 6,
               child: Text(
-                "James Cameron",
+                name,
                 style: myTextTheme.titleSmall!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -41,7 +41,7 @@ class MovieCrewModel extends StatelessWidget {
             SizedBox(
               width: mySize.width / 4,
               child: Text(
-                "Director",
+                role,
                 style: myTextTheme.bodySmall!.copyWith(
                   color: Colors.grey,
                 ),

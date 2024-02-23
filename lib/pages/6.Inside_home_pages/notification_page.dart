@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/data/movie_listtile_data.dart';
 
-import '../../models/movie_listtile_model.dart';
+import '../../models/others/movie_listtile_model.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});

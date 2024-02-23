@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:netflix/blocs/cubit/trending_section_cubit.dart';
-
-import '../../models/movie_carousel_model.dart';
+import '../../cubit/trending_section_cubit.dart';
+import '../../models/others/movie_carousel_model.dart';
+import '../../routes/app_route_constant.dart';
 
 class TrendingMoviesPage extends StatelessWidget {
   final TrendingSectionLoadedState loadedState;
@@ -40,15 +41,25 @@ class TrendingMoviesPage extends StatelessWidget {
           ),
           child: SingleChildScrollView(
             child: Wrap(
-              children: [
-                for (var movie in loadedState.trendingMovieModel.results!)
-                  MovieCarouselModel(
+              children:
+                  List.generate(loadedState.trendingMovieModel.results!.length,
+                      (int movieIndex) {
+                var movie = loadedState.trendingMovieModel.results![movieIndex];
+                return GestureDetector(
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      MyAppRouteConstants.movieDetailsPage,
+                      extra: movie.id,
+                    );
+                  },
+                  child: MovieCarouselModel(
                     width: mySize.width / 2.25,
                     height: mySize.height / 3.2,
                     image: movie.posterPath.toString(),
                     rating: movie.popularity!,
                   ),
-              ],
+                );
+              }),
             ),
           ),
         ));

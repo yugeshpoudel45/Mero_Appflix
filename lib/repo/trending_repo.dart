@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:netflix/models/trending_people_model.dart';
-import 'package:netflix/models/trending_tv_show.dart';
+import 'package:netflix/models/For%20APIs/trending_people_model.dart';
+import 'package:netflix/models/For%20APIs/trending_tv_show_model.dart';
 
 import '../config/app_constants.dart';
-import '../models/trending_movie_model.dart';
+import '../models/For APIs/trending_movie_model.dart';
 import 'package:http/http.dart' as http;
 
 class TrendingRepo {
@@ -21,9 +21,7 @@ class TrendingRepo {
         headers: headers,
       );
       if (response.statusCode == 200) {
-        // final meroBody = jsonDecode(response.body);
-
-        TrendingMovieModel? trendingMovieModel =
+        TrendingMovieModel trendingMovieModel =
             trendingMovieModelFromJson(response.body);
         return trendingMovieModel;
       } else {
@@ -33,7 +31,6 @@ class TrendingRepo {
       log("Exception caught: $e");
     }
     throw Exception("Outer Exception: Failed to Load Trending Movies");
-    // return null;
   }
 
 //------------------------------------------Trending People Fetching--------------------------------------------

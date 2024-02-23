@@ -4,15 +4,22 @@ import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
+import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
+import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
-import '../blocs/cubit/trending_section_cubit.dart';
+import '../cubit/trending_section_cubit.dart';
 import '../demo_error_page.dart';
 import '../demo_starting_page.dart';
 
 class MyAppRouter {
   GoRouter router = GoRouter(
     routes: [
+      GoRoute(
+        name: MyAppRouteConstants.practicePage,
+        path: '/practice',
+        pageBuilder: (context, state) => const MaterialPage(child: Practice()),
+      ),
       GoRoute(
         name: MyAppRouteConstants.demoStartingPageRouteName,
         path: '/',
@@ -48,6 +55,13 @@ class MyAppRouter {
             child: TrendingTvShowsPage(
           loadedState: state.extra as TrendingSectionLoadedState,
         )),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.movieDetailsPage,
+        path: '/movieDetailsPage',
+        pageBuilder: (context, state) => MaterialPage(
+          child: MovieDetailsScreen(movieId: state.extra as int),
+        ),
       ),
     ],
     errorPageBuilder: (context, state) {

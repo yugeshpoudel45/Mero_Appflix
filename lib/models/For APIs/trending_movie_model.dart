@@ -73,24 +73,7 @@ class Result {
     this.martialLawHasBeenDeclaredACoupD,
   });
 
-  // factory Result.fromJson(Map<String, dynamic> json) => Result(
-  //     adult: json["adult"],
-  //     backdropPath: json["backdrop_path"],
-  //     id: json["id"],
-  //     title: json["title"],
-  //     originalLanguage: originalLanguageValues.map[json["original_language"]]!,
-  //     originalTitle: json["original_title"],
-  //     overview: json["overview"],
-  //     posterPath: json["poster_path"],
-  //     mediaType: mediaTypeValues.map[json["media_type"]]!,
-  //     genreIds: json["genre_ids"] == null ? [] : List<int>.from(json["genre_ids"]!.map((x) => x)),
-  //     popularity: json["popularity"]?.toDouble(),
-  //     releaseDate: json["release_date"] == null ? null : DateTime.parse(json["release_date"]),
-  //     video: json["video"],
-  //     voteAverage: json["vote_average"]?.toDouble(),
-  //     voteCount: json["vote_count"],
-  //     martialLawHasBeenDeclaredACoupD: json["martial law has been declared. A coup d"],
-  // );
+
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? "Not available",

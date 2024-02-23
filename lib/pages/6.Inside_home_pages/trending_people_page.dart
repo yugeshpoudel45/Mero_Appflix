@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/blocs/cubit/trending_section_cubit.dart';
 
-import '../../models/movie_carousel_model.dart';
+import '../../cubit/trending_section_cubit.dart';
+import '../../models/others/movie_carousel_model.dart';
 
 class TrendingPeoplePage extends StatelessWidget {
   final TrendingSectionLoadedState loadedState;
