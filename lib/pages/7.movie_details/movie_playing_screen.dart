@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
+import 'package:netflix/models/others/readmore_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../models/others/movie_listtile_model.dart';
@@ -53,7 +54,6 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
   @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
-    Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return YoutubePlayerBuilder(
       onExitFullScreen: () {
@@ -128,9 +128,8 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                     right: 16,
                     top: 8,
                   ),
-                  child: Text(
-                    widget.loadedState.movieDetailsModel.overview!,
-                    style: myTextTheme.bodySmall,
+                  child: ReadMoreModel(
+                    text: widget.loadedState.movieDetailsModel.overview!,
                   ),
                 ),
                 Padding(
@@ -143,7 +142,6 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                     ),
                   ),
                 ),
-                // const SizedBox(height: 4.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
@@ -158,7 +156,8 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                             MyAppRouteConstants.moviePlayingPage,
                             extra: widget.loadedState,
                             pathParameters: {
-                              'movieKey': movieVidoes.results![index].key!
+                              'movieKey': movieVidoes.results![index].key!,
+                              'name': movieVidoes.results![index].name!,
                             },
                           );
                         },

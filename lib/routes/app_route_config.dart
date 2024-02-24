@@ -7,6 +7,7 @@ import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
 import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
 import 'package:netflix/pages/7.movie_details/movie_playing_screen.dart';
+import 'package:netflix/pages/7.movie_details/movie_reviews_screen.dart';
 import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
@@ -75,6 +76,14 @@ class MyAppRouter {
             loadedState: state.extra as MovieDetailsLoadedState,
           ),
         ),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.movieReviewsPage,
+        path: '/movieReviewsPage',
+        pageBuilder: (context, state) => MaterialPage(
+            child: MovieReviewsScreen(
+          loadedState: state.extra as MovieDetailsLoadedState,
+        )),
       ),
     ],
     errorPageBuilder: (context, state) {

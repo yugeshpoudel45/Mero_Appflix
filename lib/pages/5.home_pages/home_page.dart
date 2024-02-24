@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     context.read<TrendingSectionCubit>().onFetchingTrendingSection();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     TextTheme myTextTheme = Theme.of(context).textTheme;
@@ -163,12 +163,20 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
                               itemBuilder: (context, index) {
-                                return MovieCarouselModel(
-                                  image: state.trendingMovieModel
-                                      .results![index].posterPath
-                                      .toString(),
-                                  rating: state.trendingMovieModel
-                                      .results![index].popularity!,
+                                var movie =
+                                    state.trendingMovieModel.results![index];
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    GoRouter.of(context).pushNamed(
+                                      MyAppRouteConstants.movieDetailsPage,
+                                      extra: movie.id,
+                                    );
+                                  },
+                                  child: MovieCarouselModel(
+                                    image: movie.posterPath.toString(),
+                                    rating: movie.popularity!,
+                                  ),
                                 );
                               }),
                         ),
@@ -219,12 +227,11 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
                               itemBuilder: (context, index) {
+                                var tvShow =
+                                    state.trendingTvShowModel.results![index];
                                 return MovieCarouselModel(
-                                  image: state.trendingTvShowModel
-                                      .results![index].posterPath
-                                      .toString(),
-                                  rating: state.trendingTvShowModel
-                                      .results![index].popularity!,
+                                  image: tvShow.posterPath.toString(),
+                                  rating: tvShow.popularity!,
                                 );
                               }),
                         ),
@@ -279,12 +286,11 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
                               itemBuilder: (context, index) {
+                                var person =
+                                    state.trendingPeopleModel.results![index];
                                 return MovieCarouselModel(
-                                  image: state.trendingPeopleModel
-                                      .results![index].profilePath
-                                      .toString(),
-                                  rating: state.trendingPeopleModel
-                                      .results![index].popularity!,
+                                  image: person.profilePath.toString(),
+                                  rating: person.popularity!,
                                 );
                               }),
                         ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/models/others/movie_listtile_model.dart';
+import 'package:netflix/models/others/readmore_model.dart';
 
 import '../../components/buttons/play_button/play_button.dart';
 import '../../models/others/movie_carousel_model.dart';
@@ -84,7 +86,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          movie.title!,
+                                          movie.title!.substring(0, 20),
                                           style: myTextTheme.headlineSmall,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -190,9 +192,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      movie.overview.toString(),
-                                      style: myTextTheme.bodySmall,
+                                    ReadMoreModel(
+                                      text: movie.overview.toString(),
                                     ),
                                     SizedBox(height: mySize.height / 64),
                                     Text("Crew",
@@ -259,15 +260,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           const TabBar(
                             isScrollable: true,
                             tabs: [
-                              Tab(
-                                text: "Trailers",
-                              ),
-                              Tab(
-                                text: "More Like This",
-                              ),
-                              Tab(
-                                text: "Reviews",
-                              ),
+                              Tab(text: "Trailers"),
+                              Tab(text: "More Like This"),
+                              Tab(text: "Reviews"),
                             ],
                           ),
                         ],
@@ -278,97 +273,82 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 body: TabBarView(
                   children: <Widget>[
                     //-------------------------------Movie Trailers Section-------------------------------------------
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        top: 16,
-                        right: 16,
-                      ),
-                      child: Column(
-                        children: List.generate(
-                            state.movieDetailsModel.videos!.results!.length,
-                            (index) {
-                          final movieVidoes = state.movieDetailsModel.videos!;
-                          return GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.moviePlayingPage,
-                                extra: state,
-                                pathParameters: {
-                                  'movieKey': movieVidoes.results![index].key!,
-                                  'name': movieVidoes.results![index].name!,
-                                },
-                              );
-                            },
-                            child: MovieListTileModel(
-                              image: state.movieDetailsModel.backdropPath!,
-                              name: movieVidoes.results![index].name!,
-                              description:
-                                  movieVidoes.results![index].size.toString(),
-                              date: movieVidoes
-                                  .results![index].publishedAt!.year
-                                  .toString(),
-                              tag: movieVidoes.results![index].type!,
-                            ),
-                          );
-                        }),
+                    SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          top: 16,
+                          right: 16,
+                        ),
+                        child: Column(
+                          children: List.generate(
+                              state.movieDetailsModel.videos!.results!.length,
+                              (index) {
+                            final movieVidoes = state.movieDetailsModel.videos!;
+                            return GestureDetector(
+                              onTap: () {
+                                GoRouter.of(context).pushNamed(
+                                  MyAppRouteConstants.moviePlayingPage,
+                                  extra: state,
+                                  pathParameters: {
+                                    'movieKey':
+                                        movieVidoes.results![index].key!,
+                                    'name': movieVidoes.results![index].name!,
+                                  },
+                                );
+                              },
+                              child: Expanded(
+                                child: MovieListTileModel(
+                                  image: state.movieDetailsModel.backdropPath!,
+                                  name: movieVidoes.results![index].name!,
+                                  description: movieVidoes.results![index].size
+                                      .toString(),
+                                  date: movieVidoes
+                                      .results![index].publishedAt!.year
+                                      .toString(),
+                                  tag: movieVidoes.results![index].type!,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                     //-------------------------------Similar Movies Section-------------------------------------------
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        top: 16,
-                        right: 8,
-                        bottom: 8,
-                      ),
-                      child: Wrap(
-                        children: List.generate(6, (int movieIndex) {
-                          var similarMovies = state
-                              .movieDetailsModel.similar!.results![movieIndex];
-                          return GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.movieDetailsPage,
-                                extra: similarMovies.id,
-                              );
-                            },
-                            child: MovieCarouselModel(
-                              width: mySize.width / 2.25,
-                              height: mySize.height / 3.2,
-                              image: similarMovies.posterPath.toString(),
-                              rating: similarMovies.popularity!,
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
-                    //-----------------------------Movie Reviews Section----------------------------------
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        top: 16,
-                        right: 16,
-                      ),
-                      child: Column(
-                        children: List.generate(
-                            state.movieDetailsModel.reviews!.results!.length,
-                            (index) {
-                          final movieReviews = state.movieDetailsModel.reviews!;
-                          return MovieReviewsModel(
-                            avatar: movieReviews
-                                .results![index].authorDetails!.avatarPath!,
-                            name: movieReviews.results![index].author!,
-                            userName: movieReviews
-                                .results![index].authorDetails!.username!,
-                            rating: movieReviews
-                                .results![index].authorDetails!.rating!,
-                            comment: movieReviews.results![index].content!,
-                            datetime: movieReviews.results![index].createdAt!,
-                          );
-                        }),
+                    SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          top: 16,
+                          right: 8,
+                          bottom: 8,
+                        ),
+                        child: Wrap(
+                          children: List.generate(6, (int movieIndex) {
+                            var similarMovies = state.movieDetailsModel.similar!
+                                .results![movieIndex];
+                            return GestureDetector(
+                              onTap: () {
+                                GoRouter.of(context).pushNamed(
+                                  MyAppRouteConstants.movieDetailsPage,
+                                  extra: similarMovies.id,
+                                );
+                              },
+                              child: MovieCarouselModel(
+                                width: mySize.width / 2.25,
+                                height: mySize.height / 3.2,
+                                image: similarMovies.posterPath.toString(),
+                                rating: similarMovies.popularity!,
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
+                    //-----------------------------Movie Reviews Tab here----------------------------------
+                    _ReviewsTab(state: state),
                   ],
                 ),
               ),
@@ -378,6 +358,83 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           return const SizedBox();
         }
       },
+    );
+  }
+}
+
+//-----------------------------Movie Reviews Section----------------------------------
+class _ReviewsTab extends StatelessWidget {
+  const _ReviewsTab({
+    required this.state,
+  });
+
+  final MovieDetailsLoadedState state;
+
+  @override
+  Widget build(BuildContext context) {
+    ColorScheme myColorScheme = Theme.of(context).colorScheme;
+    TextTheme myTextTheme = Theme.of(context).textTheme;
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 16,
+          top: 16,
+          right: 16,
+        ),
+        child: 
+        state.movieDetailsModel.reviews!.results!.isEmpty
+          ? const Center(
+              child: Text("No Reviews given yet!"),
+            )
+          :
+        
+         Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Top Reviews",
+                  style: myTextTheme.titleLarge!.copyWith(
+                    fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      MyAppRouteConstants.movieReviewsPage,
+                      extra: state,
+                    );
+                  },
+                  child: Text(
+                    "See all",
+                    style: myTextTheme.titleSmall!.copyWith(
+                      color: myColorScheme.onTertiary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: List.generate(1, (index) {
+                final movieReviews = state.movieDetailsModel.reviews!;
+                return MovieReviewsModel(
+                  avatar:
+                      movieReviews.results![index].authorDetails!.avatarPath!,
+                  name: movieReviews.results![index].author!,
+                  userName:
+                      movieReviews.results![index].authorDetails!.username!,
+                  rating: movieReviews.results![index].authorDetails!.rating!,
+                  comment: movieReviews.results![index].content!,
+                  datetime: movieReviews.results![index].createdAt!,
+                );
+              }),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

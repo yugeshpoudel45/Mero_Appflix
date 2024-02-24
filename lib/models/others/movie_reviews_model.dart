@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/models/others/readmore_model.dart';
 
 class MovieReviewsModel extends StatefulWidget {
   final String name;
@@ -64,9 +65,8 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            widget.comment,
-            style: myTextTheme.bodyMedium,
+          child: ReadMoreModel(
+            text: widget.comment,
           ),
         ),
         Padding(

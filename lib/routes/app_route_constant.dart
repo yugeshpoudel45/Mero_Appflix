@@ -8,4 +8,5 @@ class MyAppRouteConstants {
   static const String trendingTvShowsPage = "trendingTvShowsPage";
   static const String movieDetailsPage = "movieDetailsPage";
   static const String moviePlayingPage = "moviePlayingPage";
+  static const String movieReviewsPage = "movieReviewsPage";
 }
