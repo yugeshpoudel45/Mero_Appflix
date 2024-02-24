@@ -23,14 +23,12 @@ class MoviePlayingScreen extends StatefulWidget {
 }
 
 class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
-  // final videoUrl = "https://youtu.be/hjQGq6uytiQ?si=ViPGYruUaEC0Cr4L";
   late YoutubePlayerController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      // initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
       initialVideoId: widget.movieKey,
       flags: const YoutubePlayerFlags(
         enableCaption: false,

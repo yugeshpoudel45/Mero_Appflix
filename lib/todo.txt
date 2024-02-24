@@ -7,3 +7,7 @@ Onboarding Screen
 -Add background image in it
 
 --UI garisakepaxi CI/CD grne
+
+
+--Add chatting feature in the app with gemini
+--Add the AI generated reviews and rating section in the app

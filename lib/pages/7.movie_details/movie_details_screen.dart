@@ -9,6 +9,7 @@ import 'package:netflix/models/others/movie_listtile_model.dart';
 import '../../components/buttons/play_button/play_button.dart';
 import '../../models/others/movie_carousel_model.dart';
 import '../../models/others/movie_crew_model.dart';
+import '../../models/others/movie_reviews_model.dart';
 import '../../routes/app_route_constant.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -149,7 +150,25 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             icon:
                                                 Icons.play_circle_fill_outlined,
                                             text: "Play",
-                                            func: () {},
+                                            func: () {
+                                              GoRouter.of(context).pushNamed(
+                                                MyAppRouteConstants
+                                                    .moviePlayingPage,
+                                                extra: state,
+                                                pathParameters: {
+                                                  'movieKey': state
+                                                      .movieDetailsModel
+                                                      .videos!
+                                                      .results![0]
+                                                      .key!,
+                                                  'name': state
+                                                      .movieDetailsModel
+                                                      .videos!
+                                                      .results![0]
+                                                      .name!,
+                                                },
+                                              );
+                                            },
                                             height: mySize.height / 16,
                                             width: mySize.width / 2.3,
                                           ),
@@ -259,7 +278,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 body: TabBarView(
                   children: <Widget>[
                     //-------------------------------Movie Trailers Section-------------------------------------------
-
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 16,
@@ -326,8 +344,31 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ),
                     ),
                     //-----------------------------Movie Reviews Section----------------------------------
-                    const Center(
-                        child: Text("Reviews Section is yet to be created")),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        top: 16,
+                        right: 16,
+                      ),
+                      child: Column(
+                        children: List.generate(
+                            state.movieDetailsModel.reviews!.results!.length,
+                            (index) {
+                          final movieReviews = state.movieDetailsModel.reviews!;
+                          return MovieReviewsModel(
+                            avatar: movieReviews
+                                .results![index].authorDetails!.avatarPath!,
+                            name: movieReviews.results![index].author!,
+                            userName: movieReviews
+                                .results![index].authorDetails!.username!,
+                            rating: movieReviews
+                                .results![index].authorDetails!.rating!,
+                            comment: movieReviews.results![index].content!,
+                            datetime: movieReviews.results![index].createdAt!,
+                          );
+                        }),
+                      ),
+                    ),
                   ],
                 ),
               ),

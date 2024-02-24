@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
-
 MovieDetailsModel movieDetailsModelFromJson(String str) =>
     MovieDetailsModel.fromJson(json.decode(str));
 
@@ -518,9 +516,13 @@ class SimilarResult {
       overview: json["overview"] ?? "unavailable",
       popularity: json["popularity"]?.toDouble() ?? 0.0,
       posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
-      releaseDate: json["release_date"] == null
-          ? null
-          : DateTime.parse(json["release_date"]),
+      releaseDate: json["release_date"] == null ? null : DateTime.now(),
+      //!---------------------Changed Here--------------------------------------------------------
+      //!Date time ma format exception aayo ani Date time ko barema khojna alxi lagera, aile lai DateTime.now() gareko ho....
+      //!paxi milamla yo date time ko format kasto huncha vanera...
+      // releaseDate: json["release_date"] == null
+      //     ? null
+      //     : DateTime.parse(json["release_date"]),
       //?---------------------------------------
       //? Future ma yaha error aauna sakxa... Release Date ko Format Exception aauna sakxa hai...
       //?---------------------------------------
