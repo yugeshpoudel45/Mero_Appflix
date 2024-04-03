@@ -67,6 +67,7 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: ReadMoreModel(
             text: widget.comment,
+            textStyle: myTextTheme.bodyMedium!,
           ),
         ),
         Padding(

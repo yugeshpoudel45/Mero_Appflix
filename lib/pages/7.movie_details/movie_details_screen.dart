@@ -85,10 +85,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          movie.title!.substring(0, 20),
-                                          style: myTextTheme.headlineSmall,
-                                          overflow: TextOverflow.ellipsis,
+                                        Expanded(
+                                          child: ReadMoreModel(
+                                            text: movie.title!,
+                                            textStyle:
+                                                myTextTheme.headlineSmall!,
+                                            trimLines: 1,
+                                          ),
                                         ),
                                         Row(
                                           children: [
@@ -194,6 +197,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     ),
                                     ReadMoreModel(
                                       text: movie.overview.toString(),
+                                      textStyle: myTextTheme.bodyMedium!,
                                     ),
                                     SizedBox(height: mySize.height / 64),
                                     Text("Crew",
@@ -382,58 +386,56 @@ class _ReviewsTab extends StatelessWidget {
           top: 16,
           right: 16,
         ),
-        child: 
-        state.movieDetailsModel.reviews!.results!.isEmpty
-          ? const Center(
-              child: Text("No Reviews given yet!"),
-            )
-          :
-        
-         Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Top Reviews",
-                  style: myTextTheme.titleLarge!.copyWith(
-                    fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+        child: state.movieDetailsModel.reviews!.results!.isEmpty
+            ? const Center(
+                child: Text("No Reviews given yet!"),
+              )
+            : Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Top Reviews",
+                        style: myTextTheme.titleLarge!.copyWith(
+                          fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          GoRouter.of(context).pushNamed(
+                            MyAppRouteConstants.movieReviewsPage,
+                            extra: state,
+                          );
+                        },
+                        child: Text(
+                          "See all",
+                          style: myTextTheme.titleSmall!.copyWith(
+                            color: myColorScheme.onTertiary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(
-                      MyAppRouteConstants.movieReviewsPage,
-                      extra: state,
-                    );
-                  },
-                  child: Text(
-                    "See all",
-                    style: myTextTheme.titleSmall!.copyWith(
-                      color: myColorScheme.onTertiary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Column(
+                    children: List.generate(1, (index) {
+                      final movieReviews = state.movieDetailsModel.reviews!;
+                      return MovieReviewsModel(
+                        avatar: movieReviews
+                            .results![index].authorDetails!.avatarPath!,
+                        name: movieReviews.results![index].author!,
+                        userName: movieReviews
+                            .results![index].authorDetails!.username!,
+                        rating:
+                            movieReviews.results![index].authorDetails!.rating!,
+                        comment: movieReviews.results![index].content!,
+                        datetime: movieReviews.results![index].createdAt!,
+                      );
+                    }),
                   ),
-                ),
-              ],
-            ),
-            Column(
-              children: List.generate(1, (index) {
-                final movieReviews = state.movieDetailsModel.reviews!;
-                return MovieReviewsModel(
-                  avatar:
-                      movieReviews.results![index].authorDetails!.avatarPath!,
-                  name: movieReviews.results![index].author!,
-                  userName:
-                      movieReviews.results![index].authorDetails!.username!,
-                  rating: movieReviews.results![index].authorDetails!.rating!,
-                  comment: movieReviews.results![index].content!,
-                  datetime: movieReviews.results![index].createdAt!,
-                );
-              }),
-            ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }

@@ -130,6 +130,7 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                   ),
                   child: ReadMoreModel(
                     text: widget.loadedState.movieDetailsModel.overview!,
+                    textStyle: myTextTheme.bodyMedium!,
                   ),
                 ),
                 Padding(

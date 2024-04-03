@@ -3,14 +3,16 @@ import 'package:readmore/readmore.dart';
 
 class ReadMoreModel extends StatelessWidget {
   final String text;
-  const ReadMoreModel({super.key, required this.text});
+  final TextStyle textStyle;
+  final int trimLines;
+  const ReadMoreModel({super.key, required this.text, required this.textStyle, this.trimLines = 3});
 
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return ReadMoreText(
       text,
-      trimLines: 3,
+      trimLines: trimLines,
       colorClickableText: Colors.blue,
       trimMode: TrimMode.Line,
       trimCollapsedText: 'Read more',
@@ -18,7 +20,7 @@ class ReadMoreModel extends StatelessWidget {
       moreStyle: myTextTheme.labelMedium!.copyWith(
         fontWeight: FontWeight.bold,
       ),
-      style: myTextTheme.bodyMedium,
+      style: textStyle,
     );
   }
 }
