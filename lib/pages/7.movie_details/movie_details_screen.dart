@@ -29,7 +29,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     context.read<MovieDetailsCubit>().onFetchingMovieDetails(widget.movieId);
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     TextTheme myTextTheme = Theme.of(context).textTheme;
@@ -47,314 +47,307 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             ),
           );
         } else if (state is MovieDetailsLoadedState) {
+          final movie = state.movieDetailsModel;
+          final image = movie.posterPath;
+          String genres = "";
+          for (var i = 0; i < movie.genres!.length; i++) {
+            genres += movie.genres![i].name!;
+            if (i != movie.genres!.length - 1) {
+              genres += ", ";
+            }
+          }
           return DefaultTabController(
             length: 3,
             child: Scaffold(
-              body: NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  final movie = state.movieDetailsModel;
-                  final image = movie.posterPath;
-                  String genres = "";
-                  for (var i = 0; i < movie.genres!.length; i++) {
-                    genres += movie.genres![i].name!;
-                    if (i != movie.genres!.length - 1) {
-                      genres += ", ";
-                    }
-                  }
-                  return [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          Column(
+              body: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: mySize.height / 2.5,
+                          width: double.maxFinite,
+                          child: Image.network(
+                            "https://image.tmdb.org/t/p/original/$image",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                height: mySize.height / 2.5,
-                                width: double.maxFinite,
-                                child: Image.network(
-                                  "https://image.tmdb.org/t/p/original/$image",
-                                  fit: BoxFit.cover,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: mySize.width / 1.5,
+                                    child: Text(
+                                      movie.title!,
+                                      style: myTextTheme.headlineSmall!,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.bookmark_border_rounded),
+                                      SizedBox(width: mySize.width / 24),
+                                      const Icon(Icons.share_outlined),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, right: 16, top: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              SizedBox(height: mySize.height / 80),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: ReadMoreModel(
-                                            text: movie.title!,
-                                            textStyle:
-                                                myTextTheme.headlineSmall!,
-                                            trimLines: 1,
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            const Icon(
-                                                Icons.bookmark_border_rounded),
-                                            SizedBox(width: mySize.width / 24),
-                                            const Icon(Icons.share_outlined),
-                                          ],
-                                        ),
-                                      ],
+                                    Icon(
+                                      Icons.star_half_rounded,
+                                      color: myColorScheme.onTertiary,
                                     ),
-                                    SizedBox(height: mySize.height / 80),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.star_half_rounded,
-                                            color: myColorScheme.onTertiary,
-                                          ),
-                                          const SizedBox(width: 2),
-                                          Text(
-                                            movie.popularity.toString(),
-                                            style: myTextTheme.labelLarge!
-                                                .copyWith(
-                                              color: myColorScheme.onTertiary,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 2),
-                                          Icon(
-                                            Icons.arrow_forward_ios_rounded,
-                                            color: myColorScheme.onTertiary,
-                                          ),
-                                          const SizedBox(width: 2),
-                                          Text(movie.releaseDate!.year
-                                              .toString()),
-                                          const SizedBox(width: 8),
-                                          InfoButton(
-                                            text: movie.spokenLanguages![0]
-                                                .englishName!,
-                                            func: () {},
-                                          ),
-                                          const SizedBox(width: 8),
-                                          InfoButton(
-                                            text: movie
-                                                .productionCountries![0].name!,
-                                            func: () {},
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 16,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          PlayButton(
-                                            icon:
-                                                Icons.play_circle_fill_outlined,
-                                            text: "Play",
-                                            func: () {
-                                              GoRouter.of(context).pushNamed(
-                                                MyAppRouteConstants
-                                                    .moviePlayingPage,
-                                                extra: state,
-                                                pathParameters: {
-                                                  'movieKey': state
-                                                      .movieDetailsModel
-                                                      .videos!
-                                                      .results![0]
-                                                      .key!,
-                                                  'name': state
-                                                      .movieDetailsModel
-                                                      .videos!
-                                                      .results![0]
-                                                      .name!,
-                                                },
-                                              );
-                                            },
-                                            height: mySize.height / 16,
-                                            width: mySize.width / 2.3,
-                                          ),
-                                          PlayButton(
-                                            icon: Icons.download_outlined,
-                                            text: "Download",
-                                            func: () {},
-                                            height: mySize.height / 16,
-                                            width: mySize.width / 2.3,
-                                            isFilled: false,
-                                            isDownloadButton: true,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    const SizedBox(width: 2),
                                     Text(
-                                      "Genre: $genres",
+                                      movie.popularity.toString(),
                                       style: myTextTheme.labelLarge!.copyWith(
-                                        fontWeight: FontWeight.bold,
+                                        color: myColorScheme.onTertiary,
                                       ),
                                     ),
-                                    ReadMoreModel(
-                                      text: movie.overview.toString(),
-                                      textStyle: myTextTheme.bodyMedium!,
+                                    const SizedBox(width: 2),
+                                    Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: myColorScheme.onTertiary,
                                     ),
-                                    SizedBox(height: mySize.height / 64),
-                                    Text("Crew",
-                                        style: myTextTheme.titleMedium!),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: SizedBox(
-                                        height: 72,
-                                        child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: 5,
-                                            itemBuilder: (context, index) {
-                                              final movieCredits =
-                                                  movie.credits!;
-                                              return MovieCrewModel(
-                                                image: movieCredits
-                                                    .crew![index].profilePath
-                                                    .toString(),
-                                                name: movieCredits
-                                                    .crew![index].name
-                                                    .toString(),
-                                                role: movieCredits
-                                                    .crew![index].job
-                                                    .toString(),
-                                              );
-                                            }),
-                                      ),
+                                    const SizedBox(width: 2),
+                                    Text(movie.releaseDate!.year.toString()),
+                                    const SizedBox(width: 8),
+                                    InfoButton(
+                                      text: movie
+                                          .spokenLanguages![0].englishName!,
+                                      func: () {},
                                     ),
-                                    Text("Cast",
-                                        style: myTextTheme.titleMedium!),
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: SizedBox(
-                                        height: 72,
-                                        child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: 5,
-                                            itemBuilder: (context, index) {
-                                              final movieCredits =
-                                                  movie.credits!;
-                                              return MovieCrewModel(
-                                                image: movieCredits
-                                                    .cast![index].profilePath
-                                                    .toString(),
-                                                name: movieCredits
-                                                    .cast![index].name
-                                                    .toString(),
-                                                role: "Actor",
-                                              );
-                                            }),
-                                      ),
+                                    const SizedBox(width: 8),
+                                    InfoButton(
+                                      text: movie.productionCountries![0].name!,
+                                      func: () {},
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                          const TabBar(
-                            isScrollable: true,
-                            tabs: [
-                              Tab(text: "Trailers"),
-                              Tab(text: "More Like This"),
-                              Tab(text: "Reviews"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ];
-                },
-                body: TabBarView(
-                  children: <Widget>[
-                    //-------------------------------Movie Trailers Section-------------------------------------------
-                    SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          top: 16,
-                          right: 16,
-                        ),
-                        child: Column(
-                          children: List.generate(
-                              state.movieDetailsModel.videos!.results!.length,
-                              (index) {
-                            final movieVidoes = state.movieDetailsModel.videos!;
-                            return GestureDetector(
-                              onTap: () {
-                                GoRouter.of(context).pushNamed(
-                                  MyAppRouteConstants.moviePlayingPage,
-                                  extra: state,
-                                  pathParameters: {
-                                    'movieKey':
-                                        movieVidoes.results![index].key!,
-                                    'name': movieVidoes.results![index].name!,
-                                  },
-                                );
-                              },
-                              child: Expanded(
-                                child: MovieListTileModel(
-                                  image: state.movieDetailsModel.backdropPath!,
-                                  name: movieVidoes.results![index].name!,
-                                  description: movieVidoes.results![index].size
-                                      .toString(),
-                                  date: movieVidoes
-                                      .results![index].publishedAt!.year
-                                      .toString(),
-                                  tag: movieVidoes.results![index].type!,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    PlayButton(
+                                      icon: Icons.play_circle_fill_outlined,
+                                      text: "Play",
+                                      func: () {
+                                        GoRouter.of(context).pushNamed(
+                                          MyAppRouteConstants.moviePlayingPage,
+                                          extra: state,
+                                          pathParameters: {
+                                            'movieKey': state.movieDetailsModel
+                                                .videos!.results![0].key!,
+                                            'name': state.movieDetailsModel
+                                                .videos!.results![0].name!,
+                                          },
+                                        );
+                                      },
+                                      height: mySize.height / 16,
+                                      width: mySize.width / 2.3,
+                                    ),
+                                    PlayButton(
+                                      icon: Icons.download_outlined,
+                                      text: "Download",
+                                      func: () {},
+                                      height: mySize.height / 16,
+                                      width: mySize.width / 2.3,
+                                      isFilled: false,
+                                      isDownloadButton: true,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                    //-------------------------------Similar Movies Section-------------------------------------------
-                    SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          top: 16,
-                          right: 8,
-                          bottom: 8,
-                        ),
-                        child: Wrap(
-                          children: List.generate(6, (int movieIndex) {
-                            var similarMovies = state.movieDetailsModel.similar!
-                                .results![movieIndex];
-                            return GestureDetector(
-                              onTap: () {
-                                GoRouter.of(context).pushNamed(
-                                  MyAppRouteConstants.movieDetailsPage,
-                                  extra: similarMovies.id,
-                                );
-                              },
-                              child: MovieCarouselModel(
-                                width: mySize.width / 2.25,
-                                height: mySize.height / 3.2,
-                                image: similarMovies.posterPath.toString(),
-                                rating: similarMovies.popularity!,
+                              Text(
+                                "Genre: $genres",
+                                style: myTextTheme.labelLarge!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            );
-                          }),
+                              ReadMoreModel(
+                                text: movie.overview.toString(),
+                                textStyle: myTextTheme.bodyMedium!,
+                              ),
+                              SizedBox(height: mySize.height / 64),
+                              Text("Crew", style: myTextTheme.titleMedium!),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  height: 72,
+                                  child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        final movieCredits = movie.credits!;
+                                        return MovieCrewModel(
+                                          image: movieCredits
+                                              .crew![index].profilePath
+                                              .toString(),
+                                          name: movieCredits.crew![index].name
+                                              .toString(),
+                                          role: movieCredits.crew![index].job
+                                              .toString(),
+                                        );
+                                      }),
+                                ),
+                              ),
+                              Text("Cast", style: myTextTheme.titleMedium!),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  height: 72,
+                                  child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        final movieCredits = movie.credits!;
+                                        return MovieCrewModel(
+                                          image: movieCredits
+                                              .cast![index].profilePath
+                                              .toString(),
+                                          name: movieCredits.cast![index].name
+                                              .toString(),
+                                          role: "Actor",
+                                        );
+                                      }),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    //-----------------------------Movie Reviews Tab here----------------------------------
-                    _ReviewsTab(state: state),
-                  ],
-                ),
+                  ),
+                  const SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: Colors.white,
+                    pinned: true,
+                    floating: true,
+                    snap: true,
+                    toolbarHeight: 0,
+                    // expandedHeight: 0,
+                    // titleSpacing: 0,
+                    // // collapsedHeight: 0,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      tabs: [
+                        Tab(text: "Trailers"),
+                        Tab(text: "More Like This"),
+                        Tab(text: "Reviews"),
+                      ],
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    //!Issue: While Scrolling tabbarView is going inside the tab bar in flutter
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        //-------------------------------Movie Trailers Section-------------------------------------------
+                        SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              top: 16,
+                              right: 16,
+                            ),
+                            child: Column(
+                              children: List.generate(
+                                  state.movieDetailsModel.videos!.results!
+                                      .length, (index) {
+                                final movieVidoes =
+                                    state.movieDetailsModel.videos!;
+                                return GestureDetector(
+                                  onTap: () {
+                                    GoRouter.of(context).pushNamed(
+                                      MyAppRouteConstants.moviePlayingPage,
+                                      extra: state,
+                                      pathParameters: {
+                                        'movieKey':
+                                            movieVidoes.results![index].key!,
+                                        'name':
+                                            movieVidoes.results![index].name!,
+                                      },
+                                    );
+                                  },
+                                  child: MovieListTileModel(
+                                    image:
+                                        state.movieDetailsModel.backdropPath!,
+                                    name: movieVidoes.results![index].name!,
+                                    description: movieVidoes
+                                        .results![index].size
+                                        .toString(),
+                                    date: movieVidoes
+                                        .results![index].publishedAt!.year
+                                        .toString(),
+                                    tag: movieVidoes.results![index].type!,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ),
+                        // -------------------------------Similar Movies Section-------------------------------------------
+                        SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16,
+                              top: 16,
+                              right: 8,
+                              bottom: 8,
+                            ),
+                            child: Wrap(
+                              children: List.generate(6, (int movieIndex) {
+                                var similarMovies = state.movieDetailsModel
+                                    .similar!.results![movieIndex];
+                                return GestureDetector(
+                                  onTap: () {
+                                    GoRouter.of(context).pushNamed(
+                                      MyAppRouteConstants.movieDetailsPage,
+                                      extra: similarMovies.id,
+                                    );
+                                  },
+                                  child: MovieCarouselModel(
+                                    width: mySize.width / 2.25,
+                                    height: mySize.height / 3.2,
+                                    image: similarMovies.posterPath.toString(),
+                                    rating: similarMovies.popularity!,
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ),
+                        //-----------------------------Movie Reviews Tab here----------------------------------
+                        _ReviewsTab(state: state),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           );

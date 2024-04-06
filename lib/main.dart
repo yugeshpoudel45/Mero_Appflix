@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 //padding: const EdgeInsets.symmetric(horizontal: 16),
 
 //Red Color

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix/models/others/readmore_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 class DemoStartingPage extends StatefulWidget {
@@ -22,26 +21,6 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: ReadMoreModel(
-                  text:
-                      "Hello Worldgfsdflkjsflk jaslkdfjlksdjflk ja jfaldkjflaskdjf lkj l",
-                  textStyle: myTextTheme.headlineMedium!,
-                  trimLines: 1,
-                ),
-              ),
-              Expanded(
-                child: ReadMoreModel(
-                  text:
-                      "Hello Worldgfsdflkjsflk jaslkdfjlksdjflk ja jfaldkjflaskdjf lkj l",
-                  textStyle: myTextTheme.headlineMedium!,
-                  trimLines: 1,
-                ),
-              ),
-            ],
-          ),
           Center(
             child: ElevatedButton(
               onPressed: () {
