@@ -1,13 +1,16 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/config/app_local_assets.dart';
+import 'package:netflix/models/For%20APIs/trending_movie_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../../components/buttons/play_button/play_button.dart';
 import '../../cubit/trending_section_cubit.dart';
+import '../../models/For APIs/trending_tv_show_model.dart';
 import '../../models/others/movie_carousel_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -43,83 +46,7 @@ class _HomePageState extends State<HomePage> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  height: mySize.height / 2.5,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppAssets.onBoard1),
-                      fit: BoxFit.cover,
-                      opacity: 0.9,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: mySize.height / 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Image.asset(
-                              AppAssets.appLogo,
-                              height: mySize.height / 24,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  CupertinoIcons.search,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
-                                SizedBox(width: mySize.width / 20),
-                                const Icon(
-                                  CupertinoIcons.bell,
-                                  color: Colors.white,
-                                  size: 32,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Text(
-                          "Fast & Furious",
-                          style: myTextTheme.headlineMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          "Action. Superhero. Science. Fiction.",
-                          style: myTextTheme.bodyMedium!.copyWith(
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: mySize.height / 80),
-                        Row(
-                          children: [
-                            PlayButton(
-                              icon: Icons.play_circle_fill_rounded,
-                              text: "Play",
-                              func: () {},
-                            ),
-                            SizedBox(width: mySize.width / 24),
-                            PlayButton(
-                              isFilled: false,
-                              width: 104,
-                              icon: Icons.add,
-                              text: "My List",
-                              func: () {},
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _LocalCarouselModel(loadedState: state),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -305,6 +232,194 @@ class _HomePageState extends State<HomePage> {
           return const SizedBox();
         }
       },
+    );
+  }
+}
+
+class _LocalCarouselModel extends StatefulWidget {
+  final TrendingSectionLoadedState loadedState;
+  const _LocalCarouselModel({required this.loadedState});
+
+  @override
+  State<_LocalCarouselModel> createState() => __LocalCarouselModelState();
+}
+
+class __LocalCarouselModelState extends State<_LocalCarouselModel> {
+  int currentPage = 0;
+  final controller = CarouselController();
+
+  @override
+  Widget build(BuildContext context) {
+    Size mySize = MediaQuery.sizeOf(context);
+    TextTheme myTextTheme = Theme.of(context).textTheme;
+    return CarouselSlider.builder(
+      carouselController: controller,
+      itemCount: 6,
+      itemBuilder: (BuildContext context, int index, int realIndex) {
+        TrendingMovieModel fetchMovie = widget.loadedState.trendingMovieModel;
+        TrendingTvShowModel fetchTvShow =
+            widget.loadedState.trendingTvShowModel;
+        String image = index % 2 == 0
+            ? fetchMovie.results![index].backdropPath.toString()
+            : fetchTvShow.results![index].backdropPath.toString();
+        String movieName = index % 2 == 0
+            ? fetchMovie.results![index].title.toString()
+            : fetchTvShow.results![index].name.toString();
+        String videoType = index % 2 == 0
+            ? fetchMovie.results![index].mediaType.toString()
+            : fetchTvShow.results![index].mediaType.toString();
+        String releaseDate = index % 2 == 0
+            ? fetchMovie.results![index].releaseDate!.year.toString()
+            : fetchTvShow.results![index].firstAirDate!.year.toString();
+        return Stack(alignment: Alignment.bottomCenter, children: [
+          Image.network(
+            "https://image.tmdb.org/t/p/original/$image",
+            fit: BoxFit.cover,
+            width: mySize.width,
+            height: mySize.height / 2.5,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 16,
+              bottom: 8,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: mySize.height / 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      AppAssets.appLogo,
+                      height: mySize.height / 24,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          CupertinoIcons.search,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                        SizedBox(width: mySize.width / 20),
+                        const Icon(
+                          CupertinoIcons.bell,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: mySize.height / 8),
+                Text(
+                  movieName,
+                  style: myTextTheme.headlineMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.clip,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      videoType == "MediaType.TV" ? "TV Show/" : "Movie/",
+                      style: myTextTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      releaseDate,
+                      style: myTextTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: mySize.height / 80),
+                Row(
+                  children: [
+                    PlayButton(
+                      icon: Icons.play_circle_fill_rounded,
+                      text: "Play",
+                      func: () {
+                        index % 2 == 0
+                            ? GoRouter.of(context).pushNamed(
+                                MyAppRouteConstants.movieDetailsPage,
+                                extra: fetchMovie.results![index].id,
+                              )
+                            : GoRouter.of(context).pushNamed(
+                                MyAppRouteConstants.trendingTvShowsPage,
+                                extra: fetchTvShow.results![index].id,
+                              );
+                        //! TODO: Change the routing for the trending TvShow here
+                      },
+                    ),
+                    SizedBox(width: mySize.width / 24),
+                    PlayButton(
+                      isFilled: false,
+                      width: 104,
+                      icon: Icons.add,
+                      text: "My List",
+                      func: () {},
+                    ),
+                  ],
+                ),
+                SizedBox(height: mySize.height / 80),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    6,
+                    (index) => buildDot(index, context),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ]);
+      },
+      options: CarouselOptions(
+        height: mySize.height / 2.5,
+        autoPlay: true,
+        viewportFraction: 1,
+        onPageChanged: (i, reason) {
+          setState(
+            () {
+              currentPage = i;
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Container buildDot(int index, BuildContext context) {
+    ColorScheme myColorScheme = Theme.of(context).colorScheme;
+    return Container(
+      height: 8.0,
+      width: 8.0,
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: currentPage == index ? myColorScheme.onTertiary : Colors.white,
+      ),
     );
   }
 }

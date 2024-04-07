@@ -38,8 +38,6 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
             backgroundImage: NetworkImage(
               "https://image.tmdb.org/t/p/original${widget.avatar}",
             ),
-            onBackgroundImageError: (exception, stackTrace) =>
-                Image.network(widget.avatar),
           ),
           title: Text(
             widget.name,

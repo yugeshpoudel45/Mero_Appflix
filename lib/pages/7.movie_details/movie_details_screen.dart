@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
+import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/models/others/movie_listtile_model.dart';
 import 'package:netflix/models/others/readmore_model.dart';
 
@@ -29,7 +30,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     context.read<MovieDetailsCubit>().onFetchingMovieDetails(widget.movieId);
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     TextTheme myTextTheme = Theme.of(context).textTheme;
@@ -48,7 +49,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           );
         } else if (state is MovieDetailsLoadedState) {
           final movie = state.movieDetailsModel;
-          final image = movie.posterPath;
+          List<String> movies = [
+            movie.backdropPath!,
+            movie.posterPath!,
+          ];
           String genres = "";
           for (var i = 0; i < movie.genres!.length; i++) {
             genres += movie.genres![i].name!;
@@ -64,14 +68,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: mySize.height / 2.5,
-                          width: double.maxFinite,
-                          child: Image.network(
-                            "https://image.tmdb.org/t/p/original/$image",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        AnimatedCarouselModel(items: movies),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16, right: 16, top: 16),
@@ -230,7 +227,23 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               .toString(),
                                           name: movieCredits.cast![index].name
                                               .toString(),
-                                          role: "Actor",
+                                          role: movieCredits.cast![index]
+                                                          .knownForDepartment
+                                                          .toString() ==
+                                                      "Acting" &&
+                                                  movieCredits.cast![index]
+                                                          .gender !=
+                                                      0
+                                              ? (movieCredits.cast![index]
+                                                          .gender ==
+                                                      1
+                                                  ? "Actress"
+                                                  : "Actor")
+                                              : movieCredits.cast![index]
+                                                  .knownForDepartment
+                                                  .toString(),
+                                          // role: movieCredits.cast![index]
+                                          //     .gender == 1 ? "Actor" : "Actress",
                                         );
                                       }),
                                 ),
@@ -248,9 +261,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     floating: true,
                     snap: true,
                     toolbarHeight: 0,
-                    // expandedHeight: 0,
-                    // titleSpacing: 0,
-                    // // collapsedHeight: 0,
+                    expandedHeight: 0,
+                    titleSpacing: 0,
+                    collapsedHeight: 0,
                     bottom: TabBar(
                       isScrollable: true,
                       tabs: [
@@ -276,8 +289,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             child: Column(
                               children: List.generate(
-                                  state.movieDetailsModel.videos!.results!
-                                      .length, (index) {
+                                  (state.movieDetailsModel.videos!.results!
+                                              .length >
+                                          6)
+                                      ? 6
+                                      : state.movieDetailsModel.videos!.results!
+                                          .length, (index) {
                                 final movieVidoes =
                                     state.movieDetailsModel.videos!;
                                 return GestureDetector(

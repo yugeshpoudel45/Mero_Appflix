@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
 import 'package:netflix/pages/2.onboarding_screen/datas.dart';
@@ -12,6 +14,40 @@ class OnboardingPage extends StatefulWidget {
 class OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+
+//!
+  // Function to automatically go to the next page
+  void _goToNextPage() {
+    if (_pageController.page! < 2) {
+      // Check if not on the last page
+      _pageController.nextPage(
+          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    }
+  }
+
+  setTimer() {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      _goToNextPage();
+      if (_pageController.page! >= 2) {
+        timer.cancel(); // Stop the timer
+      } else if (_pageController.page! < 2) {
+        timer.isActive; // active the timer
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setTimer();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+  //!
 
   @override
   Widget build(BuildContext context) {

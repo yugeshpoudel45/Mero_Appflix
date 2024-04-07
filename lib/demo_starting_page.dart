@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 class DemoStartingPage extends StatefulWidget {
@@ -33,12 +34,13 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
                 );
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.movieDetailsPage,
-                //   extra: 4567,
+                //   extra: 767,
                 // );
               },
               child: const Text('Login'),
             ),
           ),
+          // AnimatedCarouselModel(items: urlImages),
         ],
       ),
     );

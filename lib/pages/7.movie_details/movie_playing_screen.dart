@@ -67,7 +67,6 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
           const SizedBox(width: 8.0),
           Expanded(
             child: Text(
-              // _controller.metadata.title,
               widget.name.toString(),
               style: const TextStyle(
                 color: Colors.white,
@@ -98,9 +97,9 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
       ),
       builder: (context, player) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.loadedState.movieDetailsModel.title!),
-          ),
+          // appBar: AppBar(
+          //   title: Text(widget.loadedState.movieDetailsModel.title!),
+          // ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,13 +111,33 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                     top: 16,
                     right: 16,
                   ),
-                  child: Text(
-                    widget.name,
-                    style: myTextTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: Text(
+                          widget.loadedState.movieDetailsModel.title!,
+                          textAlign: TextAlign.left,
+                          style: myTextTheme.headlineSmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.maxFinite,
+                        child: Text(
+                          widget.name,
+                          style: myTextTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
