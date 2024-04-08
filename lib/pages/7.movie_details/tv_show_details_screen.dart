@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'package:netflix/components/buttons/other_buttons/info_button.dart';
-import 'package:netflix/cubit/movie_details_cubit.dart';
-import 'package:netflix/models/others/animated_carousel_model.dart';
-import 'package:netflix/models/others/movie_listtile_model.dart';
-import 'package:netflix/models/others/readmore_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 
-import '../../../components/buttons/play_button/play_button.dart';
-import '../../../models/others/movie_carousel_model.dart';
-import '../../../models/others/movie_crew_model.dart';
-import '../../../models/others/movie_reviews_model.dart';
-import '../../../routes/app_route_constant.dart';
+import '../../components/buttons/other_buttons/info_button.dart';
+import '../../components/buttons/play_button/play_button.dart';
+import '../../cubit/tv_show_details_cubit.dart';
+import '../../models/For APIs/tv_show_details_model.dart';
+import '../../models/others/animated_carousel_model.dart';
+import '../../models/others/movie_carousel_model.dart';
+import '../../models/others/movie_crew_model.dart';
+import '../../models/others/movie_listtile_model.dart';
+import '../../models/others/readmore_model.dart';
+import '../../routes/app_route_constant.dart';
 
-class MovieDetailsScreen extends StatefulWidget {
+class TvShowDetailsScreen extends StatefulWidget {
   final int movieId;
-  const MovieDetailsScreen({super.key, required this.movieId});
+  const TvShowDetailsScreen({super.key, required this.movieId});
 
   @override
-  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
+  State<TvShowDetailsScreen> createState() => _TvShowDetailsScreenState();
 }
 
-class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<MovieDetailsCubit>().onFetchingMovieDetails(widget.movieId);
+    context.read<TvShowDetailsCubit>().onFetchingTvShowDetails(widget.movieId);
   }
 
   @override
@@ -36,20 +34,20 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     TextTheme myTextTheme = Theme.of(context).textTheme;
     Size mySize = MediaQuery.sizeOf(context);
-    return BlocBuilder<MovieDetailsCubit, MovieDetailsState>(
+    return BlocBuilder<TvShowDetailsCubit, TvShowDetailsState>(
       builder: (context, state) {
-        if (state is MovieDetailsLoadingState) {
+        if (state is TvShowDetailsLoadingState) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is MovieDetailsErrorState) {
+        } else if (state is TvShowDetailsErrorState) {
           return Scaffold(
             body: Center(
               child: Text(state.errorMessage),
             ),
           );
-        } else if (state is MovieDetailsLoadedState) {
-          final movie = state.movieDetailsModel;
+        } else if (state is TvShowDetailsLoadedState) {
+          final movie = state.tvShowDetailsModel;
           List<String> movies = [
             movie.backdropPath!,
             movie.posterPath!,
@@ -83,7 +81,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   SizedBox(
                                     width: mySize.width / 1.5,
                                     child: Text(
-                                      movie.title!,
+                                      movie.name!,
                                       style: myTextTheme.headlineSmall!,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -120,7 +118,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       color: myColorScheme.onTertiary,
                                     ),
                                     const SizedBox(width: 2),
-                                    Text(movie.releaseDate!.year.toString()),
+                                    Text(movie.firstAirDate!.year.toString()),
                                     const SizedBox(width: 8),
                                     InfoButton(
                                       text: movie
@@ -151,9 +149,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                           MyAppRouteConstants.playingPage,
                                           extra: state,
                                           pathParameters: {
-                                            'movieKey': state.movieDetailsModel
+                                            'movieKey': state.tvShowDetailsModel
                                                 .videos!.results![0].key!,
-                                            'name': state.movieDetailsModel
+                                            'name': state.tvShowDetailsModel
                                                 .videos!.results![0].name!,
                                           },
                                         );
@@ -190,26 +188,26 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 child: SizedBox(
                                   height: 72,
                                   child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          (movie.credits!.crew!.length) > 5
-                                              ? 5
-                                              : movie.credits!.crew!.length,
-                                      itemBuilder: (context, index) {
-                                        final movieCredits = movie.credits!;
-                                        return MovieCrewModel(
-                                          image: movieCredits
-                                              .crew![index].profilePath
-                                              .toString(),
-                                          name: movieCredits.crew![index].name
-                                              .toString(),
-                                          role: movieCredits.crew![index].job
-                                              .toString(),
-                                        );
-                                      }),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: (movie.credits!.crew!.length) > 5
+                                        ? 5
+                                        : movie.credits!.crew!.length,
+                                    itemBuilder: (context, index) {
+                                      final movieCredits = movie.credits!;
+                                      return MovieCrewModel(
+                                        image: movieCredits
+                                            .crew![index].profilePath
+                                            .toString(),
+                                        name: movieCredits.crew![index].name
+                                            .toString(),
+                                        role: _checkDepartment(movieCredits
+                                            .crew![index].knownForDepartment!),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               Text("Cast", style: myTextTheme.titleMedium!),
@@ -234,23 +232,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               .toString(),
                                           name: movieCredits.cast![index].name
                                               .toString(),
-                                          role: movieCredits.cast![index]
-                                                          .knownForDepartment
-                                                          .toString() ==
-                                                      "Acting" &&
-                                                  movieCredits.cast![index]
-                                                          .gender !=
-                                                      0
-                                              ? (movieCredits.cast![index]
-                                                          .gender ==
-                                                      1
-                                                  ? "Actress"
-                                                  : "Actor")
-                                              : movieCredits.cast![index]
-                                                  .knownForDepartment
-                                                  .toString(),
-                                          // role: movieCredits.cast![index]
-                                          //     .gender == 1 ? "Actor" : "Actress",
+                                          role: _checkDepartment(movieCredits
+                                              .cast![index]
+                                              .knownForDepartment!),
                                         );
                                       }),
                                 ),
@@ -296,14 +280,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             child: Column(
                               children: List.generate(
-                                  (state.movieDetailsModel.videos!.results!
+                                  (state.tvShowDetailsModel.videos!.results!
                                               .length >
                                           6)
                                       ? 6
-                                      : state.movieDetailsModel.videos!.results!
-                                          .length, (index) {
+                                      : state.tvShowDetailsModel.videos!
+                                          .results!.length, (index) {
                                 final movieVidoes =
-                                    state.movieDetailsModel.videos!;
+                                    state.tvShowDetailsModel.videos!;
                                 return GestureDetector(
                                   onTap: () {
                                     GoRouter.of(context).pushNamed(
@@ -319,7 +303,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   },
                                   child: MovieListTileModel(
                                     image:
-                                        state.movieDetailsModel.backdropPath!,
+                                        state.tvShowDetailsModel.backdropPath!,
                                     name: movieVidoes.results![index].name!,
                                     description: movieVidoes
                                         .results![index].size
@@ -346,12 +330,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             child: Wrap(
                               children: List.generate(6, (int movieIndex) {
-                                var similarMovies = state.movieDetailsModel
+                                var similarMovies = state.tvShowDetailsModel
                                     .similar!.results![movieIndex];
                                 return GestureDetector(
                                   onTap: () {
                                     GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.movieDetailsPage,
+                                      MyAppRouteConstants.tvShowDetailsPage,
                                       extra: similarMovies.id,
                                     );
                                   },
@@ -383,5 +367,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 }
 
-//-----------------------------Movie Reviews Section----------------------------------
-
+String _checkDepartment(Department value) {
+  switch (value) {
+    case Department.ACTING:
+      return "Actor";
+    case Department.WRITING:
+      return "Writer";
+    case Department.PRODUCTION:
+      return "Producer";
+    case Department.DIRECTING:
+      return "Director";
+    default:
+      return "Support Role";
+  }
+}

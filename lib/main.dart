@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
+import 'package:netflix/cubit/tv_show_details_cubit.dart';
 import 'package:netflix/repo/movie_details_repo.dart';
 import 'package:netflix/repo/trending_repo.dart';
+import 'package:netflix/repo/tv_show_details_repo.dart';
 import 'package:netflix/routes/app_route_config.dart';
 import 'package:netflix/themes/dark_theme.dart';
 import 'package:netflix/themes/light_theme.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MovieDetailsCubit(MoviesDetailsRepo()),
+        ),
+        BlocProvider(
+          create: (context) => TvShowDetailsCubit(TvShowDetailsRepo()),
         ),
       ],
       child: MaterialApp.router(

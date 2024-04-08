@@ -3,9 +3,9 @@ import 'package:netflix/cubit/movie_details_cubit.dart';
 
 import '../../models/others/movie_reviews_model.dart';
 
-class MovieReviewsScreen extends StatelessWidget {
+class ReviewsScreen extends StatelessWidget {
   final MovieDetailsLoadedState loadedState;
-  const MovieReviewsScreen({super.key, required this.loadedState});
+  const ReviewsScreen({super.key, required this.loadedState});
 
   @override
   Widget build(BuildContext context) {

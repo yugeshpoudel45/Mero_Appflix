@@ -7,8 +7,9 @@ import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
 import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
-import 'package:netflix/pages/7.movie_details/movie_playing_screen.dart';
-import 'package:netflix/pages/7.movie_details/movie_reviews_screen.dart';
+import 'package:netflix/pages/7.movie_details/playing_screen.dart';
+import 'package:netflix/pages/7.movie_details/reviews_screen.dart';
+import 'package:netflix/pages/7.movie_details/tv_show_details_screen.dart';
 import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
@@ -74,22 +75,29 @@ class MyAppRouter {
         ),
       ),
       GoRoute(
-        name: MyAppRouteConstants.moviePlayingPage,
-        path: '/moviePlayingPage/:movieKey/:name',
+        name: MyAppRouteConstants.tvShowDetailsPage,
+        path: '/tvShowDetailsPage',
         pageBuilder: (context, state) => MaterialPage(
-          child: MoviePlayingScreen(
+          child: TvShowDetailsScreen(movieId: state.extra as int),
+        ),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.playingPage,
+        path: '/playingPage/:movieKey/:name',
+        pageBuilder: (context, state) => MaterialPage(
+          child: PlayingPage(
             movieKey: state.pathParameters['movieKey']!,
             name: state.pathParameters['name']!,
-            loadedState: state.extra as MovieDetailsLoadedState,
+            loadedState: state.extra as dynamic,
           ),
         ),
       ),
       GoRoute(
-        name: MyAppRouteConstants.movieReviewsPage,
-        path: '/movieReviewsPage',
+        name: MyAppRouteConstants.reviewsPage,
+        path: '/reviewsPage',
         pageBuilder: (context, state) => MaterialPage(
-            child: MovieReviewsScreen(
-          loadedState: state.extra as MovieDetailsLoadedState,
+            child: ReviewsScreen(
+          loadedState: state.extra as dynamic,
         )),
       ),
     ],

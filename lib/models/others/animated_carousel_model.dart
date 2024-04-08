@@ -1,9 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../components/buttons/play_button/play_button.dart';
-import '../../config/app_local_assets.dart';
 
 class AnimatedCarouselModel extends StatefulWidget {
   final List<String> items;
@@ -23,7 +19,6 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
   @override
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
-    TextTheme myTextTheme = Theme.of(context).textTheme;
     return CarouselSlider.builder(
       carouselController: controller,
       itemCount: widget.items.length,
@@ -35,7 +30,7 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
             fit: BoxFit.cover,
             width: mySize.width,
             height: mySize.height / 2.5,
-             loadingBuilder: (BuildContext context, Widget child,
+            loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) return child;
               return Center(

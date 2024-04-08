@@ -8,11 +8,12 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../models/others/movie_listtile_model.dart';
 import '../../routes/app_route_constant.dart';
 
-class MoviePlayingScreen extends StatefulWidget {
+class PlayingPage extends StatefulWidget {
   final String name;
   final String movieKey;
+  // dynamic loadedState;
   final MovieDetailsLoadedState loadedState;
-  const MoviePlayingScreen({
+  const PlayingPage({
     super.key,
     required this.movieKey,
     required this.loadedState,
@@ -20,10 +21,10 @@ class MoviePlayingScreen extends StatefulWidget {
   });
 
   @override
-  State<MoviePlayingScreen> createState() => _MoviePlayingScreenState();
+  State<PlayingPage> createState() => PlayingPageState();
 }
 
-class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
+class PlayingPageState extends State<PlayingPage> {
   late YoutubePlayerController _controller;
 
   @override
@@ -173,7 +174,7 @@ class _MoviePlayingScreenState extends State<MoviePlayingScreen> {
                       return GestureDetector(
                         onTap: () {
                           GoRouter.of(context).pushNamed(
-                            MyAppRouteConstants.moviePlayingPage,
+                            MyAppRouteConstants.playingPage,
                             extra: widget.loadedState,
                             pathParameters: {
                               'movieKey': movieVidoes.results![index].key!,
