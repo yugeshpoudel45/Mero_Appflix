@@ -94,10 +94,11 @@ class MyAppRouter {
       ),
       GoRoute(
         name: MyAppRouteConstants.reviewsPage,
-        path: '/reviewsPage',
+        path: '/reviewsPage/:isMovie',
         pageBuilder: (context, state) => MaterialPage(
             child: ReviewsScreen(
           loadedState: state.extra as dynamic,
+          isMovie: state.pathParameters['isMovie'] == 'true' ? true : false,
         )),
       ),
     ],

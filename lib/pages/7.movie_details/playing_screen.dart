@@ -10,7 +10,7 @@ import '../../routes/app_route_constant.dart';
 
 class PlayingPage extends StatefulWidget {
   final String name;
-  final String movieKey;
+  final String movieKey; 
   // dynamic loadedState;
   final MovieDetailsLoadedState loadedState;
   const PlayingPage({

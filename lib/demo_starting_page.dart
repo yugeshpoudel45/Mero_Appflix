@@ -28,17 +28,17 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.practicePage,
                 // );
-                // GoRouter.of(context).pushNamed(
-                //   MyAppRouteConstants.mainPage,
-                // );
+                GoRouter.of(context).pushNamed(
+                  MyAppRouteConstants.mainPage,
+                );
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.movieDetailsPage,
                 //   extra: 767,
                 // );
-                GoRouter.of(context).pushNamed(
-                  MyAppRouteConstants.tvShowDetailsPage,
-                  extra: 1400,
-                );
+                // GoRouter.of(context).pushNamed(
+                //   MyAppRouteConstants.tvShowDetailsPage,
+                //   extra: 1400,
+                // );
               },
               child: const Text('Login'),
             ),

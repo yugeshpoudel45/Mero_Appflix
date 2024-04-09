@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
@@ -11,9 +10,8 @@ import 'package:netflix/models/others/readmore_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 
 import '../../../components/buttons/play_button/play_button.dart';
-import '../../../models/others/movie_carousel_model.dart';
+import '../../../models/others/movie_carousel_model.dart'; 
 import '../../../models/others/movie_crew_model.dart';
-import '../../../models/others/movie_reviews_model.dart';
 import '../../../routes/app_route_constant.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -184,77 +182,93 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 textStyle: myTextTheme.bodyMedium!,
                               ),
                               SizedBox(height: mySize.height / 64),
-                              Text("Crew", style: myTextTheme.titleMedium!),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SizedBox(
-                                  height: 72,
-                                  child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
+                              movie.credits!.crew!.isEmpty
+                                  ? const SizedBox()
+                                  : Text("Crew",
+                                      style: myTextTheme.titleMedium!),
+                              movie.credits!.crew!.isEmpty
+                                  ? const SizedBox()
+                                  : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          (movie.credits!.crew!.length) > 5
-                                              ? 5
-                                              : movie.credits!.crew!.length,
-                                      itemBuilder: (context, index) {
-                                        final movieCredits = movie.credits!;
-                                        return MovieCrewModel(
-                                          image: movieCredits
-                                              .crew![index].profilePath
-                                              .toString(),
-                                          name: movieCredits.crew![index].name
-                                              .toString(),
-                                          role: movieCredits.crew![index].job
-                                              .toString(),
-                                        );
-                                      }),
-                                ),
-                              ),
-                              Text("Cast", style: myTextTheme.titleMedium!),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SizedBox(
-                                  height: 72,
-                                  child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
+                                      child: SizedBox(
+                                        height: 72,
+                                        child: ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: (movie.credits!.crew!
+                                                        .length) >
+                                                    5
+                                                ? 5
+                                                : movie.credits!.crew!.length,
+                                            itemBuilder: (context, index) {
+                                              final movieCredits =
+                                                  movie.credits!;
+                                              return MovieCrewModel(
+                                                image: movieCredits
+                                                    .crew![index].profilePath
+                                                    .toString(),
+                                                name: movieCredits
+                                                    .crew![index].name
+                                                    .toString(),
+                                                role: movieCredits
+                                                    .crew![index].job
+                                                    .toString(),
+                                              );
+                                            }),
+                                      ),
+                                    ),
+                              movie.credits!.cast!.isEmpty
+                                  ? const SizedBox()
+                                  : Text("Cast",
+                                      style: myTextTheme.titleMedium!),
+                              movie.credits!.cast!.isEmpty
+                                  ? const SizedBox()
+                                  : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          (movie.credits!.cast!.length) > 5
-                                              ? 5
-                                              : movie.credits!.cast!.length,
-                                      itemBuilder: (context, index) {
-                                        final movieCredits = movie.credits!;
-                                        return MovieCrewModel(
-                                          image: movieCredits
-                                              .cast![index].profilePath
-                                              .toString(),
-                                          name: movieCredits.cast![index].name
-                                              .toString(),
-                                          role: movieCredits.cast![index]
-                                                          .knownForDepartment
-                                                          .toString() ==
-                                                      "Acting" &&
-                                                  movieCredits.cast![index]
-                                                          .gender !=
-                                                      0
-                                              ? (movieCredits.cast![index]
-                                                          .gender ==
-                                                      1
-                                                  ? "Actress"
-                                                  : "Actor")
-                                              : movieCredits.cast![index]
-                                                  .knownForDepartment
-                                                  .toString(),
-                                          // role: movieCredits.cast![index]
-                                          //     .gender == 1 ? "Actor" : "Actress",
-                                        );
-                                      }),
-                                ),
-                              ),
+                                      child: SizedBox(
+                                        height: 72,
+                                        child: ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: (movie.credits!.cast!
+                                                        .length) >
+                                                    5
+                                                ? 5
+                                                : movie.credits!.cast!.length,
+                                            itemBuilder: (context, index) {
+                                              final movieCredits =
+                                                  movie.credits!;
+                                              return MovieCrewModel(
+                                                image: movieCredits
+                                                    .cast![index].profilePath
+                                                    .toString(),
+                                                name: movieCredits
+                                                    .cast![index].name
+                                                    .toString(),
+                                                role: movieCredits.cast![index]
+                                                                .knownForDepartment
+                                                                .toString() ==
+                                                            "Acting" &&
+                                                        movieCredits
+                                                                .cast![index]
+                                                                .gender !=
+                                                            0
+                                                    ? (movieCredits.cast![index]
+                                                                .gender ==
+                                                            1
+                                                        ? "Actress"
+                                                        : "Actor")
+                                                    : movieCredits.cast![index]
+                                                        .knownForDepartment
+                                                        .toString(),
+                                              );
+                                            }),
+                                      ),
+                                    ),
                             ],
                           ),
                         ),

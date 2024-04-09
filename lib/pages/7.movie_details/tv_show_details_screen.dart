@@ -119,17 +119,26 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                     ),
                                     const SizedBox(width: 2),
                                     Text(movie.firstAirDate!.year.toString()),
-                                    const SizedBox(width: 8),
-                                    InfoButton(
-                                      text: movie
-                                          .spokenLanguages![0].englishName!,
-                                      func: () {},
-                                    ),
-                                    const SizedBox(width: 8),
-                                    InfoButton(
-                                      text: movie.productionCountries![0].name!,
-                                      func: () {},
-                                    ),
+                                    movie.spokenLanguages!.isEmpty
+                                        ? const SizedBox()
+                                        : const SizedBox(width: 8),
+                                    movie.spokenLanguages!.isEmpty
+                                        ? const SizedBox()
+                                        : InfoButton(
+                                            text: movie.spokenLanguages![0]
+                                                .englishName!,
+                                            func: () {},
+                                          ),
+                                    movie.productionCountries!.isEmpty
+                                        ? const SizedBox()
+                                        : const SizedBox(width: 8),
+                                    movie.productionCountries!.isEmpty
+                                        ? const SizedBox()
+                                        : InfoButton(
+                                            text: movie
+                                                .productionCountries![0].name!,
+                                            func: () {},
+                                          ),
                                   ],
                                 ),
                               ),
@@ -182,63 +191,79 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                 textStyle: myTextTheme.bodyMedium!,
                               ),
                               SizedBox(height: mySize.height / 64),
-                              Text("Crew", style: myTextTheme.titleMedium!),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SizedBox(
-                                  height: 72,
-                                  child: ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: (movie.credits!.crew!.length) > 5
-                                        ? 5
-                                        : movie.credits!.crew!.length,
-                                    itemBuilder: (context, index) {
-                                      final movieCredits = movie.credits!;
-                                      return MovieCrewModel(
-                                        image: movieCredits
-                                            .crew![index].profilePath
-                                            .toString(),
-                                        name: movieCredits.crew![index].name
-                                            .toString(),
-                                        role: _checkDepartment(movieCredits
-                                            .crew![index].knownForDepartment!),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Text("Cast", style: myTextTheme.titleMedium!),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SizedBox(
-                                  height: 72,
-                                  child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
+                              movie.credits!.crew!.isEmpty
+                                  ? const SizedBox()
+                                  : Text("Crew",
+                                      style: myTextTheme.titleMedium!),
+                              movie.credits!.crew!.isEmpty
+                                  ? const SizedBox()
+                                  : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          (movie.credits!.cast!.length) > 5
-                                              ? 5
-                                              : movie.credits!.cast!.length,
-                                      itemBuilder: (context, index) {
-                                        final movieCredits = movie.credits!;
-                                        return MovieCrewModel(
-                                          image: movieCredits
-                                              .cast![index].profilePath
-                                              .toString(),
-                                          name: movieCredits.cast![index].name
-                                              .toString(),
-                                          role: _checkDepartment(movieCredits
-                                              .cast![index]
-                                              .knownForDepartment!),
-                                        );
-                                      }),
-                                ),
-                              ),
+                                      child: SizedBox(
+                                        height: 72,
+                                        child: ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              (movie.credits!.crew!.length) > 5
+                                                  ? 5
+                                                  : movie.credits!.crew!.length,
+                                          itemBuilder: (context, index) {
+                                            final movieCredits = movie.credits!;
+                                            return MovieCrewModel(
+                                              image: movieCredits
+                                                  .crew![index].profilePath
+                                                  .toString(),
+                                              name: movieCredits
+                                                  .crew![index].name
+                                                  .toString(),
+                                              role: _checkDepartment(
+                                                  movieCredits.crew![index]
+                                                      .knownForDepartment!),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                              movie.credits!.cast!.isEmpty
+                                  ? const SizedBox()
+                                  : Text("Cast",
+                                      style: myTextTheme.titleMedium!),
+                              movie.credits!.cast!.isEmpty
+                                  ? const SizedBox()
+                                  : SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: SizedBox(
+                                        height: 72,
+                                        child: ListView.builder(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: (movie.credits!.cast!
+                                                        .length) >
+                                                    5
+                                                ? 5
+                                                : movie.credits!.cast!.length,
+                                            itemBuilder: (context, index) {
+                                              final movieCredits =
+                                                  movie.credits!;
+                                              return MovieCrewModel(
+                                                image: movieCredits
+                                                    .cast![index].profilePath
+                                                    .toString(),
+                                                name: movieCredits
+                                                    .cast![index].name
+                                                    .toString(),
+                                                role: _checkDepartment(
+                                                    movieCredits.cast![index]
+                                                        .knownForDepartment!),
+                                              );
+                                            }),
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
@@ -278,44 +303,53 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                               top: 16,
                               right: 16,
                             ),
-                            child: Column(
-                              children: List.generate(
-                                  (state.tvShowDetailsModel.videos!.results!
-                                              .length >
-                                          6)
-                                      ? 6
-                                      : state.tvShowDetailsModel.videos!
-                                          .results!.length, (index) {
-                                final movieVidoes =
-                                    state.tvShowDetailsModel.videos!;
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.playingPage,
-                                      extra: state,
-                                      pathParameters: {
-                                        'movieKey':
-                                            movieVidoes.results![index].key!,
-                                        'name':
-                                            movieVidoes.results![index].name!,
-                                      },
-                                    );
-                                  },
-                                  child: MovieListTileModel(
-                                    image:
-                                        state.tvShowDetailsModel.backdropPath!,
-                                    name: movieVidoes.results![index].name!,
-                                    description: movieVidoes
-                                        .results![index].size
-                                        .toString(),
-                                    date: movieVidoes
-                                        .results![index].publishedAt!.year
-                                        .toString(),
-                                    tag: movieVidoes.results![index].type!,
+                            child: state
+                                    .tvShowDetailsModel.videos!.results!.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "No Trailers Available!",
+                                    ),
+                                  )
+                                : Column(
+                                    children: List.generate(
+                                        (state.tvShowDetailsModel.videos!
+                                                    .results!.length >
+                                                6)
+                                            ? 6
+                                            : state.tvShowDetailsModel.videos!
+                                                .results!.length, (index) {
+                                      final movieVidoes =
+                                          state.tvShowDetailsModel.videos!;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants.playingPage,
+                                            extra: state,
+                                            pathParameters: {
+                                              'movieKey': movieVidoes
+                                                  .results![index].key!,
+                                              'name': movieVidoes
+                                                  .results![index].name!,
+                                            },
+                                          );
+                                        },
+                                        child: MovieListTileModel(
+                                          image: state
+                                              .tvShowDetailsModel.backdropPath!,
+                                          name:
+                                              movieVidoes.results![index].name!,
+                                          description: movieVidoes
+                                              .results![index].size
+                                              .toString(),
+                                          date: movieVidoes
+                                              .results![index].publishedAt!.year
+                                              .toString(),
+                                          tag:
+                                              movieVidoes.results![index].type!,
+                                        ),
+                                      );
+                                    }),
                                   ),
-                                );
-                              }),
-                            ),
                           ),
                         ),
                         // -------------------------------Similar Movies Section-------------------------------------------
@@ -332,26 +366,34 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                               children: List.generate(6, (int movieIndex) {
                                 var similarMovies = state.tvShowDetailsModel
                                     .similar!.results![movieIndex];
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.tvShowDetailsPage,
-                                      extra: similarMovies.id,
-                                    );
-                                  },
-                                  child: MovieCarouselModel(
-                                    width: mySize.width / 2.25,
-                                    height: mySize.height / 3.2,
-                                    image: similarMovies.posterPath.toString(),
-                                    rating: similarMovies.popularity!,
-                                  ),
-                                );
+                                return similarMovies.posterPath.toString() ==
+                                        "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                    ? const SizedBox()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .tvShowDetailsPage,
+                                            extra: similarMovies.id,
+                                          );
+                                        },
+                                        child: MovieCarouselModel(
+                                          width: mySize.width / 2.25,
+                                          height: mySize.height / 3.2,
+                                          image: similarMovies.posterPath
+                                              .toString(),
+                                          rating: similarMovies.popularity!,
+                                        ),
+                                      );
                               }),
                             ),
                           ),
                         ),
                         //-----------------------------Movie Reviews Tab here----------------------------------
-                        ReviewsTab(state: state),
+                        ReviewsTab(
+                          state: state,
+                          isMovie: false,
+                        ),
                       ],
                     ),
                   ),

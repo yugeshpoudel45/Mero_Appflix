@@ -14,7 +14,7 @@ class MovieDetailsModel {
   bool? adult;
   String? backdropPath;
   dynamic belongsToCollection;
-  int? budget; 
+  int? budget;
   List<Genre>? genres;
   String? homepage;
   int? id;

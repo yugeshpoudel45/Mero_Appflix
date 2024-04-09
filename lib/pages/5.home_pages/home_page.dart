@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/components/images/network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/models/For%20APIs/trending_movie_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
@@ -156,9 +157,15 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 var tvShow =
                                     state.trendingTvShowModel.results![index];
-                                return MovieCarouselModel(
-                                  image: tvShow.posterPath.toString(),
-                                  rating: tvShow.popularity!,
+                                return GestureDetector(
+                                  onTap: () => GoRouter.of(context).pushNamed(
+                                    MyAppRouteConstants.tvShowDetailsPage,
+                                    extra: tvShow.id,
+                                  ),
+                                  child: MovieCarouselModel(
+                                    image: tvShow.posterPath.toString(),
+                                    rating: tvShow.popularity!,
+                                  ),
                                 );
                               }),
                         ),
@@ -208,18 +215,19 @@ class _HomePageState extends State<HomePage> {
                         child: SizedBox(
                           height: 200,
                           child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                var person =
-                                    state.trendingPeopleModel.results![index];
-                                return MovieCarouselModel(
-                                  image: person.profilePath.toString(),
-                                  rating: person.popularity!,
-                                );
-                              }),
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              var person =
+                                  state.trendingPeopleModel.results![index];
+                              return MovieCarouselModel(
+                                image: person.profilePath.toString(),
+                                rating: person.popularity!,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -272,23 +280,10 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
             ? fetchMovie.results![index].releaseDate!.year.toString()
             : fetchTvShow.results![index].firstAirDate!.year.toString();
         return Stack(alignment: Alignment.bottomCenter, children: [
-          Image.network(
-            "https://image.tmdb.org/t/p/original/$image",
-            fit: BoxFit.cover,
-            width: mySize.width,
+          AppNetworkImage(
+            image: "https://image.tmdb.org/t/p/original/$image",
             height: mySize.height / 2.5,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              );
-            },
+            width: mySize.width,
           ),
           Padding(
             padding: const EdgeInsets.only(
@@ -366,7 +361,7 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                                 extra: fetchMovie.results![index].id,
                               )
                             : GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.trendingTvShowsPage,
+                                MyAppRouteConstants.tvShowDetailsPage,
                                 extra: fetchTvShow.results![index].id,
                               );
                         //! TODO: Change the routing for the trending TvShow here
@@ -398,6 +393,7 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
       options: CarouselOptions(
         height: mySize.height / 2.5,
         autoPlay: true,
+        autoPlayInterval: const Duration(seconds: 5),
         viewportFraction: 1,
         onPageChanged: (i, reason) {
           setState(

@@ -90,7 +90,8 @@ class TvShowDetailsModel {
   factory TvShowDetailsModel.fromJson(Map<String, dynamic> json) =>
       TvShowDetailsModel(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath:
+            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         createdBy: json["created_by"] == null
             ? []
             : List<CreatedBy>.from(
@@ -98,9 +99,7 @@ class TvShowDetailsModel {
         episodeRunTime: json["episode_run_time"] == null
             ? []
             : List<dynamic>.from(json["episode_run_time"]!.map((x) => x)),
-        firstAirDate: json["first_air_date"] == null
-            ? null
-            : DateTime.parse(json["first_air_date"]),
+        firstAirDate: json["first_air_date"] == null ? null : DateTime.now(),
         genres: json["genres"] == null
             ? []
             : List<Genre>.from(json["genres"]!.map((x) => Genre.fromJson(x))),
@@ -109,8 +108,8 @@ class TvShowDetailsModel {
         inProduction: json["in_production"] ?? false,
         languages: json["languages"] == null
             ? []
-            : List<OriginalLanguage>.from(
-                json["languages"]!.map((x) => originalLanguageValues.map[x]!)),
+            : List<OriginalLanguage>.from(json["languages"]!.map(
+                (x) => originalLanguageValues.map[x] ?? OriginalLanguage.EN)),
         lastAirDate: json["last_air_date"] == null
             ? null
             : DateTime.parse(json["last_air_date"]),
@@ -129,7 +128,8 @@ class TvShowDetailsModel {
             ? []
             : List<String>.from(json["origin_country"]!.map((x) => x)),
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+            originalLanguageValues.map[json["original_language"]] ??
+                OriginalLanguage.EN,
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
@@ -322,7 +322,9 @@ class Cast {
         adult: json["adult"] ?? false,
         gender: json["gender"] ?? 0,
         id: json["id"] ?? 0,
-        knownForDepartment: departmentValues.map[json["known_for_department"]]!,
+        knownForDepartment:
+            departmentValues.map[json["known_for_department"]] ??
+                Department.ACTING,
         name: json["name"] ?? "unavailable",
         originalName: json["original_name"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
@@ -330,7 +332,8 @@ class Cast {
         character: json["character"] ?? "unavailable",
         creditId: json["credit_id"] ?? "unavailable",
         order: json["order"] ?? 0,
-        department: departmentValues.map[json["department"]] ?? Department.ACTING,
+        department:
+            departmentValues.map[json["department"]] ?? Department.ACTING,
         job: jobValues.map[json["job"]] ?? Job.PRODUCER,
       );
 
@@ -729,7 +732,8 @@ class SimilarResult {
 
   factory SimilarResult.fromJson(Map<String, dynamic> json) => SimilarResult(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath:
+            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -738,7 +742,8 @@ class SimilarResult {
             ? []
             : List<String>.from(json["origin_country"]!.map((x) => x)),
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+            originalLanguageValues.map[json["original_language"]] ??
+                OriginalLanguage.EN,
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
@@ -783,7 +788,8 @@ class SpokenLanguage {
 
   factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
         englishName: json["english_name"] ?? "unavailable",
-        iso6391: originalLanguageValues.map[json["iso_639_1"]]!,
+        iso6391: originalLanguageValues.map[json["iso_639_1"]] ??
+            OriginalLanguage.EN,
         name: json["name"] ?? "unavailable",
       );
 
@@ -841,7 +847,8 @@ class VideosResult {
   });
 
   factory VideosResult.fromJson(Map<String, dynamic> json) => VideosResult(
-        iso6391: originalLanguageValues.map[json["iso_639_1"]]!,
+        iso6391: originalLanguageValues.map[json["iso_639_1"]] ??
+            OriginalLanguage.EN,
         iso31661: json["iso_3166_1"] ?? "unavailable",
         name: json["name"] ?? "unavailable",
         key: json["key"] ?? "unavailable",
