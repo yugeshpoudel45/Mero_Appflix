@@ -1,12 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedCarouselModel extends StatefulWidget {
   final List<String> items;
+  final double height;
   const AnimatedCarouselModel({
-    super.key,
+    Key? key,
     required this.items,
-  });
+    this.height = 200,
+  }) : super(key: key);
 
   @override
   State<AnimatedCarouselModel> createState() => _AnimatedCarouselModelState();
@@ -29,7 +32,7 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
             "https://image.tmdb.org/t/p/original/$image",
             fit: BoxFit.cover,
             width: mySize.width,
-            height: mySize.height / 2.5,
+            height: widget.height,
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
               if (loadingProgress == null) return child;
@@ -56,7 +59,7 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
         ]);
       },
       options: CarouselOptions(
-        height: mySize.height / 2.5,
+        height: widget.height,
         autoPlay: true,
         viewportFraction: 1,
         onPageChanged: (i, reason) {

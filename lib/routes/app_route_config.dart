@@ -16,6 +16,7 @@ import 'package:netflix/routes/app_route_constant.dart';
 import '../cubit/trending_section_cubit.dart';
 import '../demo_error_page.dart';
 import '../demo_starting_page.dart';
+import '../pages/7.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
   GoRouter router = GoRouter(
@@ -82,12 +83,20 @@ class MyAppRouter {
         ),
       ),
       GoRoute(
+        name: MyAppRouteConstants.peopleDetailsPage,
+        path: '/peopleDetailsPage',
+        pageBuilder: (context, state) => MaterialPage(
+          child: PeopleDetailsScreen(peopleId: state.extra as int),
+        ),
+      ),
+      GoRoute(
         name: MyAppRouteConstants.playingPage,
-        path: '/playingPage/:movieKey/:name',
+        path: '/playingPage/:movieKey/:name/:isMovie',
         pageBuilder: (context, state) => MaterialPage(
           child: PlayingPage(
             movieKey: state.pathParameters['movieKey']!,
             name: state.pathParameters['name']!,
+            isMovie: state.pathParameters['isMovie'] == 'true' ? true : false,
             loadedState: state.extra as dynamic,
           ),
         ),

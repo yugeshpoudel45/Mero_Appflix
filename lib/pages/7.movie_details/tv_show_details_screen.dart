@@ -67,7 +67,10 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        AnimatedCarouselModel(items: movies),
+                        AnimatedCarouselModel(
+                          items: movies,
+                          height: mySize.height / 2.5,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16, right: 16, top: 16),
@@ -162,6 +165,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                                 .videos!.results![0].key!,
                                             'name': state.tvShowDetailsModel
                                                 .videos!.results![0].name!,
+                                            "isMovie": "false",
                                           },
                                         );
                                       },
@@ -330,6 +334,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                                   .results![index].key!,
                                               'name': movieVidoes
                                                   .results![index].name!,
+                                              'isMovie': 'false',
                                             },
                                           );
                                         },

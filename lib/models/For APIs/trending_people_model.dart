@@ -25,13 +25,13 @@ class TrendingPeopleModel {
 
   factory TrendingPeopleModel.fromJson(Map<String, dynamic> json) =>
       TrendingPeopleModel(
-        page: json["page"],
+        page: json["page"] ?? 0,
         results: json["results"] == null
             ? []
             : List<Result>.from(
                 json["results"]!.map((x) => Result.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
+        totalPages: json["total_pages"] ?? 0,
+        totalResults: json["total_results"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,7 +81,7 @@ class Result {
         knownForDepartment:
             knownForDepartmentValues.map[json["known_for_department"]] ??
                 KnownForDepartment.ACTING,
-        profilePath: json["profile_path"] ?? "Unavailable",
+        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         knownFor: json["known_for"] == null
             ? []
             : List<KnownFor>.from(
@@ -150,7 +150,7 @@ class KnownFor {
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "Unavailable",
+        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 0,
         title: json["title"] ?? "Unavailable",
         originalLanguage:
@@ -158,7 +158,7 @@ class KnownFor {
                 OriginalLanguage.EN,
         originalTitle: json["original_title"] ?? "Unavailable",
         overview: json["overview"] ?? "Unavailable",
-        posterPath: json["poster_path"] ?? "Unavailable",
+        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         mediaType: knownForMediaTypeValues.map[json["media_type"]] ??
             KnownForMediaType.MOVIE,
         genreIds: json["genre_ids"] == null

@@ -25,13 +25,13 @@ class TrendingTvShowModel {
 
   factory TrendingTvShowModel.fromJson(Map<String, dynamic> json) =>
       TrendingTvShowModel(
-        page: json["page"],
+        page: json["page"] ?? 0,
         results: json["results"] == null
             ? []
             : List<Result>.from(
                 json["results"]!.map((x) => Result.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
+        totalPages: json["total_pages"] ?? 0,
+        totalResults: json["total_results"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,7 +81,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "Unavailable",
+        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 0,
         name: json["name"] ?? "Unavailable",
         originalLanguage:
@@ -89,7 +89,7 @@ class Result {
                 OriginalLanguage.EN,
         originalName: json["original_name"] ?? "Unavailable",
         overview: json["overview"] ?? "Unavailable",
-        posterPath: json["poster_path"] ?? "Unavailable",
+        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.TV,
         genreIds: json["genre_ids"] == null
             ? []

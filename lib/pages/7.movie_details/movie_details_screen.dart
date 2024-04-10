@@ -10,13 +10,16 @@ import 'package:netflix/models/others/readmore_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 
 import '../../../components/buttons/play_button/play_button.dart';
-import '../../../models/others/movie_carousel_model.dart'; 
+import '../../../models/others/movie_carousel_model.dart';
 import '../../../models/others/movie_crew_model.dart';
 import '../../../routes/app_route_constant.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
-  const MovieDetailsScreen({super.key, required this.movieId});
+  const MovieDetailsScreen({
+    super.key,
+    required this.movieId,
+  });
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
@@ -26,7 +29,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<MovieDetailsCubit>().onFetchingMovieDetails(widget.movieId);
+    context.read<MovieDetailsCubit>().onFetchingMovieDetails(
+          widget.movieId,
+        );
   }
 
   @override
@@ -67,7 +72,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        AnimatedCarouselModel(items: movies),
+                        AnimatedCarouselModel(
+                          items: movies,
+                          height: mySize.height / 2.5,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16, right: 16, top: 16),
@@ -82,7 +90,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     width: mySize.width / 1.5,
                                     child: Text(
                                       movie.title!,
-                                      style: myTextTheme.headlineSmall!,
+                                      style: myTextTheme.headlineSmall,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -153,6 +161,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 .videos!.results![0].key!,
                                             'name': state.movieDetailsModel
                                                 .videos!.results![0].name!,
+                                            'isMovie': 'true',
                                           },
                                         );
                                       },
@@ -205,16 +214,27 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             itemBuilder: (context, index) {
                                               final movieCredits =
                                                   movie.credits!;
-                                              return MovieCrewModel(
-                                                image: movieCredits
-                                                    .crew![index].profilePath
-                                                    .toString(),
-                                                name: movieCredits
-                                                    .crew![index].name
-                                                    .toString(),
-                                                role: movieCredits
-                                                    .crew![index].job
-                                                    .toString(),
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  GoRouter.of(context)
+                                                      .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .peopleDetailsPage,
+                                                    extra: movieCredits
+                                                        .crew![index].id,
+                                                  );
+                                                },
+                                                child: MovieCrewModel(
+                                                  image: movieCredits
+                                                      .crew![index].profilePath
+                                                      .toString(),
+                                                  name: movieCredits
+                                                      .crew![index].name
+                                                      .toString(),
+                                                  role: movieCredits
+                                                      .crew![index].job
+                                                      .toString(),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -242,29 +262,43 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             itemBuilder: (context, index) {
                                               final movieCredits =
                                                   movie.credits!;
-                                              return MovieCrewModel(
-                                                image: movieCredits
-                                                    .cast![index].profilePath
-                                                    .toString(),
-                                                name: movieCredits
-                                                    .cast![index].name
-                                                    .toString(),
-                                                role: movieCredits.cast![index]
-                                                                .knownForDepartment
-                                                                .toString() ==
-                                                            "Acting" &&
-                                                        movieCredits
-                                                                .cast![index]
-                                                                .gender !=
-                                                            0
-                                                    ? (movieCredits.cast![index]
-                                                                .gender ==
-                                                            1
-                                                        ? "Actress"
-                                                        : "Actor")
-                                                    : movieCredits.cast![index]
-                                                        .knownForDepartment
-                                                        .toString(),
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  GoRouter.of(context)
+                                                      .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .peopleDetailsPage,
+                                                    extra: movieCredits
+                                                        .cast![index].id,
+                                                  );
+                                                },
+                                                child: MovieCrewModel(
+                                                  image: movieCredits
+                                                      .cast![index].profilePath
+                                                      .toString(),
+                                                  name: movieCredits
+                                                      .cast![index].name
+                                                      .toString(),
+                                                  role: movieCredits
+                                                                  .cast![index]
+                                                                  .knownForDepartment
+                                                                  .toString() ==
+                                                              "Acting" &&
+                                                          movieCredits
+                                                                  .cast![index]
+                                                                  .gender !=
+                                                              0
+                                                      ? (movieCredits
+                                                                  .cast![index]
+                                                                  .gender ==
+                                                              1
+                                                          ? "Actress"
+                                                          : "Actor")
+                                                      : movieCredits
+                                                          .cast![index]
+                                                          .knownForDepartment
+                                                          .toString(),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -328,6 +362,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             movieVidoes.results![index].key!,
                                         'name':
                                             movieVidoes.results![index].name!,
+                                        'isMovie': 'true',
                                       },
                                     );
                                   },
@@ -396,6 +431,3 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     );
   }
 }
-
-//-----------------------------Movie Reviews Section----------------------------------
-

@@ -222,9 +222,15 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (context, index) {
                               var person =
                                   state.trendingPeopleModel.results![index];
-                              return MovieCarouselModel(
-                                image: person.profilePath.toString(),
-                                rating: person.popularity!,
+                              return GestureDetector(
+                                onTap: () => GoRouter.of(context).pushNamed(
+                                  MyAppRouteConstants.peopleDetailsPage,
+                                  extra: person.id,
+                                ),
+                                child: MovieCarouselModel(
+                                  image: person.profilePath.toString(),
+                                  rating: person.popularity!,
+                                ),
                               );
                             },
                           ),

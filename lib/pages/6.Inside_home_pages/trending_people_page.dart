@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../cubit/trending_section_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
+import '../../routes/app_route_constant.dart';
 
 class TrendingPeoplePage extends StatelessWidget {
   final TrendingSectionLoadedState loadedState;
@@ -39,11 +41,19 @@ class TrendingPeoplePage extends StatelessWidget {
           child: Wrap(
             children: [
               for (var movie in loadedState.trendingPeopleModel.results!)
-                MovieCarouselModel(
-                  width: mySize.width / 2.25,
-                  height: mySize.height / 3.2,
-                  image: movie.profilePath.toString(),
-                  rating: movie.popularity!,
+                GestureDetector(
+                  onTap: () {
+                    GoRouter.of(context).pushNamed(
+                      MyAppRouteConstants.peopleDetailsPage,
+                      extra: movie.id,
+                    );
+                  },
+                  child: MovieCarouselModel(
+                    width: mySize.width / 2.25,
+                    height: mySize.height / 3.2,
+                    image: movie.profilePath.toString(),
+                    rating: movie.popularity!,
+                  ),
                 ),
             ],
           ),

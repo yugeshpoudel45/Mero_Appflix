@@ -32,8 +32,8 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
                   MyAppRouteConstants.mainPage,
                 );
                 // GoRouter.of(context).pushNamed(
-                //   MyAppRouteConstants.movieDetailsPage,
-                //   extra: 767,
+                //   MyAppRouteConstants.peopleDetailsPage,
+                //   extra: 500,
                 // );
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.tvShowDetailsPage,
@@ -49,3 +49,4 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
     );
   }
 }
+

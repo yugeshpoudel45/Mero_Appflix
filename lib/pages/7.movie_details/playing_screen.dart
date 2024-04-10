@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/models/others/readmore_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -10,14 +9,15 @@ import '../../routes/app_route_constant.dart';
 
 class PlayingPage extends StatefulWidget {
   final String name;
-  final String movieKey; 
-  // dynamic loadedState;
-  final MovieDetailsLoadedState loadedState;
+  final String movieKey;
+  final bool isMovie;
+  final dynamic loadedState;
   const PlayingPage({
     super.key,
     required this.movieKey,
     required this.loadedState,
     required this.name,
+    this.isMovie = true,
   });
 
   @override
@@ -98,9 +98,6 @@ class PlayingPageState extends State<PlayingPage> {
       ),
       builder: (context, player) {
         return Scaffold(
-          // appBar: AppBar(
-          //   title: Text(widget.loadedState.movieDetailsModel.title!),
-          // ),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +114,9 @@ class PlayingPageState extends State<PlayingPage> {
                       SizedBox(
                         width: double.maxFinite,
                         child: Text(
-                          widget.loadedState.movieDetailsModel.title!,
+                          widget.isMovie
+                              ? widget.loadedState.movieDetailsModel.title!
+                              : widget.loadedState.tvShowDetailsModel.name!,
                           textAlign: TextAlign.left,
                           style: myTextTheme.headlineSmall!.copyWith(
                             fontWeight: FontWeight.bold,
@@ -149,7 +148,10 @@ class PlayingPageState extends State<PlayingPage> {
                     top: 8,
                   ),
                   child: ReadMoreModel(
-                    text: widget.loadedState.movieDetailsModel.overview!,
+                    // text: widget.loadedState.movieDetailsModel.overview!,
+                    text: widget.isMovie
+                        ? widget.loadedState.movieDetailsModel.overview!
+                        : widget.loadedState.tvShowDetailsModel.overview!,
                     textStyle: myTextTheme.bodyMedium!,
                   ),
                 ),
@@ -167,10 +169,18 @@ class PlayingPageState extends State<PlayingPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: List.generate(
-                        widget.loadedState.movieDetailsModel.videos!.results!
-                            .length, (index) {
+                        // widget.loadedState.movieDetailsModel.videos!.results!
+                        //     .length,
+                        widget.isMovie
+                            ? widget.loadedState.movieDetailsModel.videos!
+                                .results!.length
+                            : widget.loadedState.tvShowDetailsModel.videos!
+                                .results!.length, (index) {
                       final movieVidoes =
-                          widget.loadedState.movieDetailsModel.videos!;
+                          // widget.loadedState.movieDetailsModel.videos!;
+                          widget.isMovie
+                              ? widget.loadedState.movieDetailsModel.videos!
+                              : widget.loadedState.tvShowDetailsModel.videos!;
                       return GestureDetector(
                         onTap: () {
                           GoRouter.of(context).pushNamed(
@@ -183,8 +193,11 @@ class PlayingPageState extends State<PlayingPage> {
                           );
                         },
                         child: MovieListTileModel(
-                          image: widget
-                              .loadedState.movieDetailsModel.backdropPath!,
+                          image: widget.isMovie
+                              ? widget
+                                  .loadedState.movieDetailsModel.backdropPath!
+                              : widget
+                                  .loadedState.tvShowDetailsModel.backdropPath!,
                           name: movieVidoes.results![index].name!,
                           description:
                               movieVidoes.results![index].size.toString(),

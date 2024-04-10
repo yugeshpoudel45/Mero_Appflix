@@ -21,7 +21,7 @@ class TrendingMovieModel {
 
   factory TrendingMovieModel.fromJson(Map<String, dynamic> json) =>
       TrendingMovieModel(
-        page: json["page"],
+        page: json["page"] ?? 0,
         results: json["results"] == null
             ? []
             : List<Result>.from(
@@ -73,10 +73,10 @@ class Result {
     this.martialLawHasBeenDeclaredACoupD,
   });
 
-
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "Not available",
+        backdropPath:
+            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 45,
         title: json["title"] ?? "Not available",
         originalLanguage:
@@ -84,7 +84,7 @@ class Result {
                 OriginalLanguage.en,
         originalTitle: json["original_title"] ?? "Not available",
         overview: json["overview"] ?? "Not available",
-        posterPath: json["poster_path"] ?? "Not available",
+        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.movie,
         genreIds: json["genre_ids"] == null
             ? []
