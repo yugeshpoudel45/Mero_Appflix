@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
-import '../../components/images/cache_image_manager.dart';
+import 'package:netflix/components/images/cache_network_image.dart';
 
 class AnimatedCarouselModel extends StatefulWidget {
   final List<String> items;
@@ -31,25 +29,10 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
         return Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            CachedNetworkImage(
-              cacheManager: CustomCacheManager.instance,
-              key: UniqueKey(),
+            AppNetworkImage(
+              image: image,
               height: widget.height,
-              imageUrl: image,
-              imageBuilder: (context, imageProvider) => Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              placeholder: (context, url) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              errorWidget: (context, url, error) => const Center(
-                child: Icon(Icons.error),
-              ),
+              width: double.maxFinite,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

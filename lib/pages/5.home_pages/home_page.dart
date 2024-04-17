@@ -287,7 +287,7 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
             : fetchTvShow.results![index].firstAirDate!.year.toString();
         return Stack(alignment: Alignment.bottomCenter, children: [
           AppNetworkImage(
-            image: "https://image.tmdb.org/t/p/original/$image",
+            image: image,
             height: mySize.height / 2.5,
             width: mySize.width,
           ),

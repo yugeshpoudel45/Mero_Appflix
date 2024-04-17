@@ -40,9 +40,6 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
       children: [
         ListTile(
           leading: CircleAvatar(
-            // backgroundImage: NetworkImage(
-            //   "https://image.tmdb.org/t/p/original${widget.avatar}",
-            // ),
             backgroundImage: CachedNetworkImageProvider(
               "https://image.tmdb.org/t/p/original/${widget.avatar}",
               cacheManager: CustomCacheManager.instance,

@@ -1,11 +1,8 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/components/images/cache_network_image.dart';
 
 import '../../components/buttons/other_buttons/info_button.dart';
-import '../../components/images/cache_image_manager.dart';
 
 class MovieListTileModel extends StatelessWidget {
   const MovieListTileModel({
@@ -35,33 +32,20 @@ class MovieListTileModel extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: mySize.height / 8,
-            width: mySize.width / 3,
+          Stack(
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(8),
+            children: [
+              AppNetworkImage(
+                image: image,
+                height: mySize.height / 8,
+                width: mySize.width / 3,
+                borderRadius: BorderRadius.circular(8),
               ),
-              image: DecorationImage(
-                image:
-                    // NetworkImage("https://image.tmdb.org/t/p/original/$image"),
-                    CachedNetworkImageProvider(
-                  "https://image.tmdb.org/t/p/original/$image",
-                  cacheManager: CustomCacheManager.instance,
-                  errorListener: (p0) => log(
-                    "Error: $p0",
-                    name: "CachedNetworkImage",
-                  ),
-                ),
-                fit: BoxFit.cover,
+              const Icon(
+                Icons.play_circle_fill_rounded,
+                color: Colors.white,
               ),
-            ),
-            child: const Icon(
-              Icons.play_circle_fill_rounded,
-              color: Colors.white,
-            ),
+            ],
           ),
           SizedBox(width: mySize.width / 24),
           Column(

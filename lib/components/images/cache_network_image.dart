@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'cache_image_manager.dart';
@@ -7,12 +9,14 @@ class AppNetworkImage extends StatelessWidget {
   final double width;
   final double height;
   final BoxFit fit;
+  final BorderRadius borderRadius;
   const AppNetworkImage({
     Key? key,
     required this.image,
     this.width = 40,
     this.height = 80,
     this.fit = BoxFit.cover,
+    this.borderRadius = const BorderRadius.all(Radius.circular(8)),
   }) : super(key: key);
 
   @override
@@ -22,22 +26,26 @@ class AppNetworkImage extends StatelessWidget {
       key: UniqueKey(),
       height: height,
       width: width,
-      fit: fit,
-      imageUrl: image,
+      imageUrl: "https://image.tmdb.org/t/p/original/$image",
       imageBuilder: (context, imageProvider) => Container(
         decoration: BoxDecoration(
+          borderRadius: borderRadius,
           image: DecorationImage(
             image: imageProvider,
             fit: fit,
           ),
         ),
       ),
-      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-        child: CircularProgressIndicator(value: downloadProgress.progress),
+      progressIndicatorBuilder: (context, url, downloadProgress) =>
+          const Center(
+        child: CircularProgressIndicator(),
       ),
-      errorWidget: (context, url, error) => const Center(
-        child: Icon(Icons.error),
-      ),
+      errorWidget: (context, url, error) {
+        log("Error loading image: $error");
+        return const Center(
+          child: Icon(Icons.error),
+        );
+      },
     );
   }
 }

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../components/images/cache_image_manager.dart';
 
 class MovieCrewModel extends StatelessWidget {
@@ -23,9 +22,7 @@ class MovieCrewModel extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage:
-              // NetworkImage("https://image.tmdb.org/t/p/original/$image"),
-              CachedNetworkImageProvider(
+          backgroundImage: CachedNetworkImageProvider(
             "https://image.tmdb.org/t/p/original/$image",
             cacheManager: CustomCacheManager.instance,
             errorListener: (p0) => log(
