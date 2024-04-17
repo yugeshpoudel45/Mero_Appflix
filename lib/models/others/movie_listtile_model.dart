@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../components/buttons/other_buttons/info_button.dart';
+import '../../components/images/cache_image_manager.dart';
 
 class MovieListTileModel extends StatelessWidget {
   const MovieListTileModel({
@@ -42,7 +46,15 @@ class MovieListTileModel extends StatelessWidget {
               ),
               image: DecorationImage(
                 image:
-                    NetworkImage("https://image.tmdb.org/t/p/original/$image"),
+                    // NetworkImage("https://image.tmdb.org/t/p/original/$image"),
+                    CachedNetworkImageProvider(
+                  "https://image.tmdb.org/t/p/original/$image",
+                  cacheManager: CustomCacheManager.instance,
+                  errorListener: (p0) => log(
+                    "Error: $p0",
+                    name: "CachedNetworkImage",
+                  ),
+                ),
                 fit: BoxFit.cover,
               ),
             ),

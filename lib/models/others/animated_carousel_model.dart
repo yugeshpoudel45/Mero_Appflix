@@ -1,6 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+import '../../components/images/cache_image_manager.dart';
 
 class AnimatedCarouselModel extends StatefulWidget {
   final List<String> items;
@@ -21,42 +23,46 @@ class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
 
   @override
   Widget build(BuildContext context) {
-    Size mySize = MediaQuery.sizeOf(context);
     return CarouselSlider.builder(
       carouselController: controller,
       itemCount: widget.items.length,
       itemBuilder: (BuildContext context, int index, int realIndex) {
         String image = widget.items[index];
-        return Stack(alignment: Alignment.bottomCenter, children: [
-          Image.network(
-            "https://image.tmdb.org/t/p/original/$image",
-            fit: BoxFit.cover,
-            width: mySize.width,
-            height: widget.height,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
+        return Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            CachedNetworkImage(
+              cacheManager: CustomCacheManager.instance,
+              key: UniqueKey(),
+              height: widget.height,
+              imageUrl: image,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                widget.items.length,
-                (index) => buildDot(index, context),
+              ),
+              placeholder: (context, url) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: (context, url, error) => const Center(
+                child: Icon(Icons.error),
               ),
             ),
-          )
-        ]);
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  widget.items.length,
+                  (index) => buildDot(index, context),
+                ),
+              ),
+            )
+          ],
+        );
       },
       options: CarouselOptions(
         height: widget.height,

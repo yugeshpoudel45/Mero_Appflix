@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netflix/components/images/network_image.dart';
+import 'package:netflix/components/images/cache_network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/models/For%20APIs/trending_movie_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';

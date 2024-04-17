@@ -1,7 +1,12 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/models/others/readmore_model.dart';
+
+import '../../components/images/cache_image_manager.dart';
 
 class MovieReviewsModel extends StatefulWidget {
   final String name;
@@ -35,8 +40,16 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
       children: [
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-              "https://image.tmdb.org/t/p/original${widget.avatar}",
+            // backgroundImage: NetworkImage(
+            //   "https://image.tmdb.org/t/p/original${widget.avatar}",
+            // ),
+            backgroundImage: CachedNetworkImageProvider(
+              "https://image.tmdb.org/t/p/original/${widget.avatar}",
+              cacheManager: CustomCacheManager.instance,
+              errorListener: (p0) => log(
+                "Error: $p0",
+                name: "CachedNetworkImage",
+              ),
             ),
           ),
           title: Text(
