@@ -74,14 +74,16 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
-                          width: mySize.width,
-                          child: Text(
-                            "(${people.alsoKnownAs![0]})",
-                            style: myTextTheme.titleMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        people.alsoKnownAs!.isNotEmpty
+                            ? SizedBox(
+                                width: mySize.width,
+                                child: Text(
+                                  "(${people.alsoKnownAs![0]})",
+                                  style: myTextTheme.titleMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            : const SizedBox(),
                         SizedBox(height: mySize.height / 64),
                         CupertinoListSection.insetGrouped(
                           header: Text(
@@ -151,10 +153,14 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
-                                itemCount:  people
-                                          .combinedCredits!.cast!.isNotEmpty
-                                      ? (people.combinedCredits!.cast!.length>5?5:people.combinedCredits!.cast!.length)
-                                      : (people.combinedCredits!.crew!.length>5?5:people.combinedCredits!.crew!.length),
+                                itemCount: people
+                                        .combinedCredits!.cast!.isNotEmpty
+                                    ? (people.combinedCredits!.cast!.length > 5
+                                        ? 5
+                                        : people.combinedCredits!.cast!.length)
+                                    : (people.combinedCredits!.crew!.length > 5
+                                        ? 5
+                                        : people.combinedCredits!.crew!.length),
                                 itemBuilder: (context, index) {
                                   var movie = people
                                           .combinedCredits!.cast!.isNotEmpty
