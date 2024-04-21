@@ -72,8 +72,8 @@ class Result {
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
         id: json["id"] ?? 0,
-        name: json["name"] ?? "Unavailable",
-        originalName: json["original_name"] ?? "Unavailable",
+        name: json["name"] ?? "unavailable",
+        originalName: json["original_name"] ?? "unavailable",
         mediaType: resultMediaTypeValues.map[json["media_type"]] ??
             ResultMediaType.PERSON,
         popularity: json["popularity"]?.toDouble() ?? 0.0,
@@ -152,12 +152,12 @@ class KnownFor {
         adult: json["adult"] ?? false,
         backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 0,
-        title: json["title"] ?? "Unavailable",
+        title: json["title"] ?? "unavailable",
         originalLanguage:
             originalLanguageValues.map[json["original_language"]] ??
                 OriginalLanguage.EN,
-        originalTitle: json["original_title"] ?? "Unavailable",
-        overview: json["overview"] ?? "Unavailable",
+        originalTitle: json["original_title"] ?? "unavailable",
+        overview: json["overview"] ?? "unavailable",
         posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         mediaType: knownForMediaTypeValues.map[json["media_type"]] ??
             KnownForMediaType.MOVIE,
@@ -171,8 +171,8 @@ class KnownFor {
         video: json["video"] ?? false,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
-        name: json["name"] ?? "Unavailable",
-        originalName: json["original_name"] ?? "Unavailable",
+        name: json["name"] ?? "unavailable",
+        originalName: json["original_name"] ?? "unavailable",
         firstAirDate: json["first_air_date"] == null
             ? null
             : DateTime.parse(json["first_air_date"]),

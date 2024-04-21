@@ -15,10 +15,12 @@ class TvShowDetailsRepo {
     try {
       http.Response response = await http.get(
         Uri.parse(
-            "https://api.themoviedb.org/3/tv/$tvShowId?append_to_response=credits%2Creviews%2Csimilar%2Cvideos&language=en-US"),
+            // "https://api.themoviedb.org/3/tv/$tvShowId?append_to_response=credits%2Creviews%2Csimilar%2Cvideos&language=en-US",
+            "https://api.themoviedb.org/3/tv/$tvShowId?append_to_response=credits%2Creviews%2Csimilar%2Cvideos",
+            
+            ),
         headers: headers,
       );
-      // log("Tv Show Details Response Code: ${response.statusCode.toString()}");
       if (response.statusCode == 200) {
         TvShowDetailsModel tvShowDetailsModel =
             tvShowDetailsModelFromJson(response.body.toString());

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/pages/2.onboarding_screen/pages.dart';
 import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';

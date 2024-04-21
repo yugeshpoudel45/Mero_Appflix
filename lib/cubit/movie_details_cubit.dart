@@ -4,7 +4,7 @@ import 'package:netflix/repo/movie_details_repo.dart';
 
 import '../models/For APIs/movie_details_model.dart';
 
-part 'movie_details_state.dart';
+part 'movie_details_state.dart'; 
 
 class MovieDetailsCubit extends Cubit<MovieDetailsState> {
   MovieDetailsCubit(this.moviesDetailsRepo) : super(MovieDetailsInitial());

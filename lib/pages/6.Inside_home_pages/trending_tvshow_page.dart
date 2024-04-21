@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../cubit/trending_section_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
+import '../../routes/app_route_constant.dart';
 
 class TrendingTvShowsPage extends StatelessWidget {
   final TrendingSectionLoadedState loadedState;
@@ -37,15 +39,23 @@ class TrendingTvShowsPage extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           child: Wrap(
-            children: [
-              for (var movie in loadedState.trendingTvShowModel.results!)
-                MovieCarouselModel(
+            children: List.generate(10, (int movieIndex) {
+              var movie = loadedState.trendingTvShowModel.results![movieIndex];
+              return GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    MyAppRouteConstants.tvShowDetailsPage,
+                    extra: movie.id,
+                  );
+                },
+                child: MovieCarouselModel(
                   width: mySize.width / 2.25,
                   height: mySize.height / 3.2,
                   image: movie.posterPath.toString(),
                   rating: movie.popularity!,
                 ),
-            ],
+              );
+            }),
           ),
         ),
       ),

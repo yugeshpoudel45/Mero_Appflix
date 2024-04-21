@@ -134,10 +134,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       func: () {},
                                     ),
                                     const SizedBox(width: 8),
-                                    InfoButton(
-                                      text: movie.productionCountries![0].name!,
-                                      func: () {},
-                                    ),
+                                    movie.productionCountries!.isNotEmpty
+                                        ? InfoButton(
+                                            text: movie
+                                                .productionCountries![0].name!,
+                                            func: () {},
+                                          )
+                                        : const SizedBox(),
                                   ],
                                 ),
                               ),
@@ -342,7 +345,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               top: 16,
                               right: 16,
                             ),
-                            child: Column(
+                            child: state
+                                    .movieDetailsModel.videos!.results!.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "No Trailers Available!",
+                                    ),
+                                  )
+                                : Column(
                               children: List.generate(
                                   (state.movieDetailsModel.videos!.results!
                                               .length >
@@ -393,11 +403,21 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               right: 8,
                               bottom: 8,
                             ),
-                            child: Wrap(
+                            child: state
+                                    .movieDetailsModel.similar!.results!.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "No Similar Movies Available!",
+                                    ),
+                                  )
+                                : Wrap(
                               children: List.generate(6, (int movieIndex) {
                                 var similarMovies = state.movieDetailsModel
                                     .similar!.results![movieIndex];
-                                return GestureDetector(
+                                return similarMovies.posterPath.toString() ==
+                                        "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                    ? const SizedBox()
+                                    : GestureDetector(
                                   onTap: () {
                                     GoRouter.of(context).pushNamed(
                                       MyAppRouteConstants.movieDetailsPage,

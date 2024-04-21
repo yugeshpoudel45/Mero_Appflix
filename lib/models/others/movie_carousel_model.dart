@@ -21,14 +21,17 @@ class MovieCarouselModel extends StatelessWidget {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     Size mySize = MediaQuery.sizeOf(context);
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(
+        right: 8,
+        bottom: 8,
+      ),
       child: Stack(
         children: [
           AppNetworkImage(
             image: image,
             height: height,
             width: width,
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(8),
           ),
           Positioned(
             top: 8,
@@ -37,7 +40,7 @@ class MovieCarouselModel extends StatelessWidget {
               opacity: 0.8,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(8),
                   color: myColorScheme.onTertiary,
                 ),
                 height: mySize.height / 32,

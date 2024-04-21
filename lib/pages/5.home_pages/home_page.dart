@@ -6,12 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/components/images/cache_network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
-import 'package:netflix/models/For%20APIs/trending_movie_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../../components/buttons/play_button/play_button.dart';
 import '../../cubit/trending_section_cubit.dart';
-import '../../models/For APIs/trending_tv_show_model.dart';
 import '../../models/others/movie_carousel_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,197 +46,282 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 _LocalCarouselModel(loadedState: state),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Trending Movies Today",
-                            style: myTextTheme.titleLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontFamily:
-                                  GoogleFonts.balsamiqSans().fontFamily!,
+                state.trendingMovieModel.results!.isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Trending Movies Today",
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                ),
+                                state.trendingMovieModel.results!.length <= 5
+                                    ? const SizedBox()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .trendingMoviesPage,
+                                            extra: state,
+                                          );
+                                        },
+                                        child: Text(
+                                          "See all",
+                                          style:
+                                              myTextTheme.titleSmall!.copyWith(
+                                            color: myColorScheme.onTertiary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                              ],
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.trendingMoviesPage,
-                                extra: state,
-                              );
-                            },
-                            child: Text(
-                              "See all",
-                              style: myTextTheme.titleSmall!.copyWith(
-                                color: myColorScheme.onTertiary,
-                                fontWeight: FontWeight.bold,
+                            SizedBox(height: mySize.height / 64),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.trendingMovieModel.results!
+                                                .length >
+                                            5
+                                        ? 5
+                                        : state
+                                            .trendingMovieModel.results!.length,
+                                    itemBuilder: (context, index) {
+                                      int newIndex = 5;
+                                      var movie = state
+                                          .trendingMovieModel.results![index];
+                                      while (movie.posterPath ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
+                                          newIndex <
+                                              state.trendingMovieModel.results!
+                                                  .length) {
+                                        movie = state.trendingMovieModel
+                                            .results![newIndex];
+                                        newIndex++;
+                                      }
+                                      return movie.posterPath ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                          ? const SizedBox()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .movieDetailsPage,
+                                                  extra: movie.id,
+                                                );
+                                              },
+                                              child: MovieCarouselModel(
+                                                image:
+                                                    movie.posterPath.toString(),
+                                                rating: movie.popularity!,
+                                              ),
+                                            );
+                                    }),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      SizedBox(height: mySize.height / 64),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
+                state.trendingTvShowModel.results!.isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Trending Shows Today",
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                ),
+                                state.trendingTvShowModel.results!.length <= 5
+                                    ? const SizedBox()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .trendingTvShowsPage,
+                                            extra: state,
+                                          );
+                                        },
+                                        child: Text(
+                                          "See all",
+                                          style:
+                                              myTextTheme.titleSmall!.copyWith(
+                                            color: myColorScheme.onTertiary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            SizedBox(height: mySize.height / 64),
+                            SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                var movie =
-                                    state.trendingMovieModel.results![index];
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.movieDetailsPage,
-                                      extra: movie.id,
-                                    );
+                              child: SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.trendingTvShowModel
+                                                .results!.length >
+                                            5
+                                        ? 5
+                                        : state.trendingTvShowModel.results!
+                                            .length,
+                                    itemBuilder: (context, index) {
+                                      // var tvShow = state
+                                      //     .trendingTvShowModel.results![index];
+                                      int newIndex = 5;
+                                      var tvShow = state
+                                          .trendingTvShowModel.results![index];
+                                      while (tvShow.posterPath ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
+                                          newIndex <
+                                              state.trendingTvShowModel.results!
+                                                  .length) {
+                                        tvShow = state.trendingTvShowModel
+                                            .results![newIndex];
+                                        newIndex++;
+                                      }
+                                      return tvShow.posterPath ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                          ? const SizedBox()
+                                          : GestureDetector(
+                                              onTap: () => GoRouter.of(context)
+                                                  .pushNamed(
+                                                MyAppRouteConstants
+                                                    .tvShowDetailsPage,
+                                                extra: tvShow.id,
+                                              ),
+                                              child: MovieCarouselModel(
+                                                image: tvShow.posterPath
+                                                    .toString(),
+                                                rating: tvShow.popularity!,
+                                              ),
+                                            );
+                                    }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                state.trendingPeopleModel.results!.isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 16,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Trending Celebrities Today",
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                ),
+                                state.trendingPeopleModel.results!.length <= 5
+                                    ? const SizedBox()
+                                    : GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .trendingPeoplePage,
+                                            extra: state,
+                                          );
+                                        },
+                                        child: Text(
+                                          "See all",
+                                          style:
+                                              myTextTheme.titleSmall!.copyWith(
+                                            color: myColorScheme.onTertiary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                            SizedBox(height: mySize.height / 64),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.trendingPeopleModel.results!
+                                              .length >
+                                          5
+                                      ? 5
+                                      : state
+                                          .trendingPeopleModel.results!.length,
+                                  itemBuilder: (context, index) {
+                                    // var person = state
+                                    //     .trendingPeopleModel.results![index];
+                                    int newIndex = 5;
+                                    var person = state
+                                        .trendingPeopleModel.results![index];
+                                    while (person.profilePath ==
+                                            "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
+                                        newIndex <
+                                            state.trendingPeopleModel.results!
+                                                .length) {
+                                      person = state.trendingPeopleModel
+                                          .results![newIndex];
+                                      newIndex++;
+                                    }
+                                    return person.profilePath ==
+                                            "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                        ? const SizedBox()
+                                        : GestureDetector(
+                                            onTap: () =>
+                                                GoRouter.of(context).pushNamed(
+                                              MyAppRouteConstants
+                                                  .peopleDetailsPage,
+                                              extra: person.id,
+                                            ),
+                                            child: MovieCarouselModel(
+                                              image:
+                                                  person.profilePath.toString(),
+                                              rating: person.popularity!,
+                                            ),
+                                          );
                                   },
-                                  child: MovieCarouselModel(
-                                    image: movie.posterPath.toString(),
-                                    rating: movie.popularity!,
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Trending Shows Today",
-                            style: myTextTheme.titleLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontFamily:
-                                  GoogleFonts.balsamiqSans().fontFamily!,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.trendingTvShowsPage,
-                                extra: state,
-                              );
-                            },
-                            child: Text(
-                              "See all",
-                              style: myTextTheme.titleSmall!.copyWith(
-                                color: myColorScheme.onTertiary,
-                                fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: mySize.height / 64),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                var tvShow =
-                                    state.trendingTvShowModel.results![index];
-                                return GestureDetector(
-                                  onTap: () => GoRouter.of(context).pushNamed(
-                                    MyAppRouteConstants.tvShowDetailsPage,
-                                    extra: tvShow.id,
-                                  ),
-                                  child: MovieCarouselModel(
-                                    image: tvShow.posterPath.toString(),
-                                    rating: tvShow.popularity!,
-                                  ),
-                                );
-                              }),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Trending Celebrities Today",
-                            style: myTextTheme.titleLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontFamily:
-                                  GoogleFonts.balsamiqSans().fontFamily!,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              GoRouter.of(context).pushNamed(
-                                MyAppRouteConstants.trendingPeoplePage,
-                                extra: state,
-                              );
-                            },
-                            child: Text(
-                              "See all",
-                              style: myTextTheme.titleSmall!.copyWith(
-                                color: myColorScheme.onTertiary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: mySize.height / 64),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              var person =
-                                  state.trendingPeopleModel.results![index];
-                              return GestureDetector(
-                                onTap: () => GoRouter.of(context).pushNamed(
-                                  MyAppRouteConstants.peopleDetailsPage,
-                                  extra: person.id,
-                                ),
-                                child: MovieCarouselModel(
-                                  image: person.profilePath.toString(),
-                                  rating: person.popularity!,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           );
@@ -250,6 +333,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+//!Yo vanda tala ko exception handling grna baki xa
 class _LocalCarouselModel extends StatefulWidget {
   final TrendingSectionLoadedState loadedState;
   const _LocalCarouselModel({required this.loadedState});
@@ -270,21 +354,22 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
       carouselController: controller,
       itemCount: 6,
       itemBuilder: (BuildContext context, int index, int realIndex) {
-        TrendingMovieModel fetchMovie = widget.loadedState.trendingMovieModel;
-        TrendingTvShowModel fetchTvShow =
-            widget.loadedState.trendingTvShowModel;
+        var fetchMovieResult =
+            widget.loadedState.trendingMovieModel.results![index];
+        var fetchTvShowResult =
+            widget.loadedState.trendingTvShowModel.results![index];
         String image = index % 2 == 0
-            ? fetchMovie.results![index].backdropPath.toString()
-            : fetchTvShow.results![index].backdropPath.toString();
+            ? fetchMovieResult.backdropPath.toString()
+            : fetchTvShowResult.backdropPath.toString();
         String movieName = index % 2 == 0
-            ? fetchMovie.results![index].title.toString()
-            : fetchTvShow.results![index].name.toString();
+            ? fetchMovieResult.title.toString()
+            : fetchTvShowResult.name.toString();
         String videoType = index % 2 == 0
-            ? fetchMovie.results![index].mediaType.toString()
-            : fetchTvShow.results![index].mediaType.toString();
+            ? fetchMovieResult.mediaType.toString()
+            : fetchTvShowResult.mediaType.toString();
         String releaseDate = index % 2 == 0
-            ? fetchMovie.results![index].releaseDate!.year.toString()
-            : fetchTvShow.results![index].firstAirDate!.year.toString();
+            ? fetchMovieResult.releaseDate!.year.toString()
+            : fetchTvShowResult.firstAirDate!.year.toString();
         return Stack(alignment: Alignment.bottomCenter, children: [
           AppNetworkImage(
             image: image,
@@ -364,13 +449,12 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                         index % 2 == 0
                             ? GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.movieDetailsPage,
-                                extra: fetchMovie.results![index].id,
+                                extra: fetchMovieResult.id,
                               )
                             : GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.tvShowDetailsPage,
-                                extra: fetchTvShow.results![index].id,
+                                extra: fetchTvShowResult.id,
                               );
-                        //! TODO: Change the routing for the trending TvShow here
                       },
                     ),
                     SizedBox(width: mySize.width / 24),

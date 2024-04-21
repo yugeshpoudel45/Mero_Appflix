@@ -95,7 +95,7 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                           ),
                           margin: const EdgeInsets.all(4),
                           children: [
-                            people.deathday != null
+                            people.birthday != null
                                 ? _MyListTile(
                                     title: "Born",
                                     details:
@@ -234,6 +234,7 @@ class _MyListTile extends StatelessWidget {
         style: myTextTheme.titleSmall!.copyWith(
           fontWeight: FontWeight.bold,
         ),
+        maxLines: 2,
       ),
       trailing: Text(
         details,

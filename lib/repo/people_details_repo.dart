@@ -15,7 +15,7 @@ class PeopleDetailsRepo {
     try {
       http.Response response = await http.get(
         Uri.parse(
-          'https://api.themoviedb.org/3/person/$peopleId?append_to_response=combined_credits%2Cexternal_ids%2Cimages&language=en-US',
+          'https://api.themoviedb.org/3/person/$peopleId?append_to_response=combined_credits%2Cexternal_ids%2Cimages',
           // 'https://api.themoviedb.org/3/person/$peopleId?append_to_response=combined_credits%2Cexternal_ids%2Cimages&language=en-US',
         ),
         headers: headers,

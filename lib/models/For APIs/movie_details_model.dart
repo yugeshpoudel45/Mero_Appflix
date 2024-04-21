@@ -76,7 +76,7 @@ class MovieDetailsModel {
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) =>
       MovieDetailsModel(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "unavailable",
+        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         belongsToCollection: json["belongs_to_collection"] ?? "unavailable",
         budget: json["budget"] ?? 0,
         genres: json["genres"] == null
@@ -506,7 +506,7 @@ class SimilarResult {
   factory SimilarResult.fromJson(Map<String, dynamic> json) {
     return SimilarResult(
       adult: json["adult"] ?? false,
-      backdropPath: json["backdrop_path"] ?? "unavailable",
+      backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
       genreIds: json["genre_ids"] == null
           ? []
           : List<int>.from(json["genre_ids"]!.map((x) => x)),

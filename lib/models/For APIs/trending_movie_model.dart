@@ -78,12 +78,12 @@ class Result {
         backdropPath:
             json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 45,
-        title: json["title"] ?? "Not available",
+        title: json["title"] ?? "unavailable",
         originalLanguage:
             originalLanguageValues.map[json["original_language"]] ??
                 OriginalLanguage.en,
-        originalTitle: json["original_title"] ?? "Not available",
-        overview: json["overview"] ?? "Not available",
+        originalTitle: json["original_title"] ?? "unavailable",
+        overview: json["overview"] ?? "unavailable",
         posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.movie,
         genreIds: json["genre_ids"] == null
@@ -97,7 +97,7 @@ class Result {
         voteAverage: json["vote_average"]?.toDouble() ?? 45.0,
         voteCount: json["vote_count"] ?? 45,
         martialLawHasBeenDeclaredACoupD:
-            json["martial law has been declared. A coup d"] ?? "Not available",
+            json["martial law has been declared. A coup d"] ?? "unavailable",
       );
 
   Map<String, dynamic> toJson() => {

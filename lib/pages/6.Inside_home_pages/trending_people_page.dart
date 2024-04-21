@@ -39,23 +39,23 @@ class TrendingPeoplePage extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           child: Wrap(
-            children: [
-              for (var movie in loadedState.trendingPeopleModel.results!)
-                GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(
-                      MyAppRouteConstants.peopleDetailsPage,
-                      extra: movie.id,
-                    );
-                  },
-                  child: MovieCarouselModel(
-                    width: mySize.width / 2.25,
-                    height: mySize.height / 3.2,
-                    image: movie.profilePath.toString(),
-                    rating: movie.popularity!,
-                  ),
+            children: List.generate( 10, (int movieIndex) {
+              var movie = loadedState.trendingPeopleModel.results![movieIndex];
+              return GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    MyAppRouteConstants.peopleDetailsPage,
+                    extra: movie.id,
+                  );
+                },
+                child: MovieCarouselModel(
+                  width: mySize.width / 2.25,
+                  height: mySize.height / 3.2,
+                  image: movie.profilePath.toString(),
+                  rating: movie.popularity!,
                 ),
-            ],
+              );
+            }),
           ),
         ),
       ),

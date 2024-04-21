@@ -367,7 +367,14 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                               right: 8,
                               bottom: 8,
                             ),
-                            child: Wrap(
+                            child: state
+                                    .tvShowDetailsModel.similar!.results!.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "No Similar Movies Available!",
+                                    ),
+                                  )
+                                : Wrap(
                               children: List.generate(6, (int movieIndex) {
                                 var similarMovies = state.tvShowDetailsModel
                                     .similar!.results![movieIndex];

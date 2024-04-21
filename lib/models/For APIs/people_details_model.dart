@@ -68,7 +68,7 @@ class PeopleDetailsModel {
         name: json["name"] ?? "unavailable",
         placeOfBirth: json["place_of_birth"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        profilePath: json["profile_path"] ?? "unavailable",
+        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         combinedCredits: json["combined_credits"] == null
             ? null
             : CombinedCredits.fromJson(json["combined_credits"]),
