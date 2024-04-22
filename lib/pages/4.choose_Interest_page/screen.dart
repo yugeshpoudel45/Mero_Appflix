@@ -32,7 +32,9 @@ class ChooseInterestScreen extends StatelessWidget {
               spacing: 8.0,
               runSpacing: 12.0,
               children: severalCategories.map((data) {
-                return ChoosingItemButton(text: data);
+                return ChoosingItemButton(text: data, buttonPressed: () {
+                  
+                }, isFilled: false,);
               }).toList(),
             ),
           ],

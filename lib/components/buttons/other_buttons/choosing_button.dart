@@ -1,26 +1,16 @@
-
 import 'package:flutter/material.dart';
 
-class ChoosingItemButton extends StatefulWidget {
+class ChoosingItemButton extends StatelessWidget {
   const ChoosingItemButton({
     super.key,
     required this.text,
+    this.isFilled = false,
+    required this.buttonPressed,
   });
 
   final String text;
-
-  @override
-  State<ChoosingItemButton> createState() => _ChoosingItemButtonState();
-}
-
-class _ChoosingItemButtonState extends State<ChoosingItemButton> {
-  bool isFilled = false;
-
-  void _buttonPressed() {
-    setState(() {
-      isFilled = !isFilled;
-    });
-  }
+  final bool isFilled;
+  final VoidCallback buttonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +33,10 @@ class _ChoosingItemButtonState extends State<ChoosingItemButton> {
             borderRadius: BorderRadius.circular(36),
           ),
         ),
-        onPressed: _buttonPressed,
+        onPressed: buttonPressed,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(widget.text,
+          child: Text(text,
               style: myTextTheme.labelLarge!.copyWith(
                 color: isFilled ? Colors.white : myColorScheme.onTertiary,
                 fontWeight: FontWeight.bold,

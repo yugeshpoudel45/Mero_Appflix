@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/cubit/people_details_cubit.dart';
+import 'package:netflix/cubit/search_section_cubit.dart';
 import 'package:netflix/cubit/tv_show_details_cubit.dart';
 import 'package:netflix/repo/movie_details_repo.dart';
 import 'package:netflix/repo/people_details_repo.dart';
+import 'package:netflix/repo/search_page_repo.dart';
 import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/repo/tv_show_details_repo.dart';
 import 'package:netflix/routes/app_route_config.dart';
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => PeopleDetailsCubit(PeopleDetailsRepo()),
         ),
+        BlocProvider(
+          create: (context) => SearchSectionCubit(SearchRepo()),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -50,7 +55,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
+ 
 //padding: const EdgeInsets.symmetric(horizontal: 16),
 
 //Red Color

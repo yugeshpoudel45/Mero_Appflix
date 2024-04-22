@@ -13,13 +13,21 @@ final class SearchSectionLoadingState extends SearchSectionState {}
 
 final class SearchSectionLoadedState extends SearchSectionState {
   final MovieSearchModel movieSearchModel;
+  final TvShowSearchModel tvShowSearchModel;
+  final PeopleSearchModel peopleSearchModel;
 
   const SearchSectionLoadedState({
+    required this.tvShowSearchModel,
+    required this.peopleSearchModel,
     required this.movieSearchModel,
   });
 
   @override
-  List<Object> get props => [movieSearchModel];
+  List<Object> get props => [
+        movieSearchModel,
+        tvShowSearchModel,
+        peopleSearchModel,
+      ];
 }
 
 final class SearchSectionErrorState extends SearchSectionState {

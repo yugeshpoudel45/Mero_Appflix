@@ -42,10 +42,8 @@ class TrendingMoviesPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Wrap(
               children: List.generate(
-              
                   10, //loadedState.trendingMovieModel.results!.length
                   (int movieIndex) {
-
                 var movie = loadedState.trendingMovieModel.results![movieIndex];
                 return GestureDetector(
                   onTap: () {

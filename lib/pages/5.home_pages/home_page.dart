@@ -333,7 +333,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//!Yo vanda tala ko exception handling grna baki xa
+//!----------------------------------------Yo vanda tala ko exception handling grna baki xa
 class _LocalCarouselModel extends StatefulWidget {
   final TrendingSectionLoadedState loadedState;
   const _LocalCarouselModel({required this.loadedState});

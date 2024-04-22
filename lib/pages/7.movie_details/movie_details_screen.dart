@@ -353,44 +353,46 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     ),
                                   )
                                 : Column(
-                              children: List.generate(
-                                  (state.movieDetailsModel.videos!.results!
-                                              .length >
-                                          6)
-                                      ? 6
-                                      : state.movieDetailsModel.videos!.results!
-                                          .length, (index) {
-                                final movieVidoes =
-                                    state.movieDetailsModel.videos!;
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.playingPage,
-                                      extra: state,
-                                      pathParameters: {
-                                        'movieKey':
-                                            movieVidoes.results![index].key!,
-                                        'name':
-                                            movieVidoes.results![index].name!,
-                                        'isMovie': 'true',
-                                      },
-                                    );
-                                  },
-                                  child: MovieListTileModel(
-                                    image:
-                                        state.movieDetailsModel.backdropPath!,
-                                    name: movieVidoes.results![index].name!,
-                                    description: movieVidoes
-                                        .results![index].size
-                                        .toString(),
-                                    date: movieVidoes
-                                        .results![index].publishedAt!.year
-                                        .toString(),
-                                    tag: movieVidoes.results![index].type!,
+                                    children: List.generate(
+                                        (state.movieDetailsModel.videos!
+                                                    .results!.length >
+                                                6)
+                                            ? 6
+                                            : state.movieDetailsModel.videos!
+                                                .results!.length, (index) {
+                                      final movieVidoes =
+                                          state.movieDetailsModel.videos!;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants.playingPage,
+                                            extra: state,
+                                            pathParameters: {
+                                              'movieKey': movieVidoes
+                                                  .results![index].key!,
+                                              'name': movieVidoes
+                                                  .results![index].name!,
+                                              'isMovie': 'true',
+                                            },
+                                          );
+                                        },
+                                        child: MovieListTileModel(
+                                          image: state
+                                              .movieDetailsModel.backdropPath!,
+                                          name:
+                                              movieVidoes.results![index].name!,
+                                          description: movieVidoes
+                                              .results![index].size
+                                              .toString(),
+                                          date: movieVidoes
+                                              .results![index].publishedAt!.year
+                                              .toString(),
+                                          tag:
+                                              movieVidoes.results![index].type!,
+                                        ),
+                                      );
+                                    }),
                                   ),
-                                );
-                              }),
-                            ),
                           ),
                         ),
                         // -------------------------------Similar Movies Section-------------------------------------------
@@ -411,28 +413,35 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     ),
                                   )
                                 : Wrap(
-                              children: List.generate(6, (int movieIndex) {
-                                var similarMovies = state.movieDetailsModel
-                                    .similar!.results![movieIndex];
-                                return similarMovies.posterPath.toString() ==
-                                        "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                    ? const SizedBox()
-                                    : GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.movieDetailsPage,
-                                      extra: similarMovies.id,
-                                    );
-                                  },
-                                  child: MovieCarouselModel(
-                                    width: mySize.width / 2.25,
-                                    height: mySize.height / 3.2,
-                                    image: similarMovies.posterPath.toString(),
-                                    rating: similarMovies.popularity!,
+                                    children:
+                                        List.generate(6, (int movieIndex) {
+                                      var similarMovies = state
+                                          .movieDetailsModel
+                                          .similar!
+                                          .results![movieIndex];
+                                      return similarMovies.posterPath
+                                                  .toString() ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                          ? const SizedBox()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .movieDetailsPage,
+                                                  extra: similarMovies.id,
+                                                );
+                                              },
+                                              child: MovieCarouselModel(
+                                                width: mySize.width / 2.25,
+                                                height: mySize.height / 3.2,
+                                                image: similarMovies.posterPath
+                                                    .toString(),
+                                                rating:
+                                                    similarMovies.popularity!,
+                                              ),
+                                            );
+                                    }),
                                   ),
-                                );
-                              }),
-                            ),
                           ),
                         ),
                         //-----------------------------Movie Reviews Tab here----------------------------------

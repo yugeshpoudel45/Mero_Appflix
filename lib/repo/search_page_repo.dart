@@ -1,83 +1,96 @@
-// class TrendingRepo {
-//   //------------------------------------------Trending Movie Fetching--------------------------------------------
-//   Future<TrendingMovieModel> fetchTrendingMovies() async {
-//     Map<String, String> headers = {
-//       'accept': 'application/json',
-//       "Authorization": "Bearer $accessToken",
-//     };
-//     try {
-//       http.Response response = await http.get(
-//         Uri.parse(
-//             "https://api.themoviedb.org/3/trending/movie/day",
-//             // "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
-//             ),
-//         headers: headers,
-//       );
-//       if (response.statusCode == 200) {
-//         TrendingMovieModel trendingMovieModel =
-//             trendingMovieModelFromJson(response.body);
-//         return trendingMovieModel;
-//       } else {
-//         throw Exception("Failed to Load Trending Movies");
-//       }
-//     } catch (e) {
-//       log("Exception caught: $e");
-//     }
-//     throw Exception("Outer Exception: Failed to Load Trending Movies");
-//   }
+import 'dart:developer';
 
-// //------------------------------------------Trending People Fetching--------------------------------------------
-//   Future<TrendingPeopleModel> fetchTrendingPeople() async {
-//     Map<String, String> headers = {
-//       'accept': 'application/json',
-//       "Authorization": "Bearer $accessToken",
-//     };
-//     try {
-//       http.Response response = await http.get(
-//         Uri.parse(
-//             // "https://api.themoviedb.org/3/trending/person/day?language=en-US",
-//             "https://api.themoviedb.org/3/trending/person/day",
-//             ),
-//         headers: headers,
-//       );
-//       if (response.statusCode == 200) {
-//         TrendingPeopleModel trendingPeopleModel =
-//             trendingPeopleModelFromJson(response.body.toString());
-//         return trendingPeopleModel;
-//       } else {
-//         throw Exception("Failed to Load Trending People");
-//       }
-//     } catch (e) {
-//       log("Exception caught: $e");
-//     }
-//     throw Exception("Outer Exception: Failed to Load Trending People");
-//   }
+import 'package:http/http.dart' as http;
+import 'package:netflix/models/For%20APIs/movie_search_model.dart';
+import 'package:netflix/models/For%20APIs/people_search_model.dart';
+import 'package:netflix/models/For%20APIs/tvShow_search_model.dart';
 
-// //------------------------------------------Trending Tv Shows Fetching--------------------------------------------
-//   Future<TrendingTvShowModel> fetchTrendingTvShows() async {
-//     Map<String, String> headers = {
-//       'accept': 'application/json',
-//       "Authorization": "Bearer $accessToken",
-//     };
-//     try {
-//       http.Response response = await http.get(
-//         Uri.parse(
-//             "https://api.themoviedb.org/3/trending/tv/day",
-//             // "https://api.themoviedb.org/3/trending/tv/day?language=en-US",
-//             ),
-//         headers: headers,
-//       );
+import '../config/app_constants.dart';
 
-//       if (response.statusCode == 200) {
-//         TrendingTvShowModel trendingTvShowModel =
-//             trendingTvShowModelFromJson(response.body.toString());
-//         return trendingTvShowModel;
-//       } else {
-//         throw Exception("Failed to Load Trending TV Shows");
-//       }
-//     } catch (e) {
-//       log("Exception caught: $e");
-//     }
-//     throw Exception("Outer Exception: Failed to Load Trending TV Shows");
-//   }
-// }
+class SearchRepo {
+  Future<MovieSearchModel> fetchSearchMovies(
+    String movieName,
+    bool includeAdult,
+    int releaseYear,
+  ) async {
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      "Authorization": "Bearer $accessToken",
+    };
+    try {
+      http.Response response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/search/movie?query=$movieName&include_adult=$includeAdult&primary_release_year=$releaseYear&page=1",
+        ),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        MovieSearchModel movieSearchModel =
+            movieSearchModelFromJson(response.body);
+        return movieSearchModel;
+      } else {
+        throw Exception("Failed to Load Search Movies");
+      }
+    } catch (e) {
+      log("Exception caught: $e");
+    }
+    throw Exception("Outer Exception: Failed to Load Search Movies");
+  }
+
+  Future<TvShowSearchModel> fetchSearchTvShow(
+    String tvShowName,
+    bool includeAdult,
+    int releaseYear,
+  ) async {
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      "Authorization": "Bearer $accessToken",
+    };
+    try {
+      http.Response response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/search/tv?query=$tvShowName&first_air_date_year=$releaseYear&include_adult=$includeAdult&page=1",
+        ),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        TvShowSearchModel tvShowSearchModel =
+            tvShowSearchModelFromJson(response.body);
+        return tvShowSearchModel;
+      } else {
+        throw Exception("Failed to Load Tv Search Shows");
+      }
+    } catch (e) {
+      log("Exception caught: $e");
+    }
+    throw Exception("Outer Exception: Failed to Load Search Tv Shows");
+  }
+
+  Future<PeopleSearchModel> fetchSearchPeople(
+    String peopleName,
+    bool includeAdult,
+  ) async {
+    Map<String, String> headers = {
+      'accept': 'application/json',
+      "Authorization": "Bearer $accessToken",
+    };
+    try {
+      http.Response response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/search/person?query=$peopleName&include_adult=$includeAdult&page=1",
+        ),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        PeopleSearchModel peopleSearchModel =
+            peopleSearchModelFromJson(response.body);
+        return peopleSearchModel;
+      } else {
+        throw Exception("Failed to Load Search People");
+      }
+    } catch (e) {
+      log("Exception caught: $e");
+    }
+    throw Exception("Outer Exception: Failed to Load Search People");
+  }
+}

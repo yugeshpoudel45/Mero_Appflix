@@ -12,7 +12,7 @@ class AppTextField extends StatelessWidget {
         filled: true,
         fillColor: myColorScheme.onInverseSurface,
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: TextStyle( 
           fontSize: 14,
           color: Colors.grey.shade400,
         ),

@@ -374,7 +374,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                       "No Similar Movies Available!",
                                     ),
                                   )
-                                : Wrap(
+                                : Wrap( 
                               children: List.generate(6, (int movieIndex) {
                                 var similarMovies = state.tvShowDetailsModel
                                     .similar!.results![movieIndex];
