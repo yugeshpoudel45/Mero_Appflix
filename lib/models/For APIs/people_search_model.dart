@@ -158,9 +158,7 @@ class KnownFor {
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        firstAirDate: json["first_air_date"] == null
-            ? null
-            : DateTime.parse(json["first_air_date"]),
+        firstAirDate: json["first_air_date"] == null ? null : DateTime.now(),
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
         originCountry: json["origin_country"] == null

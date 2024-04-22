@@ -159,7 +159,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                         GoRouter.of(context).pushNamed(
                                           MyAppRouteConstants.playingPage,
                                           extra: state,
-                                          pathParameters: {
+                                          pathParameters: { 
                                             'movieKey': state.movieDetailsModel
                                                 .videos!.results![0].key!,
                                             'name': state.movieDetailsModel
@@ -385,7 +385,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               .results![index].size
                                               .toString(),
                                           date: movieVidoes
-                                              .results![index].publishedAt!.year
+                                              .results![index].publishedAt!.year 
                                               .toString(),
                                           tag:
                                               movieVidoes.results![index].type!,

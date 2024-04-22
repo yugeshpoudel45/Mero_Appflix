@@ -154,7 +154,7 @@ class _SearchFilterModalState extends State<SearchFilterModal> {
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 12,
-                          ),
+                          ), 
                         )
                       : const SizedBox(),
                 ),

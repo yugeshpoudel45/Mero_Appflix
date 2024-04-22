@@ -216,16 +216,26 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                                   : movie.credits!.crew!.length,
                                           itemBuilder: (context, index) {
                                             final movieCredits = movie.credits!;
-                                            return MovieCrewModel(
-                                              image: movieCredits
-                                                  .crew![index].profilePath
-                                                  .toString(),
-                                              name: movieCredits
-                                                  .crew![index].name
-                                                  .toString(),
-                                              role: _checkDepartment(
-                                                  movieCredits.crew![index]
-                                                      .knownForDepartment!),
+                                            return GestureDetector(
+                                              onTap: () {
+                                                GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .peopleDetailsPage,
+                                                  extra: movieCredits
+                                                      .crew![index].id,
+                                                );
+                                              },
+                                              child: MovieCrewModel(
+                                                image: movieCredits
+                                                    .crew![index].profilePath
+                                                    .toString(),
+                                                name: movieCredits
+                                                    .crew![index].name
+                                                    .toString(),
+                                                role: _checkDepartment(
+                                                    movieCredits.crew![index]
+                                                        .knownForDepartment!),
+                                              ),
                                             );
                                           },
                                         ),
@@ -254,16 +264,27 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                             itemBuilder: (context, index) {
                                               final movieCredits =
                                                   movie.credits!;
-                                              return MovieCrewModel(
-                                                image: movieCredits
-                                                    .cast![index].profilePath
-                                                    .toString(),
-                                                name: movieCredits
-                                                    .cast![index].name
-                                                    .toString(),
-                                                role: _checkDepartment(
-                                                    movieCredits.cast![index]
-                                                        .knownForDepartment!),
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  GoRouter.of(context)
+                                                      .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .peopleDetailsPage,
+                                                    extra: movieCredits
+                                                        .cast![index].id,
+                                                  );
+                                                },
+                                                child: MovieCrewModel(
+                                                  image: movieCredits
+                                                      .cast![index].profilePath
+                                                      .toString(),
+                                                  name: movieCredits
+                                                      .cast![index].name
+                                                      .toString(),
+                                                  role: _checkDepartment(
+                                                      movieCredits.cast![index]
+                                                          .knownForDepartment!),
+                                                ),
                                               );
                                             }),
                                       ),
@@ -367,38 +388,43 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                               right: 8,
                               bottom: 8,
                             ),
-                            child: state
-                                    .tvShowDetailsModel.similar!.results!.isEmpty
+                            child: state.tvShowDetailsModel.similar!.results!
+                                    .isEmpty
                                 ? const Center(
                                     child: Text(
                                       "No Similar Movies Available!",
                                     ),
                                   )
-                                : Wrap( 
-                              children: List.generate(6, (int movieIndex) {
-                                var similarMovies = state.tvShowDetailsModel
-                                    .similar!.results![movieIndex];
-                                return similarMovies.posterPath.toString() ==
-                                        "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                    ? const SizedBox()
-                                    : GestureDetector(
-                                        onTap: () {
-                                          GoRouter.of(context).pushNamed(
-                                            MyAppRouteConstants
-                                                .tvShowDetailsPage,
-                                            extra: similarMovies.id,
-                                          );
-                                        },
-                                        child: MovieCarouselModel(
-                                          width: mySize.width / 2.25,
-                                          height: mySize.height / 3.2,
-                                          image: similarMovies.posterPath
-                                              .toString(),
-                                          rating: similarMovies.popularity!,
-                                        ),
-                                      );
-                              }),
-                            ),
+                                : Wrap(
+                                    children:
+                                        List.generate(6, (int movieIndex) {
+                                      var similarMovies = state
+                                          .tvShowDetailsModel
+                                          .similar!
+                                          .results![movieIndex];
+                                      return similarMovies.posterPath
+                                                  .toString() ==
+                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
+                                          ? const SizedBox()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .tvShowDetailsPage,
+                                                  extra: similarMovies.id,
+                                                );
+                                              },
+                                              child: MovieCarouselModel(
+                                                width: mySize.width / 2.25,
+                                                height: mySize.height / 3.2,
+                                                image: similarMovies.posterPath
+                                                    .toString(),
+                                                rating:
+                                                    similarMovies.popularity!,
+                                              ),
+                                            );
+                                    }),
+                                  ),
                           ),
                         ),
                         //-----------------------------Movie Reviews Tab here----------------------------------

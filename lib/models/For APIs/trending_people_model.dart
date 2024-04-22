@@ -150,7 +150,8 @@ class KnownFor {
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath:
+            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
         id: json["id"] ?? 0,
         title: json["title"] ?? "unavailable",
         originalLanguage:
@@ -165,9 +166,7 @@ class KnownFor {
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        releaseDate: json["release_date"] == null
-            ? null
-            : DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"] == null ? null : DateTime.now(),
         video: json["video"] ?? false,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,

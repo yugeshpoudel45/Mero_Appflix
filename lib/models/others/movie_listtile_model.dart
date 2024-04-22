@@ -63,9 +63,14 @@ class MovieListTileModel extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
-              Text(
-                description,
-                style: myTextTheme.bodySmall,
+              SizedBox(
+                width: mySize.width / 3.5,
+                child: Text(
+                  description,
+                  style: myTextTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
               InfoButton(
                 text: tag,

@@ -14,7 +14,6 @@ class SearchSectionCubit extends Cubit<SearchSectionState> {
 
   void onFetchingSearchSection(
     String name,
-    int category,
     bool includeAdult,
     int releaseYear,
   ) async {

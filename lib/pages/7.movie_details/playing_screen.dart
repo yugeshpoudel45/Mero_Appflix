@@ -189,6 +189,7 @@ class PlayingPageState extends State<PlayingPage> {
                             pathParameters: {
                               'movieKey': movieVidoes.results![index].key!,
                               'name': movieVidoes.results![index].name!,
+                              'isMovie': widget.isMovie ? 'true' : 'false',
                             },
                           );
                         },

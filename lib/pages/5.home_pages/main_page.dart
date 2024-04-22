@@ -32,6 +32,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: getBody(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
