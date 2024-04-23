@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 TrendingTvShowModel trendingTvShowModelFromJson(String str) =>
     TrendingTvShowModel.fromJson(json.decode(str));
 
@@ -81,8 +83,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         id: json["id"] ?? 0,
         name: json["name"] ?? "unavailable",
         originalLanguage:
@@ -90,7 +91,7 @@ class Result {
                 OriginalLanguage.EN,
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.TV,
         genreIds: json["genre_ids"] == null
             ? []

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 PeopleSearchModel peopleSearchModelFromJson(String str) =>
     PeopleSearchModel.fromJson(json.decode(str));
 
@@ -77,7 +79,7 @@ class Result {
         name: nameValues.map[json["name"]] ?? Name.unavailable,
         originalName: nameValues.map[json["original_name"]] ?? Name.unavailable,
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
         knownFor: json["known_for"] == null
             ? []
             : List<KnownFor>.from(
@@ -144,12 +146,11 @@ class KnownFor {
   });
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         id: json["id"] ?? 0,
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.MOVIE,
         adult: json["adult"] ?? false,
         name: json["name"] ?? "unavailable",

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 TvShowSearchModel tvShowSearchModelFromJson(String str) =>
     TvShowSearchModel.fromJson(json.decode(str));
 
@@ -79,8 +81,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -92,7 +93,7 @@ class Result {
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         firstAirDate: json["first_air_date"] == null ? null : DateTime.now(),
         name: json["name"] ?? "unavailable",
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,

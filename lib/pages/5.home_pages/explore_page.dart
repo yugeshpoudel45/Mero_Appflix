@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/cubit/search_section_cubit.dart';
+import 'package:netflix/config/app_constants.dart';
 
+import '../../components/Error/error_page.dart';
 import '../../cubit/trending_section_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
 import '../../models/others/movie_listtile_model.dart';
@@ -178,7 +180,6 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
-    ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<SearchSectionCubit, SearchSectionState>(
         builder: (context, state) {
       if (state is SearchSectionLoadingState) {
@@ -190,6 +191,18 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
           child: Text(state.errorMessage),
         );
       } else if (state is SearchSectionLoadedState) {
+        var movie = state.movieSearchModel.results!
+            .where((element) =>
+                element.posterPath != AppConstants.placeHolderImage)
+            .toList();
+        var tvShow = state.tvShowSearchModel.results!
+            .where((element) =>
+                element.posterPath != AppConstants.placeHolderImage)
+            .toList();
+        var people = state.peopleSearchModel.results!
+            .where((element) =>
+                element.profilePath != AppConstants.placeHolderImage)
+            .toList();
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -207,37 +220,15 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                           ),
                         ),
                       ),
-                      state.movieSearchModel.results!.isEmpty &&
-                              state.tvShowSearchModel.results!.isEmpty &&
-                              state.peopleSearchModel.results!.isEmpty
-                          ? Column(
-                              children: [
-                                SizedBox(
-                                  height: mySize.height / 3,
-                                ),
-                                Center(
-                                  child: Text(
-                                    "No Results Found!!",
-                                    style: myTextTheme.headlineSmall!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: myColorScheme.onTertiary,
-                                    ),
-                                  ),
-                                ),
-                                const Center(
-                                  child: Text(
-                                    "Sorry, the keyword you entered could not be found. Please try again with a different keyword.",
-                                  ),
-                                ),
-                              ],
-                            )
+                      movie.isEmpty && tvShow.isEmpty && people.isEmpty
+                          ? const ShowErrorMessage()
                           : const SizedBox(),
-                      state.movieSearchModel.results!.isEmpty
+                      movie.isEmpty
                           ? const SizedBox()
                           : SizedBox(
                               height: mySize.height / 100,
                             ),
-                      state.movieSearchModel.results!.isEmpty
+                      movie.isEmpty
                           ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(bottom: 8),
@@ -248,37 +239,35 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                 ),
                               ),
                             ),
-                      state.movieSearchModel.results!.isEmpty
+                      movie.isEmpty
                           ? const SizedBox()
                           : Wrap(
                               children: List.generate(
-                                  state.movieSearchModel.results!.length < 2
-                                      ? state.movieSearchModel.results!.length
-                                      : 2, (int movieIndex) {
-                                var movie =
-                                    state.movieSearchModel.results![movieIndex];
+                                  movie.length < 2 ? movie.length : 2,
+                                  (int movieIndex) {
+                                var movie1 = movie[movieIndex];
                                 return GestureDetector(
                                   onTap: () {
                                     GoRouter.of(context).pushNamed(
                                       MyAppRouteConstants.movieDetailsPage,
-                                      extra: movie.id,
+                                      extra: movie1.id,
                                     );
                                   },
                                   child: MovieCarouselModel(
                                     width: mySize.width / 2.25,
                                     height: mySize.height / 3.2,
-                                    image: movie.posterPath.toString(),
-                                    rating: movie.popularity!,
+                                    image: movie1.posterPath.toString(),
+                                    rating: movie1.popularity!,
                                   ),
                                 );
                               }),
                             ),
-                      state.tvShowSearchModel.results!.isEmpty
+                      tvShow.isEmpty
                           ? const SizedBox()
                           : SizedBox(
                               height: mySize.height / 40,
                             ),
-                      state.tvShowSearchModel.results!.isEmpty
+                      tvShow.isEmpty
                           ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(bottom: 8),
@@ -290,34 +279,32 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                               ),
                             ),
                       Wrap(
-                        children: List.generate(
-                            state.tvShowSearchModel.results!.length < 2
-                                ? state.tvShowSearchModel.results!.length
-                                : 2, (int movieIndex) {
-                          var tvShow =
-                              state.tvShowSearchModel.results![movieIndex];
+                        children:
+                            List.generate(tvShow.length < 2 ? tvShow.length : 2,
+                                (int movieIndex) {
+                          var tvShow1 = tvShow[movieIndex];
                           return GestureDetector(
                             onTap: () {
                               GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.tvShowDetailsPage,
-                                extra: tvShow.id,
+                                extra: tvShow1.id,
                               );
                             },
                             child: MovieCarouselModel(
                               width: mySize.width / 2.25,
                               height: mySize.height / 3.2,
-                              image: tvShow.posterPath.toString(),
-                              rating: tvShow.popularity!,
+                              image: tvShow1.posterPath.toString(),
+                              rating: tvShow1.popularity!,
                             ),
                           );
                         }),
                       ),
-                      state.peopleSearchModel.results!.isEmpty
+                      people.isEmpty
                           ? const SizedBox()
                           : SizedBox(
                               height: mySize.height / 40,
                             ),
-                      state.peopleSearchModel.results!.isEmpty
+                      people.isEmpty
                           ? const SizedBox()
                           : Padding(
                               padding: const EdgeInsets.only(bottom: 8),
@@ -329,24 +316,22 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                               ),
                             ),
                       Wrap(
-                        children: List.generate(
-                            state.peopleSearchModel.results!.length < 2
-                                ? state.peopleSearchModel.results!.length
-                                : 2, (int movieIndex) {
-                          var people =
-                              state.peopleSearchModel.results![movieIndex];
+                        children:
+                            List.generate(people.length < 2 ? people.length : 2,
+                                (int movieIndex) {
+                          var people1 = people[movieIndex];
                           return GestureDetector(
                             onTap: () {
                               GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.peopleDetailsPage,
-                                extra: people.id,
+                                extra: people1.id,
                               );
                             },
                             child: MovieCarouselModel(
                               width: mySize.width / 2.25,
                               height: mySize.height / 3.2,
-                              image: people.profilePath.toString(),
-                              rating: people.popularity!,
+                              image: people1.profilePath.toString(),
+                              rating: people1.popularity!,
                             ),
                           );
                         }),
@@ -362,24 +347,25 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: widget.result[0] == 1
-                            ? state.movieSearchModel.results!.isEmpty
-                                ? const Center(child: Text("Movie not Found"))
+                            ? movie.isEmpty
+                                ? const ShowErrorMessage(
+                                    errorMessage: "Movie not Found")
                                 : Text("Movies For You",
                                     style: myTextTheme.headlineSmall!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ))
                             : widget.result[0] == 2
-                                ? state.tvShowSearchModel.results!.isEmpty
-                                    ? const Center(
-                                        child: Text("Tv Show not Found"))
+                                ? tvShow.isEmpty
+                                    ? const ShowErrorMessage(
+                                        errorMessage: "Tv Show not Found")
                                     : Text("Tv Shows For You",
                                         style:
                                             myTextTheme.headlineSmall!.copyWith(
                                           fontWeight: FontWeight.bold,
                                         ))
-                                : state.peopleSearchModel.results!.isEmpty
-                                    ? const Center(
-                                        child: Text("Celebrity not Found"))
+                                : people.isEmpty
+                                    ? const ShowErrorMessage(
+                                        errorMessage: "People not Found")
                                     : widget.result[0] == 3
                                         ? Text(
                                             "Celebrities For You",
@@ -393,80 +379,80 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                       Wrap(
                         children: List.generate(
                             widget.result[0] == 1
-                                ? state.movieSearchModel.results!.length < 10
-                                    ? state.movieSearchModel.results!.length
+                                ? movie.length < 10
+                                    ? movie.length
                                     : 10
                                 : widget.result[0] == 2
-                                    ? state.tvShowSearchModel.results!.length <
-                                            10
-                                        ? state
-                                            .tvShowSearchModel.results!.length
+                                    ? tvShow.length < 10
+                                        ? tvShow.length
                                         : 10
                                     : widget.result[0] == 3
-                                        ? state.peopleSearchModel.results!
-                                                    .length <
-                                                10
-                                            ? state.peopleSearchModel.results!
-                                                .length
+                                        ? people.length < 10
+                                            ? people.length
                                             : 10
                                         : 0, (int movieIndex) {
-                          var movie =
-                              state.movieSearchModel.results![movieIndex];
-                          var tvShow =
-                              state.tvShowSearchModel.results![movieIndex];
-                          var people =
-                              state.peopleSearchModel.results![movieIndex];
-
                           return widget.result[0] == 1
-                              ? GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.movieDetailsPage,
-                                      extra: movie.id,
-                                    );
-                                  },
-                                  child: MovieCarouselModel(
-                                    width: mySize.width / 2.25,
-                                    height: mySize.height / 3.2,
-                                    image: movie.posterPath.toString(),
-                                    rating: movie.popularity!,
-                                  ),
-                                )
-                              : widget.result[0] == 2
-                                  ? GestureDetector(
+                              ? movie.isEmpty
+                                  ? const SizedBox()
+                                  : GestureDetector(
                                       onTap: () {
                                         GoRouter.of(context).pushNamed(
-                                          MyAppRouteConstants.tvShowDetailsPage,
-                                          extra: tvShow.id,
+                                          MyAppRouteConstants.movieDetailsPage,
+                                          extra: movie[movieIndex].id,
                                         );
                                       },
                                       child: MovieCarouselModel(
                                         width: mySize.width / 2.25,
                                         height: mySize.height / 3.2,
-                                        image: tvShow.posterPath.toString(),
-                                        rating: tvShow.popularity!,
+                                        image: movie[movieIndex]
+                                            .posterPath
+                                            .toString(),
+                                        rating: movie[movieIndex].popularity!,
                                       ),
                                     )
-                                  : widget.result[0] == 3
-                                      ? GestureDetector(
+                              : widget.result[0] == 2
+                                  ? tvShow.isEmpty
+                                      ? const SizedBox()
+                                      : GestureDetector(
                                           onTap: () {
                                             GoRouter.of(context).pushNamed(
                                               MyAppRouteConstants
-                                                  .peopleDetailsPage,
-                                              extra: people.id,
+                                                  .tvShowDetailsPage,
+                                              extra: tvShow[movieIndex].id,
                                             );
                                           },
                                           child: MovieCarouselModel(
                                             width: mySize.width / 2.25,
                                             height: mySize.height / 3.2,
-                                            image:
-                                                people.profilePath.toString(),
-                                            rating: people.popularity!,
+                                            image: tvShow[movieIndex]
+                                                .posterPath
+                                                .toString(),
+                                            rating:
+                                                tvShow[movieIndex].popularity!,
                                           ),
                                         )
-                                      : const Center(
-                                          child: Text("Error Occured"),
-                                        );
+                                  : widget.result[0] == 3
+                                      ? people.isEmpty
+                                          ? const SizedBox()
+                                          : GestureDetector(
+                                              onTap: () {
+                                                GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .peopleDetailsPage,
+                                                  extra: people[movieIndex].id,
+                                                );
+                                              },
+                                              child: MovieCarouselModel(
+                                                width: mySize.width / 2.25,
+                                                height: mySize.height / 3.2,
+                                                image: people[movieIndex]
+                                                    .profilePath
+                                                    .toString(),
+                                                rating: people[movieIndex]
+                                                    .popularity!,
+                                              ),
+                                            )
+                                      : const ShowErrorMessage();
                         }),
                       ),
                     ],
@@ -508,6 +494,14 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
           child: Text(state.errorMessage),
         );
       } else if (state is TrendingSectionLoadedState) {
+        var movie = state.trendingMovieModel.results!
+            .where((element) =>
+                element.posterPath != AppConstants.placeHolderImage)
+            .toList();
+        var tvShow = state.trendingTvShowModel.results!
+            .where((element) =>
+                element.posterPath != AppConstants.placeHolderImage)
+            .toList();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
@@ -524,29 +518,25 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
               ),
               Column(
                 children: List.generate(4, (int index) {
-                  var fetchMovieResult =
-                      state.trendingMovieModel.results![index];
-                  var fetchTvShowResult =
-                      state.trendingTvShowModel.results![index];
                   String image = index % 2 == 0
-                      ? fetchMovieResult.posterPath.toString()
-                      : fetchTvShowResult.posterPath.toString();
+                      ? movie[index].posterPath.toString()
+                      : tvShow[index].posterPath.toString();
                   String movieName = index % 2 == 0
-                      ? fetchMovieResult.title.toString()
-                      : fetchTvShowResult.name.toString();
+                      ? movie[index].title.toString()
+                      : tvShow[index].name.toString();
                   String type = index % 2 == 0 ? "Movie" : "Tv Show";
                   String releaseDate = index % 2 == 0
-                      ? fetchMovieResult.releaseDate!.year.toString()
-                      : fetchTvShowResult.firstAirDate!.year.toString();
+                      ? movie[index].releaseDate!.year.toString()
+                      : tvShow[index].firstAirDate!.year.toString();
                   return GestureDetector(
                     onTap: () => index % 2 == 0
                         ? GoRouter.of(context).pushNamed(
                             MyAppRouteConstants.movieDetailsPage,
-                            extra: fetchMovieResult.id,
+                            extra: movie[index].id,
                           )
                         : GoRouter.of(context).pushNamed(
                             MyAppRouteConstants.tvShowDetailsPage,
-                            extra: fetchTvShowResult.id,
+                            extra: tvShow[index].id,
                           ),
                     child: MovieListTileModel(
                       image: image,

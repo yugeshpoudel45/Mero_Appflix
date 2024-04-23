@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 PeopleDetailsModel peopleDetailsModelFromJson(String str) =>
     PeopleDetailsModel.fromJson(json.decode(str));
 
@@ -68,7 +70,7 @@ class PeopleDetailsModel {
         name: json["name"] ?? "unavailable",
         placeOfBirth: json["place_of_birth"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
         combinedCredits: json["combined_credits"] == null
             ? null
             : CombinedCredits.fromJson(json["combined_credits"]),
@@ -188,8 +190,7 @@ class Cast {
 
   factory Cast.fromJson(Map<String, dynamic> json) => Cast(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -200,7 +201,7 @@ class Cast {
         originalTitle: json["original_title"] ?? "Unavailable",
         overview: json["overview"] ?? "Unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         releaseDate: json["release_date"] ?? "Unavailable",
         title: json["title"] ?? "Unavailable",
         video: json["video"] ?? false,
@@ -390,7 +391,7 @@ class Profile {
         aspectRatio: json["aspect_ratio"]?.toDouble() ?? 0.0,
         height: json["height"] ?? 0,
         iso6391: json["iso_639_1"] ?? "unavailable",
-        filePath: json["file_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        filePath: json["file_path"] ?? AppConstants.placeHolderImage,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
         voteCount: json["vote_count"] ?? 0,
         width: json["width"] ?? 0,

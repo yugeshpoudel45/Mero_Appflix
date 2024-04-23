@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 TvShowDetailsModel tvShowDetailsModelFromJson(String str) =>
     TvShowDetailsModel.fromJson(json.decode(str));
 
@@ -90,8 +92,7 @@ class TvShowDetailsModel {
   factory TvShowDetailsModel.fromJson(Map<String, dynamic> json) =>
       TvShowDetailsModel(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         createdBy: json["created_by"] == null
             ? []
             : List<CreatedBy>.from(
@@ -133,7 +134,7 @@ class TvShowDetailsModel {
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         productionCompanies: json["production_companies"] == null
             ? []
             : List<Network>.from(
@@ -247,7 +248,7 @@ class CreatedBy {
         creditId: json["credit_id"] ?? "unavailable",
         name: json["name"] ?? "unavailable",
         gender: json["gender"] ?? 0,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
       );
 
   Map<String, dynamic> toJson() => {
@@ -328,7 +329,7 @@ class Cast {
         name: json["name"] ?? "unavailable",
         originalName: json["original_name"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
         character: json["character"] ?? "unavailable",
         creditId: json["credit_id"] ?? "unavailable",
         order: json["order"] ?? 0,
@@ -439,7 +440,7 @@ class LastEpisodeToAir {
         runtime: json["runtime"] ?? 0,
         seasonNumber: json["season_number"] ?? 0,
         showId: json["show_id"] ?? 0,
-        stillPath: json["still_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        stillPath: json["still_path"] ?? AppConstants.placeHolderImage,
       );
   //!Vote average ko data type int bata double ma change gareko ho
 
@@ -476,7 +477,7 @@ class Network {
 
   factory Network.fromJson(Map<String, dynamic> json) => Network(
         id: json["id"] ?? 0,
-        logoPath: json["logo_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        logoPath: json["logo_path"] ?? AppConstants.placeHolderImage,
         name: json["name"] ?? "unavailable",
         originCountry: json["origin_country"] ?? "unavailable",
       );
@@ -605,7 +606,7 @@ class AuthorDetails {
   factory AuthorDetails.fromJson(Map<String, dynamic> json) => AuthorDetails(
         name: json["name"] ?? "unavailable",
         username: json["username"] ?? "unavailable",
-        avatarPath: json["avatar_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        avatarPath: json["avatar_path"] ?? AppConstants.placeHolderImage,
         rating: json["rating"] ?? 0.0,
       );
   //!Rating ko datatype changed here, mathi declare garda nai change handeko ho
@@ -646,7 +647,7 @@ class Season {
         id: json["id"] ?? 0,
         name: json["name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         seasonNumber: json["season_number"] ?? 0,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
       );
@@ -732,8 +733,7 @@ class SimilarResult {
 
   factory SimilarResult.fromJson(Map<String, dynamic> json) => SimilarResult(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         genreIds: json["genre_ids"] == null
             ? []
             : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -747,7 +747,7 @@ class SimilarResult {
         originalName: json["original_name"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         firstAirDate: json["first_air_date"] ?? "unavailable",
         name: json["name"] ?? "unavailable",
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,

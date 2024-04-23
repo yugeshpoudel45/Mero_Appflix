@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 TrendingPeopleModel trendingPeopleModelFromJson(String str) =>
     TrendingPeopleModel.fromJson(json.decode(str));
 
@@ -81,7 +83,7 @@ class Result {
         knownForDepartment:
             knownForDepartmentValues.map[json["known_for_department"]] ??
                 KnownForDepartment.ACTING,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
         knownFor: json["known_for"] == null
             ? []
             : List<KnownFor>.from(
@@ -150,8 +152,7 @@ class KnownFor {
 
   factory KnownFor.fromJson(Map<String, dynamic> json) => KnownFor(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         id: json["id"] ?? 0,
         title: json["title"] ?? "unavailable",
         originalLanguage:
@@ -159,7 +160,7 @@ class KnownFor {
                 OriginalLanguage.EN,
         originalTitle: json["original_title"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         mediaType: knownForMediaTypeValues.map[json["media_type"]] ??
             KnownForMediaType.MOVIE,
         genreIds: json["genre_ids"] == null

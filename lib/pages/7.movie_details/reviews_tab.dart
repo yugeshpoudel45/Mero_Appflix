@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/components/Error/error_page.dart';
 
 import '../../models/others/movie_reviews_model.dart';
 import '../../routes/app_route_constant.dart';
@@ -30,8 +31,10 @@ class ReviewsTab extends StatelessWidget {
         child: isMovie
             ? state.movieDetailsModel.reviews!.results!.isEmpty
                 ? const Center(
-                    child: Text("No Reviews given yet!"),
-                  )
+                    child: ShowErrorMessage(
+                    errorMessage: "No Reviews given yet!",
+                    extraInfo: "",
+                  ))
                 : Column(
                     children: [
                       Row(
@@ -65,7 +68,11 @@ class ReviewsTab extends StatelessWidget {
                         ],
                       ),
                       Column(
-                        children: List.generate(1, (index) {
+                        children: List.generate(
+                            state.movieDetailsModel.reviews!.results!.length > 2
+                                ? 2
+                                : state.movieDetailsModel.reviews!.results!
+                                    .length, (index) {
                           final movieReviews = state.movieDetailsModel.reviews!;
                           return MovieReviewsModel(
                             avatar: movieReviews
@@ -84,8 +91,10 @@ class ReviewsTab extends StatelessWidget {
                   )
             : state.tvShowDetailsModel.reviews!.results!.isEmpty
                 ? const Center(
-                    child: Text("No Reviews given yet!"),
-                  )
+                    child: ShowErrorMessage(
+                    errorMessage: "No Reviews given yet!",
+                    extraInfo: "",
+                  ))
                 : Column(
                     children: [
                       Row(
@@ -119,7 +128,12 @@ class ReviewsTab extends StatelessWidget {
                         ],
                       ),
                       Column(
-                        children: List.generate(1, (index) {
+                        children: List.generate(
+                            state.tvShowDetailsModel.reviews!.results!.length >
+                                    2
+                                ? 2
+                                : state.tvShowDetailsModel.reviews!.results!
+                                    .length, (index) {
                           final movieReviews =
                               state.tvShowDetailsModel.reviews!;
                           return MovieReviewsModel(

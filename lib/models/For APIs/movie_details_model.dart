@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 MovieDetailsModel movieDetailsModelFromJson(String str) =>
     MovieDetailsModel.fromJson(json.decode(str));
 
@@ -76,7 +78,7 @@ class MovieDetailsModel {
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) =>
       MovieDetailsModel(
         adult: json["adult"] ?? false,
-        backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         belongsToCollection: json["belongs_to_collection"] ?? "unavailable",
         budget: json["budget"] ?? 0,
         genres: json["genres"] == null
@@ -89,7 +91,7 @@ class MovieDetailsModel {
         originalTitle: json["original_title"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         productionCompanies: json["production_companies"] == null
             ? []
             : List<ProductionCompany>.from(json["production_companies"]
@@ -233,7 +235,7 @@ class Cast {
         name: json["name"] ?? "unavailable",
         originalName: json["original_name"] ?? "unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
-        profilePath: json["profile_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        profilePath: json["profile_path"] ?? AppConstants.placeHolderImage,
         castId: json["cast_id"] ?? 0,
         character: json["character"] ?? "unavailable",
         creditId: json["credit_id"] ?? "unavailable",
@@ -296,7 +298,7 @@ class ProductionCompany {
   factory ProductionCompany.fromJson(Map<String, dynamic> json) =>
       ProductionCompany(
         id: json["id"] ?? 0,
-        logoPath: json["logo_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        logoPath: json["logo_path"] ?? AppConstants.placeHolderImage,
         name: json["name"] ?? "unavailable",
         originCountry: json["origin_country"] ?? "unavailable",
       );
@@ -425,7 +427,7 @@ class AuthorDetails {
   factory AuthorDetails.fromJson(Map<String, dynamic> json) => AuthorDetails(
         name: json["name"] ?? "unavailable",
         username: json["username"] ?? "unavailable",
-        avatarPath: json["avatar_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        avatarPath: json["avatar_path"] ?? AppConstants.placeHolderImage,
         rating: json["rating"] ?? 0.0,
       );
   //!Rating datatype Changed Here------------------------------------------
@@ -506,7 +508,7 @@ class SimilarResult {
   factory SimilarResult.fromJson(Map<String, dynamic> json) {
     return SimilarResult(
       adult: json["adult"] ?? false,
-      backdropPath: json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+      backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
       genreIds: json["genre_ids"] == null
           ? []
           : List<int>.from(json["genre_ids"]!.map((x) => x)),
@@ -515,7 +517,7 @@ class SimilarResult {
       originalTitle: json["original_title"] ?? "unavailable",
       overview: json["overview"] ?? "unavailable",
       popularity: json["popularity"]?.toDouble() ?? 0.0,
-      posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+      posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
       releaseDate: json["release_date"] == null ? null : DateTime.now(),
       //!---------------------Changed Here--------------------------------------------------------
       //!Date time ma format exception aayo ani Date time ko barema khojna alxi lagera, aile lai DateTime.now() gareko ho....

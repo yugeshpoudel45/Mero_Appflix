@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/Error/error_page.dart';
+import 'package:netflix/config/app_constants.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
@@ -53,10 +55,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           );
         } else if (state is MovieDetailsLoadedState) {
           final movie = state.movieDetailsModel;
-          List<String> movies = [
+          List<String> allMoviePosters = [
             movie.backdropPath!,
             movie.posterPath!,
           ];
+          List<String> movies = allMoviePosters
+              .where((element) => element != AppConstants.placeHolderImage)
+              .toList();
+
           String genres = "";
           for (var i = 0; i < movie.genres!.length; i++) {
             genres += movie.genres![i].name!;
@@ -64,6 +70,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               genres += ", ";
             }
           }
+          var crews = movie.credits!.crew!
+              .where((element) =>
+                  element.profilePath != AppConstants.placeHolderImage)
+              .toList();
+          var casts = movie.credits!.cast!
+              .where((element) =>
+                  element.profilePath != AppConstants.placeHolderImage)
+              .toList();
           return DefaultTabController(
             length: 3,
             child: Scaffold(
@@ -72,10 +86,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        AnimatedCarouselModel(
-                          items: movies,
-                          height: mySize.height / 2.5,
-                        ),
+                        movies.isNotEmpty
+                            ? AnimatedCarouselModel(
+                                items: movies,
+                                height: mySize.height / 2.5,
+                              )
+                            : SizedBox(
+                                height: mySize.height / 2.5,
+                                child: const Center(
+                                  child: Text("Image Not Found"),
+                                ),
+                              ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16, right: 16, top: 16),
@@ -128,11 +149,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                     const SizedBox(width: 2),
                                     Text(movie.releaseDate!.year.toString()),
                                     const SizedBox(width: 8),
-                                    InfoButton(
-                                      text: movie
-                                          .spokenLanguages![0].englishName!,
-                                      func: () {},
-                                    ),
+                                    movie.spokenLanguages!.isEmpty
+                                        ? const SizedBox()
+                                        : InfoButton(
+                                            text: movie.spokenLanguages![0]
+                                                .englishName!,
+                                            func: () {},
+                                          ),
                                     const SizedBox(width: 8),
                                     movie.productionCountries!.isNotEmpty
                                         ? InfoButton(
@@ -159,7 +182,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                         GoRouter.of(context).pushNamed(
                                           MyAppRouteConstants.playingPage,
                                           extra: state,
-                                          pathParameters: { 
+                                          pathParameters: {
                                             'movieKey': state.movieDetailsModel
                                                 .videos!.results![0].key!,
                                             'name': state.movieDetailsModel
@@ -194,11 +217,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 textStyle: myTextTheme.bodyMedium!,
                               ),
                               SizedBox(height: mySize.height / 64),
-                              movie.credits!.crew!.isEmpty
+                              crews.isEmpty
                                   ? const SizedBox()
                                   : Text("Crew",
                                       style: myTextTheme.titleMedium!),
-                              movie.credits!.crew!.isEmpty
+                              crews.isEmpty
                                   ? const SizedBox()
                                   : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -209,11 +232,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: (movie.credits!.crew!
-                                                        .length) >
-                                                    5
+                                            itemCount: (crews.length) > 5
                                                 ? 5
-                                                : movie.credits!.crew!.length,
+                                                : crews.length,
                                             itemBuilder: (context, index) {
                                               final movieCredits =
                                                   movie.credits!;
@@ -223,30 +244,29 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                       .pushNamed(
                                                     MyAppRouteConstants
                                                         .peopleDetailsPage,
-                                                    extra: movieCredits
-                                                        .crew![index].id,
+                                                    extra: crews[index].id,
                                                   );
                                                 },
                                                 child: MovieCrewModel(
-                                                  image: movieCredits
-                                                      .crew![index].profilePath
+                                                  image: crews[index]
+                                                      .profilePath
                                                       .toString(),
-                                                  name: movieCredits
-                                                      .crew![index].name
+                                                  name: crews[index]
+                                                      .name
                                                       .toString(),
-                                                  role: movieCredits
-                                                      .crew![index].job
+                                                  role: crews[index]
+                                                      .job
                                                       .toString(),
                                                 ),
                                               );
                                             }),
                                       ),
                                     ),
-                              movie.credits!.cast!.isEmpty
+                              casts.isEmpty
                                   ? const SizedBox()
                                   : Text("Cast",
                                       style: myTextTheme.titleMedium!),
-                              movie.credits!.cast!.isEmpty
+                              casts.isEmpty
                                   ? const SizedBox()
                                   : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -257,11 +277,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: (movie.credits!.cast!
-                                                        .length) >
-                                                    5
+                                            itemCount: (casts.length) > 5
                                                 ? 5
-                                                : movie.credits!.cast!.length,
+                                                : casts.length,
                                             itemBuilder: (context, index) {
                                               final movieCredits =
                                                   movie.credits!;
@@ -271,34 +289,27 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                       .pushNamed(
                                                     MyAppRouteConstants
                                                         .peopleDetailsPage,
-                                                    extra: movieCredits
-                                                        .cast![index].id,
+                                                    extra: casts[index].id,
                                                   );
                                                 },
                                                 child: MovieCrewModel(
-                                                  image: movieCredits
-                                                      .cast![index].profilePath
+                                                  image: casts[index]
+                                                      .profilePath
                                                       .toString(),
-                                                  name: movieCredits
-                                                      .cast![index].name
+                                                  name: casts[index]
+                                                      .name
                                                       .toString(),
-                                                  role: movieCredits
-                                                                  .cast![index]
+                                                  role: casts[index]
                                                                   .knownForDepartment
                                                                   .toString() ==
                                                               "Acting" &&
-                                                          movieCredits
-                                                                  .cast![index]
-                                                                  .gender !=
+                                                          casts[index].gender !=
                                                               0
-                                                      ? (movieCredits
-                                                                  .cast![index]
-                                                                  .gender ==
+                                                      ? (casts[index].gender ==
                                                               1
                                                           ? "Actress"
                                                           : "Actor")
-                                                      : movieCredits
-                                                          .cast![index]
+                                                      : casts[index]
                                                           .knownForDepartment
                                                           .toString(),
                                                 ),
@@ -348,8 +359,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             child: state
                                     .movieDetailsModel.videos!.results!.isEmpty
                                 ? const Center(
-                                    child: Text(
-                                      "No Trailers Available!",
+                                    child: ShowErrorMessage(
+                                      errorMessage: "No Trailers Available!",
+                                      extraInfo: "",
                                     ),
                                   )
                                 : Column(
@@ -385,7 +397,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               .results![index].size
                                               .toString(),
                                           date: movieVidoes
-                                              .results![index].publishedAt!.year 
+                                              .results![index].publishedAt!.year
                                               .toString(),
                                           tag:
                                               movieVidoes.results![index].type!,
@@ -408,38 +420,36 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             child: state
                                     .movieDetailsModel.similar!.results!.isEmpty
                                 ? const Center(
-                                    child: Text(
-                                      "No Similar Movies Available!",
+                                    child: ShowErrorMessage(
+                                      errorMessage: "No Similar Movies Found!!",
+                                      extraInfo: "",
                                     ),
                                   )
                                 : Wrap(
-                                    children:
-                                        List.generate(6, (int movieIndex) {
-                                      var similarMovies = state
-                                          .movieDetailsModel
-                                          .similar!
-                                          .results![movieIndex];
-                                      return similarMovies.posterPath
-                                                  .toString() ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                          ? const SizedBox()
-                                          : GestureDetector(
-                                              onTap: () {
-                                                GoRouter.of(context).pushNamed(
-                                                  MyAppRouteConstants
-                                                      .movieDetailsPage,
-                                                  extra: similarMovies.id,
-                                                );
-                                              },
-                                              child: MovieCarouselModel(
-                                                width: mySize.width / 2.25,
-                                                height: mySize.height / 3.2,
-                                                image: similarMovies.posterPath
-                                                    .toString(),
-                                                rating:
-                                                    similarMovies.popularity!,
-                                              ),
-                                            );
+                                    children: List.generate(6, (int index) {
+                                      var movie = state
+                                          .movieDetailsModel.similar!.results!
+                                          .where((element) =>
+                                              element.posterPath !=
+                                              AppConstants.placeHolderImage)
+                                          .toList();
+                                      return GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .movieDetailsPage,
+                                            extra: movie[index].id,
+                                          );
+                                        },
+                                        child: MovieCarouselModel(
+                                          width: mySize.width / 2.25,
+                                          height: mySize.height / 3.2,
+                                          image: movie[index]
+                                              .posterPath
+                                              .toString(),
+                                          rating: movie[index].popularity!,
+                                        ),
+                                      );
                                     }),
                                   ),
                           ),

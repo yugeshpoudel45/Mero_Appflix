@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:netflix/config/app_constants.dart';
+
 TrendingMovieModel trendingMovieModelFromJson(String str) =>
     TrendingMovieModel.fromJson(json.decode(str));
 
@@ -75,8 +77,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"] ?? false,
-        backdropPath:
-            json["backdrop_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        backdropPath: json["backdrop_path"] ?? AppConstants.placeHolderImage,
         id: json["id"] ?? 45,
         title: json["title"] ?? "unavailable",
         originalLanguage:
@@ -84,7 +85,7 @@ class Result {
                 OriginalLanguage.en,
         originalTitle: json["original_title"] ?? "unavailable",
         overview: json["overview"] ?? "unavailable",
-        posterPath: json["poster_path"] ?? "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+        posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
         mediaType: mediaTypeValues.map[json["media_type"]] ?? MediaType.movie,
         genreIds: json["genre_ids"] == null
             ? []

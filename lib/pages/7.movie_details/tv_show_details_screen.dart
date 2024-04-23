@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
+import 'package:netflix/config/app_constants.dart';
 
 import '../../components/buttons/other_buttons/info_button.dart';
 import '../../components/buttons/play_button/play_button.dart';
@@ -48,10 +50,13 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
           );
         } else if (state is TvShowDetailsLoadedState) {
           final movie = state.tvShowDetailsModel;
-          List<String> movies = [
+          List<String> allMoviePosters = [
             movie.backdropPath!,
             movie.posterPath!,
           ];
+          List<String> movies = allMoviePosters
+              .where((element) => element != AppConstants.placeHolderImage)
+              .toList();
           String genres = "";
           for (var i = 0; i < movie.genres!.length; i++) {
             genres += movie.genres![i].name!;
@@ -59,6 +64,15 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
               genres += ", ";
             }
           }
+          var crews = movie.credits!.crew!
+              .where((element) =>
+                  element.profilePath != AppConstants.placeHolderImage)
+              .toList();
+          var casts = movie.credits!.cast!
+              .where((element) =>
+                  element.profilePath != AppConstants.placeHolderImage)
+              .toList();
+
           return DefaultTabController(
             length: 3,
             child: Scaffold(
@@ -67,10 +81,17 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        AnimatedCarouselModel(
-                          items: movies,
-                          height: mySize.height / 2.5,
-                        ),
+                        movies.isNotEmpty
+                            ? AnimatedCarouselModel(
+                                items: movies,
+                                height: mySize.height / 2.5,
+                              )
+                            : SizedBox(
+                                height: mySize.height / 2.5,
+                                child: const Center(
+                                  child: Text("Image Not Found"),
+                                ),
+                              ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16, right: 16, top: 16),
@@ -195,11 +216,11 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                 textStyle: myTextTheme.bodyMedium!,
                               ),
                               SizedBox(height: mySize.height / 64),
-                              movie.credits!.crew!.isEmpty
+                              crews.isEmpty
                                   ? const SizedBox()
                                   : Text("Crew",
                                       style: myTextTheme.titleMedium!),
-                              movie.credits!.crew!.isEmpty
+                              crews.isEmpty
                                   ? const SizedBox()
                                   : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -210,30 +231,27 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                               const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
-                                          itemCount:
-                                              (movie.credits!.crew!.length) > 5
-                                                  ? 5
-                                                  : movie.credits!.crew!.length,
+                                          itemCount: (crews.length) > 5
+                                              ? 5
+                                              : crews.length,
                                           itemBuilder: (context, index) {
-                                            final movieCredits = movie.credits!;
                                             return GestureDetector(
                                               onTap: () {
                                                 GoRouter.of(context).pushNamed(
                                                   MyAppRouteConstants
                                                       .peopleDetailsPage,
-                                                  extra: movieCredits
-                                                      .crew![index].id,
+                                                  extra: crews[index].id,
                                                 );
                                               },
                                               child: MovieCrewModel(
-                                                image: movieCredits
-                                                    .crew![index].profilePath
+                                                image: crews[index]
+                                                    .profilePath
                                                     .toString(),
-                                                name: movieCredits
-                                                    .crew![index].name
+                                                name: crews[index]
+                                                    .name
                                                     .toString(),
                                                 role: _checkDepartment(
-                                                    movieCredits.crew![index]
+                                                    crews[index]
                                                         .knownForDepartment!),
                                               ),
                                             );
@@ -241,11 +259,11 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                         ),
                                       ),
                                     ),
-                              movie.credits!.cast!.isEmpty
+                              casts.isEmpty
                                   ? const SizedBox()
                                   : Text("Cast",
                                       style: myTextTheme.titleMedium!),
-                              movie.credits!.cast!.isEmpty
+                              casts.isEmpty
                                   ? const SizedBox()
                                   : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
@@ -256,33 +274,28 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                                 const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: (movie.credits!.cast!
-                                                        .length) >
-                                                    5
+                                            itemCount: (casts.length) > 5
                                                 ? 5
-                                                : movie.credits!.cast!.length,
+                                                : casts.length,
                                             itemBuilder: (context, index) {
-                                              final movieCredits =
-                                                  movie.credits!;
                                               return GestureDetector(
                                                 onTap: () {
                                                   GoRouter.of(context)
                                                       .pushNamed(
                                                     MyAppRouteConstants
                                                         .peopleDetailsPage,
-                                                    extra: movieCredits
-                                                        .cast![index].id,
+                                                    extra: casts[index].id,
                                                   );
                                                 },
                                                 child: MovieCrewModel(
-                                                  image: movieCredits
-                                                      .cast![index].profilePath
+                                                  image: casts[index]
+                                                      .profilePath
                                                       .toString(),
-                                                  name: movieCredits
-                                                      .cast![index].name
+                                                  name: casts[index]
+                                                      .name
                                                       .toString(),
                                                   role: _checkDepartment(
-                                                      movieCredits.cast![index]
+                                                      casts[index]
                                                           .knownForDepartment!),
                                                 ),
                                               );
@@ -331,9 +344,10 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                             child: state
                                     .tvShowDetailsModel.videos!.results!.isEmpty
                                 ? const Center(
-                                    child: Text(
-                                      "No Trailers Available!",
-                                    ),
+                                    child: ShowErrorMessage(
+                                      errorMessage: "No Trailers Available!",
+                                      extraInfo: "",
+                                    ), 
                                   )
                                 : Column(
                                     children: List.generate(
@@ -391,38 +405,37 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                             child: state.tvShowDetailsModel.similar!.results!
                                     .isEmpty
                                 ? const Center(
-                                    child: Text(
-                                      "No Similar Movies Available!",
+                                    child: ShowErrorMessage(
+                                      errorMessage:
+                                          "No Similar Tv Shows Found!!",
+                                      extraInfo: "",
                                     ),
                                   )
                                 : Wrap(
-                                    children:
-                                        List.generate(6, (int movieIndex) {
-                                      var similarMovies = state
-                                          .tvShowDetailsModel
-                                          .similar!
-                                          .results![movieIndex];
-                                      return similarMovies.posterPath
-                                                  .toString() ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                          ? const SizedBox()
-                                          : GestureDetector(
-                                              onTap: () {
-                                                GoRouter.of(context).pushNamed(
-                                                  MyAppRouteConstants
-                                                      .tvShowDetailsPage,
-                                                  extra: similarMovies.id,
-                                                );
-                                              },
-                                              child: MovieCarouselModel(
-                                                width: mySize.width / 2.25,
-                                                height: mySize.height / 3.2,
-                                                image: similarMovies.posterPath
-                                                    .toString(),
-                                                rating:
-                                                    similarMovies.popularity!,
-                                              ),
-                                            );
+                                    children: List.generate(6, (int index) {
+                                      var tvShow = state
+                                          .tvShowDetailsModel.similar!.results!
+                                          .where((element) =>
+                                              element.posterPath !=
+                                              AppConstants.placeHolderImage)
+                                          .toList();
+                                      return GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .tvShowDetailsPage,
+                                            extra: tvShow[index].id,
+                                          );
+                                        },
+                                        child: MovieCarouselModel(
+                                          width: mySize.width / 2.25,
+                                          height: mySize.height / 3.2,
+                                          image: tvShow[index]
+                                              .posterPath
+                                              .toString(),
+                                          rating: tvShow[index].popularity!,
+                                        ),
+                                      );
                                     }),
                                   ),
                           ),

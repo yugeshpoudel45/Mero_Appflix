@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/config/app_constants.dart';
+
 import 'package:netflix/components/images/cache_network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/routes/app_route_constant.dart';
@@ -42,11 +44,27 @@ class _HomePageState extends State<HomePage> {
             child: Text(state.errorMessage),
           );
         } else if (state is TrendingSectionLoadedState) {
+          var movie = state.trendingMovieModel.results!
+              .where((element) =>
+                  element.posterPath != AppConstants.placeHolderImage)
+              .toList();
+          var tvShow = state.trendingTvShowModel.results!
+              .where((element) =>
+                  element.posterPath != AppConstants.placeHolderImage)
+              .toList();
+          var people = state.trendingPeopleModel.results!
+              .where((element) =>
+                  element.profilePath != AppConstants.placeHolderImage)
+              .toList();
           return SingleChildScrollView(
             child: Column(
               children: [
-                _LocalCarouselModel(loadedState: state),
-                state.trendingMovieModel.results!.isEmpty
+                _LocalCarouselModel(
+                  loadedState: state,
+                  movie: movie,
+                  tvShow: tvShow,
+                ),
+                movie.isEmpty
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.all(16),
@@ -63,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                                         GoogleFonts.balsamiqSans().fontFamily!,
                                   ),
                                 ),
-                                state.trendingMovieModel.results!.length <= 5
+                                movie.length <= 5
                                     ? const SizedBox()
                                     : GestureDetector(
                                         onTap: () {
@@ -94,49 +112,31 @@ class _HomePageState extends State<HomePage> {
                                         const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: state.trendingMovieModel.results!
-                                                .length >
-                                            5
-                                        ? 5
-                                        : state
-                                            .trendingMovieModel.results!.length,
+                                    itemCount:
+                                        movie.length > 5 ? 5 : movie.length,
                                     itemBuilder: (context, index) {
-                                      int newIndex = 5;
-                                      var movie = state
-                                          .trendingMovieModel.results![index];
-                                      while (movie.posterPath ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
-                                          newIndex <
-                                              state.trendingMovieModel.results!
-                                                  .length) {
-                                        movie = state.trendingMovieModel
-                                            .results![newIndex];
-                                        newIndex++;
-                                      }
-                                      return movie.posterPath ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                          ? const SizedBox()
-                                          : GestureDetector(
-                                              onTap: () {
-                                                GoRouter.of(context).pushNamed(
-                                                  MyAppRouteConstants
-                                                      .movieDetailsPage,
-                                                  extra: movie.id,
-                                                );
-                                              },
-                                              child: MovieCarouselModel(
-                                                image:
-                                                    movie.posterPath.toString(),
-                                                rating: movie.popularity!,
-                                              ),
-                                            );
+                                      return GestureDetector(
+                                        onTap: () {
+                                          GoRouter.of(context).pushNamed(
+                                            MyAppRouteConstants
+                                                .movieDetailsPage,
+                                            extra: movie[index].id,
+                                          );
+                                        },
+                                        child: MovieCarouselModel(
+                                          image: movie[index]
+                                              .posterPath
+                                              .toString(),
+                                          rating: movie[index].popularity!,
+                                        ),
+                                      );
                                     }),
                               ),
                             ),
                           ],
                         ),
                       ),
-                state.trendingTvShowModel.results!.isEmpty
+                tvShow.isEmpty
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.all(16),
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                         GoogleFonts.balsamiqSans().fontFamily!,
                                   ),
                                 ),
-                                state.trendingTvShowModel.results!.length <= 5
+                                tvShow.length <= 5
                                     ? const SizedBox()
                                     : GestureDetector(
                                         onTap: () {
@@ -184,50 +184,29 @@ class _HomePageState extends State<HomePage> {
                                         const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: state.trendingTvShowModel
-                                                .results!.length >
-                                            5
-                                        ? 5
-                                        : state.trendingTvShowModel.results!
-                                            .length,
+                                    itemCount:
+                                        tvShow.length > 5 ? 5 : tvShow.length,
                                     itemBuilder: (context, index) {
-                                      // var tvShow = state
-                                      //     .trendingTvShowModel.results![index];
-                                      int newIndex = 5;
-                                      var tvShow = state
-                                          .trendingTvShowModel.results![index];
-                                      while (tvShow.posterPath ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
-                                          newIndex <
-                                              state.trendingTvShowModel.results!
-                                                  .length) {
-                                        tvShow = state.trendingTvShowModel
-                                            .results![newIndex];
-                                        newIndex++;
-                                      }
-                                      return tvShow.posterPath ==
-                                              "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                          ? const SizedBox()
-                                          : GestureDetector(
-                                              onTap: () => GoRouter.of(context)
-                                                  .pushNamed(
-                                                MyAppRouteConstants
-                                                    .tvShowDetailsPage,
-                                                extra: tvShow.id,
-                                              ),
-                                              child: MovieCarouselModel(
-                                                image: tvShow.posterPath
-                                                    .toString(),
-                                                rating: tvShow.popularity!,
-                                              ),
-                                            );
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            GoRouter.of(context).pushNamed(
+                                          MyAppRouteConstants.tvShowDetailsPage,
+                                          extra: tvShow[index].id,
+                                        ),
+                                        child: MovieCarouselModel(
+                                          image: tvShow[index]
+                                              .posterPath
+                                              .toString(),
+                                          rating: tvShow[index].popularity!,
+                                        ),
+                                      );
                                     }),
                               ),
                             ),
                           ],
                         ),
                       ),
-                state.trendingPeopleModel.results!.isEmpty
+                people.isEmpty
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.only(
@@ -248,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                                         GoogleFonts.balsamiqSans().fontFamily!,
                                   ),
                                 ),
-                                state.trendingPeopleModel.results!.length <= 5
+                                people.length <= 5
                                     ? const SizedBox()
                                     : GestureDetector(
                                         onTap: () {
@@ -278,43 +257,22 @@ class _HomePageState extends State<HomePage> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: state.trendingPeopleModel.results!
-                                              .length >
-                                          5
-                                      ? 5
-                                      : state
-                                          .trendingPeopleModel.results!.length,
+                                  itemCount:
+                                      people.length > 5 ? 5 : people.length,
                                   itemBuilder: (context, index) {
-                                    // var person = state
-                                    //     .trendingPeopleModel.results![index];
-                                    int newIndex = 5;
-                                    var person = state
-                                        .trendingPeopleModel.results![index];
-                                    while (person.profilePath ==
-                                            "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png" &&
-                                        newIndex <
-                                            state.trendingPeopleModel.results!
-                                                .length) {
-                                      person = state.trendingPeopleModel
-                                          .results![newIndex];
-                                      newIndex++;
-                                    }
-                                    return person.profilePath ==
-                                            "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png"
-                                        ? const SizedBox()
-                                        : GestureDetector(
-                                            onTap: () =>
-                                                GoRouter.of(context).pushNamed(
-                                              MyAppRouteConstants
-                                                  .peopleDetailsPage,
-                                              extra: person.id,
-                                            ),
-                                            child: MovieCarouselModel(
-                                              image:
-                                                  person.profilePath.toString(),
-                                              rating: person.popularity!,
-                                            ),
-                                          );
+                                    return GestureDetector(
+                                      onTap: () =>
+                                          GoRouter.of(context).pushNamed(
+                                        MyAppRouteConstants.peopleDetailsPage,
+                                        extra: people[index].id,
+                                      ),
+                                      child: MovieCarouselModel(
+                                        image: people[index]
+                                            .profilePath
+                                            .toString(),
+                                        rating: people[index].popularity!,
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -336,7 +294,14 @@ class _HomePageState extends State<HomePage> {
 //!----------------------------------------Yo vanda tala ko exception handling grna baki xa
 class _LocalCarouselModel extends StatefulWidget {
   final TrendingSectionLoadedState loadedState;
-  const _LocalCarouselModel({required this.loadedState});
+  final dynamic movie;
+  final dynamic tvShow;
+  const _LocalCarouselModel({
+    Key? key,
+    required this.loadedState,
+    required this.movie,
+    required this.tvShow,
+  }) : super(key: key);
 
   @override
   State<_LocalCarouselModel> createState() => __LocalCarouselModelState();
@@ -354,22 +319,18 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
       carouselController: controller,
       itemCount: 6,
       itemBuilder: (BuildContext context, int index, int realIndex) {
-        var fetchMovieResult =
-            widget.loadedState.trendingMovieModel.results![index];
-        var fetchTvShowResult =
-            widget.loadedState.trendingTvShowModel.results![index];
         String image = index % 2 == 0
-            ? fetchMovieResult.backdropPath.toString()
-            : fetchTvShowResult.backdropPath.toString();
+            ? widget.movie[index].backdropPath.toString()
+            : widget.tvShow[index].backdropPath.toString();
         String movieName = index % 2 == 0
-            ? fetchMovieResult.title.toString()
-            : fetchTvShowResult.name.toString();
+            ? widget.movie[index].title.toString()
+            : widget.tvShow[index].name.toString();
         String videoType = index % 2 == 0
-            ? fetchMovieResult.mediaType.toString()
-            : fetchTvShowResult.mediaType.toString();
+            ? widget.movie[index].mediaType.toString()
+            : widget.tvShow[index].mediaType.toString();
         String releaseDate = index % 2 == 0
-            ? fetchMovieResult.releaseDate!.year.toString()
-            : fetchTvShowResult.firstAirDate!.year.toString();
+            ? widget.movie[index].releaseDate!.year.toString()
+            : widget.tvShow[index].firstAirDate!.year.toString();
         return Stack(alignment: Alignment.bottomCenter, children: [
           AppNetworkImage(
             image: image,
@@ -449,11 +410,11 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                         index % 2 == 0
                             ? GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.movieDetailsPage,
-                                extra: fetchMovieResult.id,
+                                extra: widget.movie[index].id,
                               )
                             : GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.tvShowDetailsPage,
-                                extra: fetchTvShowResult.id,
+                                extra: widget.movie[index].id,
                               );
                       },
                     ),
