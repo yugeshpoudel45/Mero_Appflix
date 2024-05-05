@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Practice extends StatelessWidget {
@@ -6,17 +5,6 @@ class Practice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [
-          Row(
-            children: [
-              CupertinoSearchTextField(),
-              Icon(CupertinoIcons.color_filter),
-            ],
-          ),
-        ],
-      ),
-    );
+    return Container();
   }
 }

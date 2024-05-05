@@ -346,7 +346,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                 ? const Center(
                                     child: ShowErrorMessage(
                                       errorMessage: "No Trailers Available!",
-                                      extraInfo: "",
+                                      extraInfo: "😅",
                                     ), 
                                   )
                                 : Column(
@@ -408,7 +408,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                     child: ShowErrorMessage(
                                       errorMessage:
                                           "No Similar Tv Shows Found!!",
-                                      extraInfo: "",
+                                      extraInfo: "😣",
                                     ),
                                   )
                                 : Wrap(

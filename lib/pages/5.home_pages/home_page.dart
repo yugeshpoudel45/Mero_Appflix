@@ -414,7 +414,7 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                               )
                             : GoRouter.of(context).pushNamed(
                                 MyAppRouteConstants.tvShowDetailsPage,
-                                extra: widget.movie[index].id,
+                                extra: widget.tvShow[index].id,
                               );
                       },
                     ),

@@ -23,7 +23,7 @@ class MyAppRouter {
       GoRoute(
         name: MyAppRouteConstants.practicePage,
         path: '/practice',
-        pageBuilder: (context, state) => const MaterialPage(child: Practice()),
+        pageBuilder: (context, state) => MaterialPage(child: Practice()),
       ),
       GoRoute(
         name: MyAppRouteConstants.demoStartingPageRouteName,

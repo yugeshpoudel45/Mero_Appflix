@@ -236,8 +236,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 ? 5
                                                 : crews.length,
                                             itemBuilder: (context, index) {
-                                              final movieCredits =
-                                                  movie.credits!;
                                               return GestureDetector(
                                                 onTap: () {
                                                   GoRouter.of(context)
@@ -281,8 +279,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                                 ? 5
                                                 : casts.length,
                                             itemBuilder: (context, index) {
-                                              final movieCredits =
-                                                  movie.credits!;
                                               return GestureDetector(
                                                 onTap: () {
                                                   GoRouter.of(context)
@@ -361,7 +357,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 ? const Center(
                                     child: ShowErrorMessage(
                                       errorMessage: "No Trailers Available!",
-                                      extraInfo: "",
+                                      extraInfo: "😅",
                                     ),
                                   )
                                 : Column(
@@ -422,7 +418,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 ? const Center(
                                     child: ShowErrorMessage(
                                       errorMessage: "No Similar Movies Found!!",
-                                      extraInfo: "",
+                                      extraInfo: "😩",
                                     ),
                                   )
                                 : Wrap(

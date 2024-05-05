@@ -54,7 +54,7 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                 children: [
                   people.images!.profiles!.isNotEmpty
                       ? AnimatedCarouselModel(
-                          height: mySize.height / 1.8,
+                          height: mySize.height / 1.6,
                           items: people.images!.profiles!
                               .map((e) => e.filePath!)
                               .toList())

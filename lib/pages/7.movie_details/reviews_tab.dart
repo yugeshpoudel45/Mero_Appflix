@@ -33,9 +33,9 @@ class ReviewsTab extends StatelessWidget {
                 ? const Center(
                     child: ShowErrorMessage(
                     errorMessage: "No Reviews given yet!",
-                    extraInfo: "",
+                    extraInfo: "😓",
                   ))
-                : Column(
+                : Column( 
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,9 +92,10 @@ class ReviewsTab extends StatelessWidget {
             : state.tvShowDetailsModel.reviews!.results!.isEmpty
                 ? const Center(
                     child: ShowErrorMessage(
-                    errorMessage: "No Reviews given yet!",
-                    extraInfo: "",
-                  ))
+                      errorMessage: "No Reviews given yet!",
+                      extraInfo: "😣",
+                    ),
+                  )
                 : Column(
                     children: [
                       Row(
