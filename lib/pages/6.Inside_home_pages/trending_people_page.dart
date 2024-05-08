@@ -49,6 +49,7 @@ class TrendingPeoplePage extends StatelessWidget {
                   );
                 },
                 child: MovieCarouselModel(
+                  isPeople: true,
                   width: mySize.width / 2.25,
                   height: mySize.height / 3.2,
                   image: movie.profilePath.toString(),

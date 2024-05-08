@@ -127,7 +127,9 @@ class _HomePageState extends State<HomePage> {
                                           image: movie[index]
                                               .posterPath
                                               .toString(),
-                                          rating: movie[index].popularity!,
+                                          rating: movie[index]
+                                              .voteAverage!
+                                              .toDouble(),
                                         ),
                                       );
                                     }),
@@ -197,7 +199,9 @@ class _HomePageState extends State<HomePage> {
                                           image: tvShow[index]
                                               .posterPath
                                               .toString(),
-                                          rating: tvShow[index].popularity!,
+                                          rating: tvShow[index]
+                                              .voteAverage!
+                                              .toDouble(),
                                         ),
                                       );
                                     }),
@@ -267,6 +271,7 @@ class _HomePageState extends State<HomePage> {
                                         extra: people[index].id,
                                       ),
                                       child: MovieCarouselModel(
+                                        isPeople: true,
                                         image: people[index]
                                             .profilePath
                                             .toString(),

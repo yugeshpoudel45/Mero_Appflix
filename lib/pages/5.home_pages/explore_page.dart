@@ -257,7 +257,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                     width: mySize.width / 2.25,
                                     height: mySize.height / 3.2,
                                     image: movie1.posterPath.toString(),
-                                    rating: movie1.popularity!,
+                                    rating: movie1.voteAverage!.toDouble(),
                                   ),
                                 );
                               }),
@@ -294,7 +294,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                               width: mySize.width / 2.25,
                               height: mySize.height / 3.2,
                               image: tvShow1.posterPath.toString(),
-                              rating: tvShow1.popularity!,
+                              rating: tvShow1.voteAverage!.toDouble(),
                             ),
                           );
                         }),
@@ -328,6 +328,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                               );
                             },
                             child: MovieCarouselModel(
+                              isPeople: true,
                               width: mySize.width / 2.25,
                               height: mySize.height / 3.2,
                               image: people1.profilePath.toString(),
@@ -407,7 +408,9 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                         image: movie[movieIndex]
                                             .posterPath
                                             .toString(),
-                                        rating: movie[movieIndex].popularity!,
+                                        rating: movie[movieIndex]
+                                            .voteAverage!
+                                            .toDouble(),
                                       ),
                                     )
                               : widget.result[0] == 2
@@ -427,8 +430,9 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                             image: tvShow[movieIndex]
                                                 .posterPath
                                                 .toString(),
-                                            rating:
-                                                tvShow[movieIndex].popularity!,
+                                            rating: tvShow[movieIndex]
+                                                .voteAverage!
+                                                .toDouble(),
                                           ),
                                         )
                                   : widget.result[0] == 3
@@ -443,6 +447,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                                 );
                                               },
                                               child: MovieCarouselModel(
+                                                isPeople: true,
                                                 width: mySize.width / 2.25,
                                                 height: mySize.height / 3.2,
                                                 image: people[movieIndex]

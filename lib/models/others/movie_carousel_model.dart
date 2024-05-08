@@ -8,12 +8,14 @@ class MovieCarouselModel extends StatelessWidget {
     required this.rating,
     this.height = 200,
     this.width = 144,
+    this.isPeople = false,
   });
 
   final String image;
   final double rating;
   final double height;
   final double width;
+  final bool isPeople;
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +35,31 @@ class MovieCarouselModel extends StatelessWidget {
             width: width,
             borderRadius: BorderRadius.circular(8),
           ),
-          Positioned(
-            top: 8,
-            left: 8,
-            child: Opacity(
-              opacity: 0.8,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: myColorScheme.onTertiary,
-                ),
-                height: mySize.height / 32,
-                width: mySize.width / 12,
-                child: Center(
-                  child: Text(
-                    rating.toString().substring(0, 3),
-                    style: myTextTheme.labelSmall!.copyWith(
-                      color: Colors.white,
+          isPeople
+              ? const SizedBox()
+              : Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Opacity(
+                    opacity: 0.8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: myColorScheme.onTertiary,
+                      ),
+                      height: mySize.height / 32,
+                      width: mySize.width / 12,
+                      child: Center(
+                        child: Text(
+                          rating.toString().substring(0, 3),
+                          style: myTextTheme.labelSmall!.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );

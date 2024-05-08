@@ -56,7 +56,7 @@ class TrendingMoviesPage extends StatelessWidget {
                     width: mySize.width / 2.25,
                     height: mySize.height / 3.2,
                     image: movie.posterPath.toString(),
-                    rating: movie.popularity!,
+                    rating: movie.voteAverage!.toDouble(),
                   ),
                 );
               }),

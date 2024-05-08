@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../data/movie_carousel_data.dart';
 import '../../models/others/movie_carousel_model.dart';
 
-
 class NewReleasesPage extends StatelessWidget {
   const NewReleasesPage({super.key});
 

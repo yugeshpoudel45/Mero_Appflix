@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/config/app_constants.dart';
@@ -7,6 +8,7 @@ import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/models/others/animated_carousel_model.dart';
+import 'package:netflix/models/others/check_rating_model.dart';
 import 'package:netflix/models/others/movie_listtile_model.dart';
 import 'package:netflix/models/others/readmore_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
@@ -15,6 +17,7 @@ import '../../../components/buttons/play_button/play_button.dart';
 import '../../../models/others/movie_carousel_model.dart';
 import '../../../models/others/movie_crew_model.dart';
 import '../../../routes/app_route_constant.dart';
+import '../../models/others/rating_model.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -130,18 +133,36 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    Icon(
-                                      Icons.star_half_rounded,
-                                      color: myColorScheme.onTertiary,
-                                    ),
-                                    const SizedBox(width: 2),
-                                    Text(
-                                      movie.popularity.toString(),
-                                      style: myTextTheme.labelLarge!.copyWith(
-                                        color: myColorScheme.onTertiary,
+                                    GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return const RatingModal();
+                                          },
+                                        );
+                                      },
+                                      child: Row(
+                                        children: [
+                                          CheckRating(
+                                            rating: movie.voteAverage!,
+                                          ),
+                                          const SizedBox(width: 2),
+                                          Text(
+                                            movie.voteAverage!
+                                                .toString()
+                                                .substring(0, 3),
+                                            style: myTextTheme.labelLarge!
+                                                .copyWith(
+                                              color: myColorScheme.onTertiary,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 2),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(width: 2),
                                     Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       color: myColorScheme.onTertiary,
@@ -443,7 +464,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                           image: movie[index]
                                               .posterPath
                                               .toString(),
-                                          rating: movie[index].popularity!,
+                                          rating: movie[index]
+                                              .voteAverage!
+                                              .toDouble(),
                                         ),
                                       );
                                     }),
