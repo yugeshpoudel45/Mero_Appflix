@@ -25,12 +25,15 @@ class MyAppRouter {
         path: '/practice',
         pageBuilder: (context, state) => MaterialPage(child: Practice()),
       ),
+      //!--------------------------------------------------------------------------------------------------------------------------
+      //!-------------------------------------------------This is home route-------------------------------------------------------
       GoRoute(
         name: MyAppRouteConstants.demoStartingPageRouteName,
         path: '/',
         pageBuilder: (context, state) =>
             const MaterialPage(child: DemoStartingPage()),
       ),
+      //!--------------------------------------------------------------------------------------------------------------------------
       GoRoute(
         name: MyAppRouteConstants.onBoardingPage,
         path: '/onBoardingPage',
