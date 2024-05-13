@@ -4,21 +4,21 @@
 // import 'package:netflix/components/buttons/direct_login_button/direct_login_button.dart';
 // import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
 
-// import '../../config/app_local_assets.dart';
+// import '../../../config/app_local_assets.dart';
 
-// class RegisterScreen extends StatefulWidget {
-//   const RegisterScreen({super.key});
+// class MeroLogin extends StatefulWidget {
+//   const MeroLogin({super.key});
 
 //   @override
-//   State<RegisterScreen> createState() => _RegisterScreenState();
+//   State<MeroLogin> createState() => _MeroLoginState();
 // }
 
-// class _RegisterScreenState extends State<RegisterScreen> {
+// class _MeroLoginState extends State<MeroLogin> {
 //   bool _checkBox = false;
 //   void _onPressedCheckBox() {
 //     setState(() {
 //       _checkBox = !_checkBox;
-//     });
+//     }); 
 //   }
 
 //   @override
@@ -33,14 +33,13 @@
 //           padding: const EdgeInsets.symmetric(horizontal: 16),
 //           child: Column(
 //             children: [
-//               // SizedBox(height: mySize.height / 12),
 //               Image.asset(
 //                 AppAssets.appLogo,
 //                 height: mySize.height / 6,
 //               ),
 //               SizedBox(height: mySize.height / 64),
 //               Text(
-//                 "Create Your Account",
+//                 "Login to Your Account",
 //                 style: myTextTheme.headlineLarge!.copyWith(
 //                   fontWeight: FontWeight.bold,
 //                 ),
@@ -59,8 +58,16 @@
 //                 ],
 //               ),
 //               SizedBox(height: mySize.height / 80),
-//               PrimaryLongButton(text: "Sign up", func: () {}),
+//               PrimaryLongButton(text: "Sign in", func: () {}),
 //               SizedBox(height: mySize.height / 40),
+//               Text(
+//                 "Forgot the password?",
+//                 style: myTextTheme.bodyMedium!.copyWith(
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.red,
+//                 ),
+//               ),
+//               SizedBox(height: mySize.height / 48),
 //               Row(children: <Widget>[
 //                 const Expanded(child: Divider()),
 //                 Padding(
@@ -99,12 +106,12 @@
 //                   ),
 //                 ],
 //               ),
-//               SizedBox(height: mySize.height / 32),
+//               SizedBox(height: mySize.height / 48),
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.center,
 //                 children: [
 //                   Text(
-//                     "Already have an account? ",
+//                     "Don't have an account? ",
 //                     style: myTextTheme.bodyMedium!.copyWith(
 //                       color: Colors.grey,
 //                     ),
@@ -114,7 +121,7 @@
 //                       //TODO Add your button logic here
 //                     },
 //                     child: Text(
-//                       "Sign in",
+//                       "Sign up",
 //                       style: myTextTheme.bodyMedium!.copyWith(
 //                         fontWeight: FontWeight.bold,
 //                         color: Colors.red,

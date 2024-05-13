@@ -12,4 +12,5 @@ class MyAppRouteConstants {
   static const String peopleDetailsPage = "peopleDetailsPage";
   static const String playingPage = "playingPage";
   static const String reviewsPage = "reviewsPage";
+  static const String loginPage = "loginPage";
 }

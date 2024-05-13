@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/pages/2.onboarding_screen/pages.dart';
+import 'package:netflix/pages/3.login_pages/login_screen.dart';
 import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
@@ -34,6 +35,12 @@ class MyAppRouter {
             const MaterialPage(child: DemoStartingPage()),
       ),
       //!--------------------------------------------------------------------------------------------------------------------------
+      GoRoute(
+        name: MyAppRouteConstants.loginPage,
+        path: '/loginPage',
+        pageBuilder: (context, state) =>
+            const MaterialPage(child: LoginScreen()),
+      ),
       GoRoute(
         name: MyAppRouteConstants.onBoardingPage,
         path: '/onBoardingPage',

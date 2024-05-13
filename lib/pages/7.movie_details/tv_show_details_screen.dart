@@ -41,8 +41,10 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
     return BlocBuilder<TvShowDetailsCubit, TvShowDetailsState>(
       builder: (context, state) {
         if (state is TvShowDetailsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is TvShowDetailsErrorState) {
           return Scaffold(
@@ -134,7 +136,10 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                           context: context,
                                           backgroundColor: Colors.transparent,
                                           builder: (context) {
-                                            return const RatingModal();
+                                            return RatingModal(
+                                              movieId: widget.movieId,
+                                              isMovie: false,
+                                            );
                                           },
                                         );
                                       },

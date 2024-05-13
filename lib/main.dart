@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
+import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
+import 'package:netflix/cubit/movie_rating_cubit.dart';
 import 'package:netflix/cubit/people_details_cubit.dart';
 import 'package:netflix/cubit/search_section_cubit.dart';
 import 'package:netflix/cubit/tv_show_details_cubit.dart';
+import 'package:netflix/repo/guest_session_repo.dart';
 import 'package:netflix/repo/movie_details_repo.dart';
+import 'package:netflix/repo/movie_rating_repo.dart';
 import 'package:netflix/repo/people_details_repo.dart';
 import 'package:netflix/repo/search_page_repo.dart';
 import 'package:netflix/repo/trending_repo.dart';
@@ -41,6 +45,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SearchSectionCubit(SearchRepo()),
+        ),
+        BlocProvider(
+          create: (context) => MovieRatingCubit(MovieRatingRepo()),
+        ),
+        BlocProvider(
+          create: (context) => GuestSessionCubit(GuestSessionRepo()),
         ),
       ],
       child: MaterialApp.router(

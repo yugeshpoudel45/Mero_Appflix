@@ -1,57 +1,81 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:netflix/components/buttons/other_buttons/bottom_sheet_buttons.dart';
-import 'package:netflix/models/others/rating_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/cubit/guest_session_cubit.dart';
 
-class Practice extends StatelessWidget {
+class Practice extends StatefulWidget {
   const Practice({super.key});
 
   @override
+  State<Practice> createState() => _PracticeState();
+}
+
+class _PracticeState extends State<Practice> {
+  bool generateSession = false;
+  @override
   Widget build(BuildContext context) {
-    ColorScheme myColorScheme = Theme.of(context).colorScheme;
-    Size mySize = MediaQuery.sizeOf(context);
-    TextTheme myTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Practice Page'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            child: const Text('Show Modal Bottom Sheet'),
-            onPressed: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) {
-                  return const RatingModal();
-                },
-              );
-            },
-          ),
-          RatingBar.builder(
-            initialRating: 3,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => Icon(
-              CupertinoIcons.star_fill,
-              color: myColorScheme.onTertiary,
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  generateSession = true;
+                });
+              },
+              child: const Text('Generate Guest Session'),
             ),
-            onRatingUpdate: (rating) {
-              log(rating.toString());
-            },
           ),
+          generateSession ? const GenerateGuestSession() : const SizedBox(),
         ],
       ),
     );
   }
 }
 
+class GenerateGuestSession extends StatefulWidget {
+  const GenerateGuestSession({super.key});
+
+  @override
+  State<GenerateGuestSession> createState() => _GenerateGuestSessionState();
+}
+
+class _GenerateGuestSessionState extends State<GenerateGuestSession> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<GuestSessionCubit>().onGeneratingGuestSession();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GuestSessionCubit, GuestSessionState>(
+      builder: (context, state) {
+        if (state is GuestSessionLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is GuestSessionLoadedState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Session Generated Successfully'),
+              Text(state.guestSessionModel.success.toString()),
+              Text(state.guestSessionModel.guestSessionId.toString()),
+              Text(state.guestSessionModel.expiresAt.toString()),
+            ],
+          );
+        } else if (state is GuestSessionErrorState) {
+          return Center(
+            child: Text(state.errorMessage),
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
+  }
+}

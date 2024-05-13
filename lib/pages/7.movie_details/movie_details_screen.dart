@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/config/app_constants.dart';
@@ -47,8 +46,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return BlocBuilder<MovieDetailsCubit, MovieDetailsState>(
       builder: (context, state) {
         if (state is MovieDetailsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is MovieDetailsErrorState) {
           return Scaffold(
@@ -140,7 +141,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                           context: context,
                                           backgroundColor: Colors.transparent,
                                           builder: (context) {
-                                            return const RatingModal();
+                                            return RatingModal(
+                                              movieId: widget.movieId,
+                                              isMovie: true,
+                                            );
                                           },
                                         );
                                       },

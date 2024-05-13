@@ -37,8 +37,10 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
     return BlocBuilder<PeopleDetailsCubit, PeopleDetailsState>(
       builder: (context, state) {
         if (state is PeopleDetailsLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is PeopleDetailsErrorState) {
           return Scaffold(
@@ -176,7 +178,7 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                                     },
                                     child: MovieCarouselModel(
                                       image: movie.posterPath.toString(),
-                                      rating: movie.popularity!,
+                                      rating: movie.voteAverage!.toDouble(),
                                     ),
                                   );
                                 }),
