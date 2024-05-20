@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         if (state is TrendingSectionLoadingState) {
           return const Center(
-            child: CircularProgressIndicator(), 
+            child: CircularProgressIndicator(),
           );
         } else if (state is TrendingSectionErrorState) {
           return Center(

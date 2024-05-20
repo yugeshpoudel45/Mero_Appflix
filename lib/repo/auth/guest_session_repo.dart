@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:netflix/models/For%20APIs/guest_session_model.dart';
+import 'package:netflix/models/For%20APIs/auth/guest_session_model.dart';
 
-import '../config/app_constants.dart';
+import '../../config/app_constants.dart';
 
 class GuestSessionRepo {
   //----------------------------------Fetching Movie Details-------------------------------------

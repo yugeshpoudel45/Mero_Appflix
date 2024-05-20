@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/buttons/other_buttons/bottom_sheet_buttons.dart';
 import '../../cubit/movie_rating_cubit.dart';
@@ -152,57 +153,61 @@ class RatingGiven extends StatefulWidget {
 
 class _RatingGivenState extends State<RatingGiven> {
 //!----------Change this later with shared preferences value
+  String sessionId = "";
   bool isGuest = true;
   @override
   void initState() {
-    super.initState();
+    Future.delayed(const Duration(seconds: 1), () async {
+      await getSharedPref();
+    });
     widget.isMovie
         ? isGuest
             ? widget.addRating
                 ? context.read<MovieRatingCubit>().onGivingMovieRatingWithGuest(
                       widget.movieId,
                       widget.rating,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
                 : context
                     .read<MovieRatingCubit>()
                     .onDeletingMovieRatingWithGuest(
                       widget.movieId,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
             : widget.addRating
                 ? context.read<MovieRatingCubit>().onGivingMovieRatingWithUser(
                       widget.movieId,
                       widget.rating,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
                 : context
                     .read<MovieRatingCubit>()
                     .onDeletingMovieRatingWithUser(
                       widget.movieId,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
         : isGuest
             ? widget.addRating
                 ? context.read<MovieRatingCubit>().onGivingTvRatingWithGuest(
                       widget.movieId,
                       widget.rating,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
                 : context.read<MovieRatingCubit>().onDeletingTvRatingWithGuest(
                       widget.movieId,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
             : widget.addRating
                 ? context.read<MovieRatingCubit>().onGivingTvRatingWithUser(
                       widget.movieId,
                       widget.rating,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     )
                 : context.read<MovieRatingCubit>().onDeletingTvRatingWithUser(
                       widget.movieId,
-                      '4d428ac6383d10338e499230f07378a7',
+                      sessionId,
                     );
+    super.initState();
   }
 
   @override
@@ -229,5 +234,11 @@ class _RatingGivenState extends State<RatingGiven> {
         }
       },
     );
+  }
+
+  Future<void> getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    sessionId = prefs.getString('sessionId') ?? "";
+    isGuest = prefs.getBool('isGuest') ?? true;
   }
 }

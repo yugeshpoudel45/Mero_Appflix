@@ -1,8 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netflix/components/checkbox/app_checkbox.dart';
 import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
+import 'package:netflix/cubit/guest_session_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/app_local_assets.dart';
+import '../../cubit/login_session_cubit.dart';
+import '../../routes/app_route_constant.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +22,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _checkBox = false;
   bool _obscureText = true;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   void _togglePassword() {
     setState(() {
@@ -52,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: mySize.height / 64),
               TextFormField(
+                controller: _usernameController,
                 keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -89,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: mySize.height / 32),
               TextFormField(
+                controller: _passwordController,
                 obscureText: _obscureText,
                 keyboardType: TextInputType.visiblePassword,
                 validator: (value) {
@@ -143,7 +155,61 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               SizedBox(height: mySize.height / 80),
-              PrimaryLongButton(text: "Login", func: () {}),
+              SizedBox(
+                height: mySize.height / 14,
+                width: mySize.width,
+                child: Material(
+                  type: MaterialType.button,
+                  elevation: 2,
+                  shadowColor: myColorScheme.onBackground,
+                  color: myColorScheme.onTertiary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      context
+                          .read<LoginSessionCubit>()
+                          .onGeneratingLoginSession(
+                            username: _usernameController.text,
+                            password: _passwordController.text,
+                          );
+                      Future.delayed(const Duration(seconds: 1), () {
+                        GoRouter.of(context).pushNamed(
+                          MyAppRouteConstants.mainPage,
+                        );
+                      });
+                    },
+                    child: BlocBuilder<LoginSessionCubit, LoginSessionState>(
+                      builder: (context, state) {
+                        if (state is LoginSessionInitial) {
+                          return Text("Login",
+                              style: myTextTheme.labelLarge!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ));
+                        }
+                        if (state is LoginSessionLoadingState) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state is LoginSessionErrorState) {
+                          return Center(
+                            child: Text(state.errorMessage),
+                          );
+                        } else if (state is LoginSessionLoadedState) {
+                          _storeLoginSessionId(
+                            state.loginSessionModel.sessionId.toString(),
+                          );
+                          return const SizedBox();
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: mySize.height / 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -155,9 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
-                      //TODO Add your button logic here
-                    },
+                    onTap: () {},
                     child: Text(
                       "Register",
                       style: myTextTheme.bodyMedium!.copyWith(
@@ -189,7 +253,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: mySize.height / 14,
                 width: double.maxFinite,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    context
+                        .read<GuestSessionCubit>()
+                        .onGeneratingGuestSession();
+                    Future.delayed(const Duration(seconds: 1), () {
+                      GoRouter.of(context).pushNamed(
+                        MyAppRouteConstants.mainPage,
+                      );
+                    });
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: myColorScheme.onInverseSurface,
                     shape: const RoundedRectangleBorder(
@@ -202,11 +275,33 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: myColorScheme.inverseSurface,
                     ),
                   ),
-                  child: Text(
-                    "Continue as Guest",
-                    style: myTextTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: BlocBuilder<GuestSessionCubit, GuestSessionState>(
+                    builder: (context, state) {
+                      if (state is GuestSessionInitial) {
+                        return Text(
+                          "Continue as Guest",
+                          style: myTextTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }
+                      if (state is GuestSessionLoadingState) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is GuestSessionErrorState) {
+                        return Center(
+                          child: Text(state.errorMessage),
+                        );
+                      } else if (state is GuestSessionLoadedState) {
+                        _storeGuestSessionId(
+                          state.guestSessionModel.guestSessionId.toString(),
+                        );
+                        return const SizedBox();
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
                   ),
                 ),
               ),
@@ -215,5 +310,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _storeGuestSessionId(String guestSessionId) async {
+    SharedPreferences guestSp = await SharedPreferences.getInstance();
+    guestSp.setString("guestSessionId", guestSessionId);
+    guestSp.setBool("isGuest", true);
+  }
+
+  void _storeLoginSessionId(String sessionId) async {
+    SharedPreferences loginSp = await SharedPreferences.getInstance();
+    loginSp.setString("sessionId", sessionId);
+    loginSp.setBool("isGuest", false);
   }
 }

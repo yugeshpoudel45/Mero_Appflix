@@ -7,7 +7,7 @@ class PrimaryLongButton extends StatelessWidget {
   final String text;
   final VoidCallback func;
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
     return AppButton(
