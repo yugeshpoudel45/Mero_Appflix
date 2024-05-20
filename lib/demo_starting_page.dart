@@ -28,12 +28,12 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.practicePage,
                 // );
-                GoRouter.of(context).pushNamed(
-                  MyAppRouteConstants.loginPage,
-                );
                 // GoRouter.of(context).pushNamed(
-                //   MyAppRouteConstants.mainPage,
+                //   MyAppRouteConstants.loginPage,
                 // );
+                GoRouter.of(context).pushNamed(
+                  MyAppRouteConstants.mainPage,
+                );
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.peopleDetailsPage,
                 //   extra: 500,

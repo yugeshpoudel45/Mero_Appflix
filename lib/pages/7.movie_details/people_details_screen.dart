@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
+import '../../components/urls/url_launcher.dart';
 import '../../cubit/people_details_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
 import '../../models/others/readmore_model.dart';
@@ -50,6 +51,13 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
           );
         } else if (state is PeopleDetailsLoadedState) {
           final people = state.peopleDetailsModel;
+
+          String facebookId = people.externalIds!.facebookId.toString();
+          String instagramId = people.externalIds!.instagramId.toString();
+          String tiktokId = people.externalIds!.tiktokId.toString();
+          String twitterId = people.externalIds!.twitterId.toString();
+          String youtubeId = people.externalIds!.youtubeId.toString();
+
           return Scaffold(
             body: SingleChildScrollView(
               child: Column(
@@ -140,6 +148,55 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                               )
                             : const SizedBox(),
                         SizedBox(height: mySize.height / 40),
+                        facebookId != "unavailable" ||
+                                instagramId != "unavailable" ||
+                                twitterId != "unavailable" ||
+                                tiktokId != "unavailable" ||
+                                youtubeId != "unavailable"
+                            ? Text(
+                                'Social Media Handles',
+                                style: myTextTheme.titleLarge!.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.balsamiqSans().fontFamily!,
+                                ),
+                              )
+                            : const SizedBox(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            facebookId != "unavailable"
+                                ? SocialHandles(
+                                    id: facebookId,
+                                    socialMedia: "facebook",
+                                  )
+                                : const SizedBox(),
+                            instagramId != "unavailable"
+                                ? SocialHandles(
+                                    id: instagramId,
+                                    socialMedia: "instagram",
+                                  )
+                                : const SizedBox(),
+                            twitterId != "unavailable"
+                                ? SocialHandles(
+                                    id: twitterId,
+                                    socialMedia: "twitter",
+                                  )
+                                : const SizedBox(),
+                            tiktokId != "unavailable"
+                                ? SocialHandles(
+                                    id: tiktokId,
+                                    socialMedia: "tiktok",
+                                  )
+                                : const SizedBox(),
+                            youtubeId != "unavailable"
+                                ? SocialHandles(
+                                    id: youtubeId,
+                                    socialMedia: "youtube",
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                        SizedBox(height: mySize.height / 40),
                         Text(
                           'Known For',
                           style: myTextTheme.titleLarge!.copyWith(
@@ -184,29 +241,6 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                                 }),
                           ),
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     IconButton(
-                        //       icon: const Icon(Icons.facebook),
-                        //       onPressed: () {
-                        //         // Handle Facebook link
-                        //       },
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(Icons.one_x_mobiledata),
-                        //       onPressed: () {
-                        //         // Handle Twitter link
-                        //       },
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(Icons.perm_identity_rounded),
-                        //       onPressed: () {
-                        //         // Handle Instagram link
-                        //       },
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),
@@ -241,6 +275,29 @@ class _MyListTile extends StatelessWidget {
       trailing: Text(
         details,
         style: myTextTheme.titleSmall,
+      ),
+    );
+  }
+}
+
+class SocialHandles extends StatelessWidget {
+  const SocialHandles({super.key, required this.id, required this.socialMedia});
+  final String id;
+  final String socialMedia;
+
+  @override
+  Widget build(BuildContext context) {
+    Size mySize = MediaQuery.sizeOf(context);
+    return GestureDetector(
+      onTap: () {
+        launchURL("https://www.$socialMedia.com/$id");
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Image.asset(
+          "assets/images/$socialMedia.png",
+          height: mySize.height / 20,
+        ),
       ),
     );
   }

@@ -40,8 +40,8 @@ class _RatingModalState extends State<RatingModal> {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Container(
-      // height: mySize.height / 2.8,
-      height: mySize.height / 2,
+      height: mySize.height / 2.8,
+      // height: mySize.height / 2,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -87,7 +87,6 @@ class _RatingModalState extends State<RatingModal> {
             updateOnDrag: true,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             onRatingUpdate: (rating) {
-              // log(rating.toString());
               setState(() {
                 movieRating = (rating * 2).toString();
               });

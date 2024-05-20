@@ -35,7 +35,6 @@ class LoginSessionRepo {
       );
       if (requestTokenResponse.statusCode == 200) {
         requestToken = jsonDecode(requestTokenResponse.body)['request_token'];
-        log("Request Token: $requestToken");
       } else {
         throw Exception("Failed to generate request token");
       }
@@ -47,17 +46,13 @@ class LoginSessionRepo {
           ),
           headers: headers,
           body: {
-            // "username": "alex45d",
-            // "password": "1234",
             "username": username,
             "password": password,
-
             "request_token": requestToken,
           });
       if (validateTokenResponse.statusCode == 200) {
         newRequestToken =
             jsonDecode(validateTokenResponse.body)['request_token'];
-        log("New Request Token: $newRequestToken");
       } else {
         throw Exception("Failed to validate request token with login");
       }
@@ -82,7 +77,6 @@ class LoginSessionRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception(
-        "Outer Exception: Failed to generate session Id with login");
+    throw Exception("Failed to generate session Id with login");
   }
 }

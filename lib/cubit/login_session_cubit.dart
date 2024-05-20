@@ -17,7 +17,8 @@ class LoginSessionCubit extends Cubit<LoginSessionState> {
   }) async {
     emit(LoginSessionLoadingState());
     try {
-      final loginSessionModel = await loginSessionRepo.generateLoginSession(
+      final LoginSessionModel loginSessionModel =
+          await loginSessionRepo.generateLoginSession(
         username,
         password,
       );

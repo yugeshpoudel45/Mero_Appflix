@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/checkbox/app_checkbox.dart';
-import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
+import 'package:netflix/components/urls/url_launcher.dart';
 import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   void _togglePassword() {
     setState(() {
       _obscureText = !_obscureText;
@@ -64,13 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 controller: _usernameController,
                 keyboardType: TextInputType.text,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Username is required";
-                  } else {
-                    return null;
-                  }
-                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: myColorScheme.onInverseSurface,
@@ -103,13 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: _obscureText,
                 keyboardType: TextInputType.visiblePassword,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Password is required";
-                  } else {
-                    return null;
-                  }
-                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: myColorScheme.onInverseSurface,
@@ -174,39 +157,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             username: _usernameController.text,
                             password: _passwordController.text,
                           );
-                      Future.delayed(const Duration(seconds: 1), () {
-                        GoRouter.of(context).pushNamed(
-                          MyAppRouteConstants.mainPage,
-                        );
-                      });
                     },
-                    child: BlocBuilder<LoginSessionCubit, LoginSessionState>(
-                      builder: (context, state) {
-                        if (state is LoginSessionInitial) {
-                          return Text("Login",
-                              style: myTextTheme.labelLarge!.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ));
-                        }
-                        if (state is LoginSessionLoadingState) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (state is LoginSessionErrorState) {
-                          return Center(
-                            child: Text(state.errorMessage),
-                          );
-                        } else if (state is LoginSessionLoadedState) {
-                          _storeLoginSessionId(
-                            state.loginSessionModel.sessionId.toString(),
-                          );
-                          return const SizedBox();
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    ),
+                    child: Text("Login",
+                        style: myTextTheme.labelLarge!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        )),
                   ),
                 ),
               ),
@@ -221,7 +177,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      launchURL("https://www.themoviedb.org/signup");
+                    },
                     child: Text(
                       "Register",
                       style: myTextTheme.bodyMedium!.copyWith(
@@ -232,7 +190,42 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               ),
-              SizedBox(height: mySize.height / 16),
+              BlocBuilder<LoginSessionCubit, LoginSessionState>(
+                builder: (context, state) {
+                  if (state is LoginSessionInitial) {
+                    return SizedBox(height: mySize.height / 12);
+                  }
+                  if (state is LoginSessionLoadingState) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is LoginSessionErrorState) {
+                    return SizedBox(
+                      height: mySize.height / 12,
+                      child: const Center(
+                        child: Text(
+                          "Invalid username or password",
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (state is LoginSessionLoadedState) {
+                    _storeLoginSessionId(
+                      state.loginSessionModel.sessionId.toString(),
+                    );
+                    Future.delayed(const Duration(seconds: 1), () {
+                      GoRouter.of(context).pushNamed(
+                        MyAppRouteConstants.mainPage,
+                      );
+                    });
+                    return const SizedBox();
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
               Row(children: <Widget>[
                 const Expanded(child: Divider()),
                 Padding(
@@ -248,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Expanded(child: Divider()),
               ]),
-              SizedBox(height: mySize.height / 32),
+              SizedBox(height: mySize.height / 40),
               SizedBox(
                 height: mySize.height / 14,
                 width: double.maxFinite,
