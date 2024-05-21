@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is TrendingSectionErrorState) {
-          return Center(
+          return Center( 
             child: Text(state.errorMessage),
           );
         } else if (state is TrendingSectionLoadedState) {
@@ -296,7 +296,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-//!----------------------------------------Yo vanda tala ko exception handling grna baki xa
 class _LocalCarouselModel extends StatefulWidget {
   final TrendingSectionLoadedState loadedState;
   final dynamic movie;

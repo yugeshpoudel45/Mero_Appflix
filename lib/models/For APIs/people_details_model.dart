@@ -202,7 +202,7 @@ class Cast {
         overview: json["overview"] ?? "Unavailable",
         popularity: json["popularity"]?.toDouble() ?? 0.0,
         posterPath: json["poster_path"] ?? AppConstants.placeHolderImage,
-        releaseDate: json["release_date"] ?? "Unavailable",
+        releaseDate: json["release_date"] ?? "Unavailable", 
         title: json["title"] ?? "Unavailable",
         video: json["video"] ?? false,
         voteAverage: json["vote_average"]?.toDouble() ?? 0.0,

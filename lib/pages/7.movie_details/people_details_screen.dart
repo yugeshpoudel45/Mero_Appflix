@@ -7,6 +7,7 @@ import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../../components/urls/url_launcher.dart';
+import '../../config/app_constants.dart';
 import '../../cubit/people_details_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
 import '../../models/others/readmore_model.dart';
@@ -51,6 +52,15 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
           );
         } else if (state is PeopleDetailsLoadedState) {
           final people = state.peopleDetailsModel;
+          var movie1 = people.combinedCredits!.cast!
+              .where((element) =>
+                  element.posterPath != AppConstants.placeHolderImage)
+              .toList();
+          var movie2 = people.combinedCredits!.cast!
+              .where((element) =>
+                  element.posterPath != AppConstants.placeHolderImage)
+              .toList();
+          var combinedMovie = movie1 + movie2;
 
           String facebookId = people.externalIds!.facebookId.toString();
           String instagramId = people.externalIds!.instagramId.toString();
@@ -112,23 +122,32 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                                         "${people.birthday!.year}-${people.birthday!.month}-${people.birthday!.day}",
                                   )
                                 : const SizedBox(),
-                            _MyListTile(
-                                title: "BirthPlace",
-                                details: people.placeOfBirth.toString()),
+                            people.placeOfBirth != null &&
+                                    people.placeOfBirth!.length < 30
+                                ? _MyListTile(
+                                    title: "BirthPlace",
+                                    details: people.placeOfBirth.toString())
+                                : const SizedBox(),
                             people.deathday != null
                                 ? _MyListTile(
                                     title: "Died",
                                     details:
                                         "${people.deathday!.year}-${people.deathday!.month}-${people.deathday!.day}")
                                 : const SizedBox(),
-                            _MyListTile(
-                              title: "Gender",
-                              details: people.gender == 1 ? "Female" : "Male",
-                            ),
-                            _MyListTile(
-                              title: "Department",
-                              details: people.knownForDepartment.toString(),
-                            ),
+                            people.gender != null
+                                ? _MyListTile(
+                                    title: "Gender",
+                                    details:
+                                        people.gender == 1 ? "Female" : "Male",
+                                  )
+                                : const SizedBox(),
+                            people.knownForDepartment != null
+                                ? _MyListTile(
+                                    title: "Department",
+                                    details:
+                                        people.knownForDepartment.toString(),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                         SizedBox(height: mySize.height / 40),
@@ -197,50 +216,66 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
                           ],
                         ),
                         SizedBox(height: mySize.height / 40),
-                        Text(
-                          'Known For',
-                          style: myTextTheme.titleLarge!.copyWith(
-                            fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
-                          ),
-                        ),
-                        SizedBox(height: mySize.height / 80),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: SizedBox(
-                            height: 200,
-                            child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
+                        combinedMovie.isNotEmpty
+                            ? Text(
+                                'Known For',
+                                style: myTextTheme.titleLarge!.copyWith(
+                                  fontFamily:
+                                      GoogleFonts.balsamiqSans().fontFamily!,
+                                ),
+                              )
+                            : const SizedBox(),
+                        combinedMovie.isNotEmpty
+                            ? SizedBox(height: mySize.height / 80)
+                            : const SizedBox(),
+                        combinedMovie.isNotEmpty
+                            ? SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: people
-                                        .combinedCredits!.cast!.isNotEmpty
-                                    ? (people.combinedCredits!.cast!.length > 5
-                                        ? 5
-                                        : people.combinedCredits!.cast!.length)
-                                    : (people.combinedCredits!.crew!.length > 5
-                                        ? 5
-                                        : people.combinedCredits!.crew!.length),
-                                itemBuilder: (context, index) {
-                                  var movie = people
-                                          .combinedCredits!.cast!.isNotEmpty
-                                      ? people.combinedCredits!.cast![index]
-                                      : people.combinedCredits!.crew![index];
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      GoRouter.of(context).pushNamed(
-                                        MyAppRouteConstants.movieDetailsPage,
-                                        extra: movie.id,
-                                      );
-                                    },
-                                    child: MovieCarouselModel(
-                                      image: movie.posterPath.toString(),
-                                      rating: movie.voteAverage!.toDouble(),
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),
+                                child: SizedBox(
+                                  height: 200,
+                                  child: ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: combinedMovie.length > 5
+                                          ? 5
+                                          : combinedMovie.length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            combinedMovie[index]
+                                                        .mediaType
+                                                        .toString() ==
+                                                    "MediaType.MOVIE"
+                                                ? GoRouter.of(context)
+                                                    .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .movieDetailsPage,
+                                                    extra:
+                                                        combinedMovie[index].id,
+                                                  )
+                                                : GoRouter.of(context)
+                                                    .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .tvShowDetailsPage,
+                                                    extra:
+                                                        combinedMovie[index].id,
+                                                  );
+                                          },
+                                          child: MovieCarouselModel(
+                                            image: combinedMovie[index]
+                                                .posterPath
+                                                .toString(),
+                                            rating: combinedMovie[index]
+                                                .voteAverage!
+                                                .toDouble(),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                   ),

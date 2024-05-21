@@ -35,6 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    getRememberMe();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
@@ -157,6 +163,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             username: _usernameController.text,
                             password: _passwordController.text,
                           );
+                      if (_checkBox) {
+                        saveRememberMe(
+                          _usernameController.text,
+                          _passwordController.text,
+                        );
+                      } else {
+                        deleteRememberMe();
+                      }
                     },
                     child: Text("Login",
                         style: myTextTheme.labelLarge!.copyWith(
@@ -216,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       state.loginSessionModel.sessionId.toString(),
                     );
                     Future.delayed(const Duration(seconds: 1), () {
-                      GoRouter.of(context).pushNamed(
+                      GoRouter.of(context).pushReplacementNamed(
                         MyAppRouteConstants.mainPage,
                       );
                     });
@@ -251,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         .read<GuestSessionCubit>()
                         .onGeneratingGuestSession();
                     Future.delayed(const Duration(seconds: 1), () {
-                      GoRouter.of(context).pushNamed(
+                      GoRouter.of(context).pushReplacementNamed(
                         MyAppRouteConstants.mainPage,
                       );
                     });
@@ -315,5 +329,23 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences loginSp = await SharedPreferences.getInstance();
     loginSp.setString("sessionId", sessionId);
     loginSp.setBool("isGuest", false);
+  }
+
+  Future<void> saveRememberMe(String userName, String password) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("username", userName);
+    sp.setString("password", password);
+  }
+
+  Future<void> getRememberMe() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    _usernameController.text = sp.getString("username") ?? "";
+    _passwordController.text = sp.getString("password") ?? "";
+  }
+
+  Future<void> deleteRememberMe() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.remove('username');
+    sp.remove('password');
   }
 }
