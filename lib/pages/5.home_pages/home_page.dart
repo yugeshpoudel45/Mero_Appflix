@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/config/app_constants.dart';
 
 import 'package:netflix/components/images/cache_network_image.dart';
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is TrendingSectionErrorState) {
-          return Center( 
+          return Center(
             child: Text(state.errorMessage),
           );
         } else if (state is TrendingSectionLoadedState) {
@@ -312,6 +313,7 @@ class _LocalCarouselModel extends StatefulWidget {
 }
 
 class __LocalCarouselModelState extends State<_LocalCarouselModel> {
+  bool watchLaterPressed = false;
   int currentPage = 0;
   final controller = CarouselController();
 
@@ -427,8 +429,33 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                       isFilled: false,
                       width: 104,
                       icon: Icons.add,
-                      text: "My List",
-                      func: () {},
+                      text: "Save",
+                      func: () {
+                        setState(() {
+                          watchLaterPressed = !watchLaterPressed;
+                        });
+                        index % 2 == 0
+                            ? watchLaterPressed
+                                ? MyListHelper.addToMovieList(
+                                    [
+                                      widget.movie[index].id.toString(),
+                                      widget.movie[index].posterPath.toString(),
+                                    ],
+                                  )
+                                : MyListHelper.removeFromMovieList(
+                                    widget.movie[index].id.toString())
+                            : watchLaterPressed
+                                ? MyListHelper.addToTvShowList(
+                                    [
+                                      widget.tvShow[index].id.toString(),
+                                      widget.tvShow[index].posterPath
+                                          .toString(),
+                                    ],
+                                  )
+                                : MyListHelper.removeFromTvShowList(
+                                    widget.tvShow[index].id.toString());
+                      
+                      },
                     ),
                   ],
                 ),

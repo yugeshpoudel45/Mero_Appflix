@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix/pages/5.home_pages/download_page.dart';
+import 'package:netflix/pages/5.home_pages/gemini_page.dart';
 import 'package:netflix/pages/5.home_pages/explore_page.dart';
 import 'package:netflix/pages/5.home_pages/home_page.dart';
 import 'package:netflix/pages/5.home_pages/my_list_page.dart';
@@ -19,8 +19,8 @@ class _MainPageState extends State<MainPage> {
   List<Widget> pages = [
     const HomePage(),
     const ExplorePage(),
+    const GeminiPage(),
     const MyListPage(),
-    const DownloadPage(),
     const ProfilePage(),
   ];
 
@@ -60,15 +60,15 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: selectedIndex == 2
-                ? const Icon(Icons.summarize)
-                : const Icon(Icons.summarize_outlined),
-            label: "My List",
+                ? const Icon(CupertinoIcons.chat_bubble_fill)
+                : const Icon(CupertinoIcons.chat_bubble),
+            label: "Gemini",
           ),
           BottomNavigationBarItem(
             icon: selectedIndex == 3
-                ? const Icon(Icons.download_rounded)
-                : const Icon(Icons.download_outlined),
-            label: "Download",
+                ? const Icon(Icons.watch_later_rounded)
+                : const Icon(Icons.watch_later_outlined),
+            label: "My List",
           ),
           BottomNavigationBarItem(
             icon: selectedIndex == 4

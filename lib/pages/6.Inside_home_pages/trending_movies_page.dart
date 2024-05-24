@@ -62,6 +62,7 @@ class TrendingMoviesPage extends StatelessWidget {
               }),
             ),
           ),
-        ));
+        ),
+        );
   }
 }

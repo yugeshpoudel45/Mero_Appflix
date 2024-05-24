@@ -356,7 +356,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                       fontWeight: FontWeight.bold,
                                     ))
                             : widget.result[0] == 2
-                                ? tvShow.isEmpty
+                                ? tvShow.isEmpty 
                                     ? const ShowErrorMessage(
                                         errorMessage: "Tv Show not Found")
                                     : Text("Tv Shows For You",

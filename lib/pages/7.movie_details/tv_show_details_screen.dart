@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
+import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/models/others/check_rating_model.dart';
+import 'package:netflix/models/others/my_list_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 import 'package:netflix/config/app_constants.dart';
 
@@ -27,6 +29,7 @@ class TvShowDetailsScreen extends StatefulWidget {
 }
 
 class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
+  bool watchLaterPressed = false;
   @override
   void initState() {
     super.initState();
@@ -115,13 +118,7 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.bookmark_border_rounded),
-                                      SizedBox(width: mySize.width / 24),
-                                      const Icon(Icons.share_outlined),
-                                    ],
-                                  ),
+                                  const Icon(Icons.share_outlined),
                                 ],
                               ),
                               SizedBox(height: mySize.height / 80),
@@ -217,9 +214,25 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                       width: mySize.width / 2.3,
                                     ),
                                     PlayButton(
-                                      icon: Icons.download_outlined,
-                                      text: "Download",
-                                      func: () {},
+                                      icon: Icons.watch_later_outlined,
+                                      text: "Watch Later",
+                                      func: () {
+                                        setState(() {
+                                          watchLaterPressed =
+                                              !watchLaterPressed;
+                                        });
+                                        watchLaterPressed
+                                            ? MyListHelper.addToTvShowList([
+                                                state.tvShowDetailsModel.id
+                                                    .toString(),
+                                                state.tvShowDetailsModel
+                                                    .posterPath
+                                                    .toString(),
+                                              ])
+                                            : MyListHelper.removeFromTvShowList(
+                                                state.tvShowDetailsModel.id
+                                                    .toString());
+                                      },
                                       height: mySize.height / 16,
                                       width: mySize.width / 2.3,
                                       isFilled: false,

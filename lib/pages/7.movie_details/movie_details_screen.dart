@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
+import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/config/app_constants.dart';
 
 import 'package:netflix/components/buttons/other_buttons/info_button.dart';
@@ -16,6 +17,7 @@ import '../../../components/buttons/play_button/play_button.dart';
 import '../../../models/others/movie_carousel_model.dart';
 import '../../../models/others/movie_crew_model.dart';
 import '../../../routes/app_route_constant.dart';
+import '../../models/others/my_list_model.dart';
 import '../../models/others/rating_model.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -30,6 +32,8 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  bool watchLaterPressed = false;
+
   @override
   void initState() {
     super.initState();
@@ -120,13 +124,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.bookmark_border_rounded),
-                                      SizedBox(width: mySize.width / 24),
-                                      const Icon(Icons.share_outlined),
-                                    ],
-                                  ),
+                                  const Icon(Icons.share_outlined),
                                 ],
                               ),
                               SizedBox(height: mySize.height / 80),
@@ -220,9 +218,25 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       width: mySize.width / 2.3,
                                     ),
                                     PlayButton(
-                                      icon: Icons.download_outlined,
-                                      text: "Download",
-                                      func: () {},
+                                      icon: Icons.watch_later_outlined,
+                                      text: "Watch Later",
+                                      func: () {
+                                        setState(() {
+                                          watchLaterPressed =
+                                              !watchLaterPressed;
+                                        });
+                                        watchLaterPressed
+                                            ? MyListHelper.addToMovieList([
+                                                state.movieDetailsModel.id
+                                                    .toString(),
+                                                state.movieDetailsModel
+                                                    .posterPath
+                                                    .toString(),
+                                              ])
+                                            : MyListHelper.removeFromMovieList(
+                                                state.movieDetailsModel.id
+                                                    .toString());
+                                      },
                                       height: mySize.height / 16,
                                       width: mySize.width / 2.3,
                                       isFilled: false,
@@ -364,7 +378,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     ),
                   ),
                   SliverFillRemaining(
-                    //!Issue: While Scrolling tabbarView is going inside the tab bar in flutter
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[

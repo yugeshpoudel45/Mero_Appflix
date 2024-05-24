@@ -151,7 +151,6 @@ class RatingGiven extends StatefulWidget {
 }
 
 class _RatingGivenState extends State<RatingGiven> {
-//!----------Change this later with shared preferences value
   String sessionId = "";
   bool isGuest = true;
   @override

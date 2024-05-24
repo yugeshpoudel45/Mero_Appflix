@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 class DemoStartingPage extends StatefulWidget {
@@ -12,6 +13,13 @@ class DemoStartingPage extends StatefulWidget {
 }
 
 class _DemoStartingPageState extends State<DemoStartingPage> {
+  // @override
+  // void initState() {
+  //   MyListHelper.clearMovieList();
+  //   MyListHelper.clearTvShowList();
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
@@ -24,7 +32,7 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                log("Welcome to the World");
+                // log("Welcome to the World");
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.practicePage,
                 // );

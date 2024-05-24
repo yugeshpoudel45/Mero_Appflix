@@ -21,7 +21,7 @@ import 'package:netflix/themes/light_theme.dart';
 import 'cubit/trending_section_cubit.dart';
 import 'repo/auth/login_session_repo.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 //TODO add the preserve and remove the native splash screen here, and also remove it after initialization.
