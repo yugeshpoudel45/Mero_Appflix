@@ -37,8 +37,11 @@ class MyListHelper {
     final SharedPreferences prefs1 = await SharedPreferences.getInstance();
     List<String> movieId = prefs1.getStringList('movieId') ?? [];
     List<String> movieImage = prefs1.getStringList('movieImage') ?? [];
-    movieImage.removeAt(movieId.indexOf(id));
-    movieId.remove(id);
+    String image = movieImage.elementAt(movieId.indexOf(id));
+    Future.wait([
+      prefs1.setStringList('movieId', movieId..remove(id)),
+      prefs1.setStringList('movieImage', movieImage..remove(image)),
+    ]);
     log('Movie Removed from List');
   }
 
@@ -77,8 +80,23 @@ class MyListHelper {
     final SharedPreferences prefs1 = await SharedPreferences.getInstance();
     List<String> tvShowId = prefs1.getStringList('tvShowId') ?? [];
     List<String> tvShowImage = prefs1.getStringList('tvShowImage') ?? [];
-    tvShowImage.removeAt(tvShowId.indexOf(id));
-    tvShowId.remove(id);
+    String image = tvShowImage.elementAt(tvShowId.indexOf(id));
+    Future.wait([
+      prefs1.setStringList('tvShowId', tvShowId..remove(id)),
+      prefs1.setStringList('tvShowImage', tvShowImage..remove(image)),
+    ]);
     log('Tv Show Removed from List');
+  }
+
+  static Future<bool> movieExists(String id) async {
+    final SharedPreferences prefs1 = await SharedPreferences.getInstance();
+    List<String> movieId = prefs1.getStringList('movieId') ?? [];
+    return movieId.contains(id);
+  }
+
+  static Future<bool> tvShowExists(String id) async {
+    final SharedPreferences prefs1 = await SharedPreferences.getInstance();
+    List<String> tvShowId = prefs1.getStringList('tvShowId') ?? [];
+    return tvShowId.contains(id);
   }
 }

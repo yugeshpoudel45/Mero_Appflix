@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/components/buttons/other_buttons/choosing_button.dart';
 import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/models/others/movie_carousel_model.dart';
@@ -77,18 +79,60 @@ class _MyListPageState extends State<MyListPage> {
                     bottom: 8,
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        AppAssets.appLogo,
-                        height: mySize.height / 24,
+                      Row(
+                        children: [
+                          Image.asset(
+                            AppAssets.appLogo,
+                            height: mySize.height / 24,
+                          ),
+                          SizedBox(
+                            width: mySize.width / 32,
+                          ),
+                          Text(
+                            "My List",
+                            style: myTextTheme.headlineSmall!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        width: mySize.width / 32,
-                      ),
-                      Text(
-                        "My List",
-                        style: myTextTheme.headlineSmall!.copyWith(
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Clear List"),
+                                content: const Text(
+                                    "Are you sure you want to clear your list?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      MyListHelper.clearMovieList();
+                                      MyListHelper.clearTvShowList();
+                                      setState(() {
+                                        _storedDataFuture = getStoredData();
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Yes"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("No"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Icon(
+                          Icons.delete,
+                          color: myColorScheme.onTertiary,
                         ),
                       ),
                     ],
@@ -126,8 +170,13 @@ class _MyListPageState extends State<MyListPage> {
                 _selectCategory == 0
                     ? movieList[0].isEmpty && tvList[0].isEmpty
                         ? const Center(
-                            child: Text(
-                              'No items in your list',
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: ShowErrorMessage(
+                                errorMessage: "Your List is Empty",
+                                extraInfo:
+                                    "It seems that you haven't added any Movies or Tv Shows to the list.",
+                              ),
                             ),
                           )
                         : Padding(
@@ -174,62 +223,85 @@ class _MyListPageState extends State<MyListPage> {
                             ),
                           )
                     : _selectCategory == 1
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              top: 16,
-                              right: 8,
-                              bottom: 8,
-                            ),
-                            child: Wrap(
-                              children: List.generate(movieList[0].length,
-                                  (int movieIndex) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.movieDetailsPage,
-                                      extra: movieList[0][movieIndex],
-                                    );
-                                  },
-                                  child: MovieCarouselModel(
-                                    width: mySize.width / 2.25,
-                                    height: mySize.height / 3.2,
-                                    image: movieList[1][movieIndex],
-                                    rating: 0.0,
-                                    isPeople: true,
+                        ? movieList[0].isEmpty
+                            ? const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: ShowErrorMessage(
+                                    errorMessage: "Your Movie List is Empty",
+                                    extraInfo:
+                                        "It seems that you haven't added any Movies to the list.",
                                   ),
-                                );
-                              }),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                              top: 16,
-                              right: 8,
-                              bottom: 8,
-                            ),
-                            child: Wrap(
-                              children: List.generate(tvList[0].length,
-                                  (int tvIndex) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    GoRouter.of(context).pushNamed(
-                                      MyAppRouteConstants.tvShowDetailsPage,
-                                      extra: tvList[0][tvIndex],
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  top: 16,
+                                  right: 8,
+                                  bottom: 8,
+                                ),
+                                child: Wrap(
+                                  children: List.generate(movieList[0].length,
+                                      (int movieIndex) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        GoRouter.of(context).pushNamed(
+                                          MyAppRouteConstants.movieDetailsPage,
+                                          extra: int.parse(
+                                              movieList[0][movieIndex]),
+                                        );
+                                      },
+                                      child: MovieCarouselModel(
+                                        width: mySize.width / 2.25,
+                                        height: mySize.height / 3.2,
+                                        image: movieList[1][movieIndex],
+                                        rating: 0.0,
+                                        isPeople: true,
+                                      ),
                                     );
-                                  },
-                                  child: MovieCarouselModel(
-                                    width: mySize.width / 2.25,
-                                    height: mySize.height / 3.2,
-                                    image: tvList[1][tvIndex],
-                                    rating: 0.0,
-                                    isPeople: true,
+                                  }),
+                                ),
+                              )
+                        : tvList[0].isEmpty
+                            ? const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: ShowErrorMessage(
+                                    errorMessage: "Your Tv Show List is Empty",
+                                    extraInfo:
+                                        "It seems that you haven't added any Tv Shows to the list.",
                                   ),
-                                );
-                              }),
-                            ),
-                          ),
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  top: 16,
+                                  right: 8,
+                                  bottom: 8,
+                                ),
+                                child: Wrap(
+                                  children: List.generate(tvList[0].length,
+                                      (int tvIndex) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        GoRouter.of(context).pushNamed(
+                                          MyAppRouteConstants.tvShowDetailsPage,
+                                          extra: tvList[0][tvIndex],
+                                        );
+                                      },
+                                      child: MovieCarouselModel(
+                                        width: mySize.width / 2.25,
+                                        height: mySize.height / 3.2,
+                                        image: tvList[1][tvIndex],
+                                        rating: 0.0,
+                                        isPeople: true,
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ),
               ],
             ),
           );

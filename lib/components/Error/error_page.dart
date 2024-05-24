@@ -17,9 +17,9 @@ class ShowErrorMessage extends StatelessWidget {
     Size mySize = MediaQuery.sizeOf(context);
     return Column(
       children: [
-        // SizedBox(
-        //   height: mySize.height / 3,
-        // ),
+        SizedBox(
+          height: mySize.height / 3,
+        ),
         Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 16.0),
@@ -35,6 +35,7 @@ class ShowErrorMessage extends StatelessWidget {
         Center(
           child: Text(
             extraInfo,
+            textAlign: TextAlign.center,
           ),
         ),
       ],

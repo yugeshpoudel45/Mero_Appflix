@@ -313,7 +313,6 @@ class _LocalCarouselModel extends StatefulWidget {
 }
 
 class __LocalCarouselModelState extends State<_LocalCarouselModel> {
-  bool watchLaterPressed = false;
   int currentPage = 0;
   final controller = CarouselController();
 
@@ -430,31 +429,46 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                       width: 104,
                       icon: Icons.add,
                       text: "Save",
-                      func: () {
-                        setState(() {
-                          watchLaterPressed = !watchLaterPressed;
-                        });
+                      func: () async {
                         index % 2 == 0
-                            ? watchLaterPressed
-                                ? MyListHelper.addToMovieList(
-                                    [
-                                      widget.movie[index].id.toString(),
-                                      widget.movie[index].posterPath.toString(),
-                                    ],
-                                  )
-                                : MyListHelper.removeFromMovieList(
-                                    widget.movie[index].id.toString())
-                            : watchLaterPressed
-                                ? MyListHelper.addToTvShowList(
-                                    [
-                                      widget.tvShow[index].id.toString(),
-                                      widget.tvShow[index].posterPath
-                                          .toString(),
-                                    ],
-                                  )
-                                : MyListHelper.removeFromTvShowList(
-                                    widget.tvShow[index].id.toString());
-                      
+                            ? Future.wait(
+                                [
+                                  MyListHelper.movieExists(
+                                          widget.movie[index].id.toString())
+                                      .then(
+                                    (value) {
+                                      value
+                                          ? MyListHelper.removeFromMovieList(
+                                              widget.movie[index].id.toString())
+                                          : MyListHelper.addToMovieList([
+                                              widget.movie[index].id.toString(),
+                                              widget.movie[index].posterPath
+                                                  .toString(),
+                                            ]);
+                                    },
+                                  ),
+                                ],
+                              )
+                            : Future.wait(
+                                [
+                                  MyListHelper.tvShowExists(
+                                          widget.tvShow[index].id.toString())
+                                      .then(
+                                    (value) {
+                                      value
+                                          ? MyListHelper.removeFromTvShowList(
+                                              widget.tvShow[index].id
+                                                  .toString())
+                                          : MyListHelper.addToTvShowList([
+                                              widget.tvShow[index].id
+                                                  .toString(),
+                                              widget.tvShow[index].posterPath
+                                                  .toString(),
+                                            ]);
+                                    },
+                                  ),
+                                ],
+                              );
                       },
                     ),
                   ],
