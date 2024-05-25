@@ -29,6 +29,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   shared_preferences: ^2.2.3
   url_launcher: ^6.1.6
+  google_generative_ai: ^0.4.1
+  flutter_markdown: ^0.6.19
 
 flutter_native_splash:
   color: "#000000"
