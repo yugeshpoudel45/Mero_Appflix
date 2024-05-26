@@ -20,15 +20,7 @@ class TrendingTvShowsPage extends StatelessWidget {
           "Trending Tv Shows",
           style: myTextTheme.headlineSmall,
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              size: 32,
-            ),
-          ),
-        ],
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(

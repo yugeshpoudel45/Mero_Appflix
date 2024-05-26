@@ -20,15 +20,7 @@ class TrendingPeoplePage extends StatelessWidget {
           "Trending Celebrities",
           style: myTextTheme.headlineSmall,
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search,
-              size: 32,
-            ),
-          ),
-        ],
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(
@@ -39,7 +31,7 @@ class TrendingPeoplePage extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           child: Wrap(
-            children: List.generate( 10, (int movieIndex) {
+            children: List.generate(10, (int movieIndex) {
               var movie = loadedState.trendingPeopleModel.results![movieIndex];
               return GestureDetector(
                 onTap: () {

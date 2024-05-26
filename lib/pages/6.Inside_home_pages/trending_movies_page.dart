@@ -17,52 +17,44 @@ class TrendingMoviesPage extends StatelessWidget {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     Size mySize = MediaQuery.sizeOf(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Trending Movies",
-            style: myTextTheme.headlineSmall,
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.search,
-                size: 32,
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: Text(
+          "Trending Movies",
+          style: myTextTheme.headlineSmall,
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            top: 16,
-            right: 8,
-            bottom: 8,
-          ),
-          child: SingleChildScrollView(
-            child: Wrap(
-              children: List.generate(
-                  10, //loadedState.trendingMovieModel.results!.length
-                  (int movieIndex) {
-                var movie = loadedState.trendingMovieModel.results![movieIndex];
-                return GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context).pushNamed(
-                      MyAppRouteConstants.movieDetailsPage,
-                      extra: movie.id,
-                    );
-                  },
-                  child: MovieCarouselModel(
-                    width: mySize.width / 2.25,
-                    height: mySize.height / 3.2,
-                    image: movie.posterPath.toString(),
-                    rating: movie.voteAverage!.toDouble(),
-                  ),
-                );
-              }),
-            ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: 16,
+          top: 16,
+          right: 8,
+          bottom: 8,
+        ),
+        child: SingleChildScrollView(
+          child: Wrap(
+            children: List.generate(
+                10, //loadedState.trendingMovieModel.results!.length
+                (int movieIndex) {
+              var movie = loadedState.trendingMovieModel.results![movieIndex];
+              return GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    MyAppRouteConstants.movieDetailsPage,
+                    extra: movie.id,
+                  );
+                },
+                child: MovieCarouselModel(
+                  width: mySize.width / 2.25,
+                  height: mySize.height / 3.2,
+                  image: movie.posterPath.toString(),
+                  rating: movie.voteAverage!.toDouble(),
+                ),
+              );
+            }),
           ),
         ),
-        );
+      ),
+    );
   }
 }
