@@ -5,6 +5,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:netflix/config/app_constants.dart';
 
+import '../../config/app_local_assets.dart';
+
 class GeminiPage extends StatefulWidget {
   const GeminiPage({super.key});
 
@@ -46,16 +48,44 @@ class _GeminiPageState extends State<GeminiPage> {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Movie Talks with AI",
-          style: myTextTheme.headlineSmall,
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     "Movie Talks with AI",
+      //     style: myTextTheme.headlineSmall,
+      //   ),
+      //   centerTitle: true,
+      //   automaticallyImplyLeading: false,
+      // ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 40,
+              left: 16,
+              right: 16,
+              bottom: 16,
+            ),
+            child: Row(
+              children: [
+                Image.asset(
+                  AppAssets.appLogo,
+                  height: mySize.height / 24,
+                ),
+                SizedBox(
+                  width: mySize.width / 32,
+                ),
+                Text(
+                  "Movie Talks with AI",
+                  style: myTextTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // SizedBox(
+          //   height: mySize.height / 16,
+          // ),
           isloading
               ? const Expanded(
                   child: Center(
@@ -113,12 +143,9 @@ class _GeminiPageState extends State<GeminiPage> {
                                     maxWidth: mySize.width / 1.4,
                                   ),
                                   decoration: BoxDecoration(
-                                    // color: isUser
-                                    //     ? Colors.green
-                                    //     : Colors.grey.shade500,
                                     color: isUser
                                         ? myColorScheme.onTertiary
-                                        : myColorScheme.onBackground,
+                                        : myColorScheme.secondary,
                                     borderRadius: BorderRadius.only(
                                       topLeft: const Radius.circular(16),
                                       topRight: const Radius.circular(16),
@@ -163,7 +190,7 @@ class _GeminiPageState extends State<GeminiPage> {
                       maxWidth: mySize.width / 1.3,
                     ),
                     child: TextField(
-                      autofocus: true,
+                      // autofocus: true,
                       controller: inputController,
                       minLines: 1,
                       maxLines: 5,

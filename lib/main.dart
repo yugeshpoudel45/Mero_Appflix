@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
 import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:netflix/cubit/login_session_cubit.dart';
@@ -7,6 +8,8 @@ import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/cubit/movie_rating_cubit.dart';
 import 'package:netflix/cubit/people_details_cubit.dart';
 import 'package:netflix/cubit/search_section_cubit.dart';
+import 'package:netflix/cubit/theme_cubit_cubit.dart';
+import 'package:netflix/cubit/theme_cubit_state.dart';
 import 'package:netflix/cubit/tv_show_details_cubit.dart';
 import 'package:netflix/repo/auth/guest_session_repo.dart';
 import 'package:netflix/repo/movie_details_repo.dart';
@@ -16,13 +19,19 @@ import 'package:netflix/repo/search_page_repo.dart';
 import 'package:netflix/repo/trending_repo.dart';
 import 'package:netflix/repo/tv_show_details_repo.dart';
 import 'package:netflix/routes/app_route_config.dart';
-import 'package:netflix/themes/dark_theme.dart';
-import 'package:netflix/themes/light_theme.dart';
+import 'package:path_provider/path_provider.dart';
 import 'cubit/trending_section_cubit.dart';
 import 'repo/auth/login_session_repo.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+  HydratedBlocOverrides.runZoned(
+    () => runApp(const MyApp()),
+    storage: storage,
+  );
 }
 //TODO add the preserve and remove the native splash screen here, and also remove it after initialization.
 
@@ -57,19 +66,26 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => LoginSessionCubit(LoginSessionRepo()),
         ),
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: MyAppRouter().router,
-        themeMode: ThemeMode.light,
-        // themeMode: ThemeMode.dark,
-        title: AppConstants.appName,
-        theme: lightTheme,
-        darkTheme: darkTheme,
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: MyAppRouter().router,
+            title: AppConstants.appName,
+            theme: themeState.themeData,
+          );
+        },
       ),
     );
   }
 }
+
+
+
 //padding: const EdgeInsets.symmetric(horizontal: 16),
 
 //Red Color

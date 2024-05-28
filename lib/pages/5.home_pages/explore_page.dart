@@ -41,6 +41,7 @@ class _ExplorePageState extends State<ExplorePage> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
+          
           SizedBox(
             height: mySize.height / 16,
           ),
@@ -53,7 +54,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   height: mySize.height / 12,
                   width: mySize.width / 1.4,
                   child: CupertinoSearchTextField(
-                    autofocus: true,
+                    // autofocus: true,
                     controller: _searchController,
                     prefixInsets: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -356,7 +357,7 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
                                       fontWeight: FontWeight.bold,
                                     ))
                             : widget.result[0] == 2
-                                ? tvShow.isEmpty 
+                                ? tvShow.isEmpty
                                     ? const ShowErrorMessage(
                                         errorMessage: "Tv Show not Found")
                                     : Text("Tv Shows For You",

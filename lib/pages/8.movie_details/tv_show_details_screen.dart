@@ -5,7 +5,7 @@ import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/components/local_storage/watchlater_helper.dart';
 import 'package:netflix/models/others/check_rating_model.dart';
 import 'package:netflix/models/others/my_list_model.dart';
-import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
+import 'package:netflix/pages/8.movie_details/reviews_tab.dart';
 import 'package:netflix/config/app_constants.dart';
 
 import '../../components/buttons/other_buttons/info_button.dart';

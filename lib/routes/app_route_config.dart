@@ -6,17 +6,18 @@ import 'package:netflix/pages/5.home_pages/main_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
-import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
-import 'package:netflix/pages/7.movie_details/playing_screen.dart';
-import 'package:netflix/pages/7.movie_details/reviews_screen.dart';
-import 'package:netflix/pages/7.movie_details/tv_show_details_screen.dart';
+import 'package:netflix/pages/7.%20Inside_profile_page.dart/themes_page.dart';
+import 'package:netflix/pages/8.movie_details/movie_details_screen.dart';
+import 'package:netflix/pages/8.movie_details/playing_screen.dart';
+import 'package:netflix/pages/8.movie_details/reviews_screen.dart';
+import 'package:netflix/pages/8.movie_details/tv_show_details_screen.dart';
 import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../cubit/trending_section_cubit.dart';
 import '../demo_error_page.dart';
 import '../demo_starting_page.dart';
-import '../pages/7.movie_details/people_details_screen.dart';
+import '../pages/8.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
   GoRouter router = GoRouter(
@@ -31,26 +32,31 @@ class MyAppRouter {
       GoRoute(
         name: MyAppRouteConstants.demoStartingPageRouteName,
         path: '/',
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: DemoStartingPage()),
+        pageBuilder: (context, state) => const MaterialPage(
+          child: DemoStartingPage(),
+        ),
       ),
       //!--------------------------------------------------------------------------------------------------------------------------
       GoRoute(
         name: MyAppRouteConstants.loginPage,
         path: '/loginPage',
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: LoginScreen()),
+        pageBuilder: (context, state) => const MaterialPage(
+          child: LoginScreen(),
+        ),
       ),
       GoRoute(
         name: MyAppRouteConstants.onBoardingPage,
         path: '/onBoardingPage',
-        pageBuilder: (context, state) =>
-            const MaterialPage(child: OnboardingPage()),
+        pageBuilder: (context, state) => const MaterialPage(
+          child: OnboardingPage(),
+        ),
       ),
       GoRoute(
         name: MyAppRouteConstants.mainPage,
         path: '/mainpage',
-        pageBuilder: (context, state) => const MaterialPage(child: MainPage()),
+        pageBuilder: (context, state) => const MaterialPage(
+          child: MainPage(),
+        ),
       ),
       GoRoute(
         name: MyAppRouteConstants.trendingMoviesPage,
@@ -118,6 +124,13 @@ class MyAppRouter {
           loadedState: state.extra as dynamic,
           isMovie: state.pathParameters['isMovie'] == 'true' ? true : false,
         )),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.themesPage,
+        path: '/themesPage',
+        pageBuilder: (context, state) => MaterialPage(
+          child: ThemesPage(),
+        ),
       ),
     ],
     errorPageBuilder: (context, state) {
