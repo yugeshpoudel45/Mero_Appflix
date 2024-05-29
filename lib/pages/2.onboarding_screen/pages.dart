@@ -24,7 +24,7 @@ class OnboardingPageState extends State<OnboardingPage> {
       // Check if not on the last page
       _pageController.nextPage(
         duration: const Duration(
-          seconds: 1,
+          milliseconds: 500,
         ),
         curve: Curves.ease,
       );
@@ -118,7 +118,7 @@ class OnboardingPageState extends State<OnboardingPage> {
               PrimaryLongButton(
                   text: "Get Started",
                   func: () {
-                    GoRouter.of(context).pushNamed(
+                    GoRouter.of(context).pushReplacementNamed(
                       MyAppRouteConstants.loginPage,
                     );
                   }),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/checkbox/app_checkbox.dart';
+import 'package:netflix/components/local_storage/login_checker.dart';
 import 'package:netflix/components/urls/url_launcher.dart';
 import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -239,6 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor: Colors.green,
                     );
                     Future.delayed(const Duration(seconds: 1), () {
+                      MyLogin.isLoggedIn(true);
                       GoRouter.of(context).pushReplacementNamed(
                         MyAppRouteConstants.mainPage,
                       );
@@ -273,6 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     context
                         .read<GuestSessionCubit>()
                         .onGeneratingGuestSession();
+                    MyLogin.isLoggedIn(true);
                     Fluttertoast.showToast(
                       msg: 'Login Successful!',
                       backgroundColor: Colors.green,

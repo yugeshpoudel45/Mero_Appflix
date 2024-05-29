@@ -90,15 +90,4 @@ class MyApp extends StatelessWidget {
 }
 
 
-
-//padding: const EdgeInsets.symmetric(horizontal: 16),
-
-//Red Color
-//Ff0000
-
-//Netflix Color:
-//E50914
-
-
-
-
+//Release garda app bundle banauna matra baki aba

@@ -1,7 +1,0 @@
-TODOs
-
-Splash Screen (Create it later)
--Net chaleko xa ki xaina, check grne, xaina vane no internet connection vanera surumai dekhaune
-
-Onboarding Screen
--Add background image in it

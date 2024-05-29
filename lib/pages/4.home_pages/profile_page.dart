@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
+import 'package:netflix/components/local_storage/login_checker.dart';
 
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/cubit/delete_session_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/local_storage/watchlater_helper.dart';
 import '../../routes/app_route_constant.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -124,6 +126,9 @@ class ProfilePage extends StatelessWidget {
               text: "Log out",
               func: () async {
                 const _SessionDeleted();
+                MyListHelper.clearMovieList();
+                MyListHelper.clearTvShowList();
+                MyLogin.isLoggedIn(false);
                 GoRouter.of(context).pushReplacementNamed(
                   MyAppRouteConstants.loginPage,
                 );

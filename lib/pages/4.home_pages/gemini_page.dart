@@ -262,9 +262,7 @@ class _GeminiPageState extends State<GeminiPage> {
 
   Future<void> _sendInitialPrompt() async {
     try {
-      final response =
-          await session.sendMessage(Content.text(GeminiConstants.prompt));
-      // log(response.text.toString());
+      await session.sendMessage(Content.text(GeminiConstants.prompt));
     } catch (e) {
       log(e.toString());
       if (context.mounted) {
