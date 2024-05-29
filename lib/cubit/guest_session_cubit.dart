@@ -19,7 +19,7 @@ class GuestSessionCubit extends Cubit<GuestSessionState> {
           guestSessionModel: guestSessionModel,
         ),
       );
-    } catch (e) {
+    } catch (e) { 
       emit(GuestSessionErrorState(errorMessage: e.toString()));
     }
   }

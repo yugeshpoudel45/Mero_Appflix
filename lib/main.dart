@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:netflix/config/app_constants.dart';
+import 'package:netflix/cubit/delete_session_cubit.dart';
 import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:netflix/cubit/login_session_cubit.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:netflix/cubit/search_section_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_state.dart';
 import 'package:netflix/cubit/tv_show_details_cubit.dart';
+import 'package:netflix/repo/auth/delete_session_repo.dart';
 import 'package:netflix/repo/auth/guest_session_repo.dart';
 import 'package:netflix/repo/movie_details_repo.dart';
 import 'package:netflix/repo/movie_rating_repo.dart';
@@ -65,6 +67,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LoginSessionCubit(LoginSessionRepo()),
+        ),
+        BlocProvider(
+          create: (context) => DeleteSessionCubit(DeleteSessionRepo()),
         ),
         BlocProvider(
           create: (context) => ThemeCubit(),

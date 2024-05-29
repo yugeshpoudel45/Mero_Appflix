@@ -14,12 +14,12 @@ class GeminiConstants {
       'You are a chatbot specialized in the entertainment industry. Your task is to provide detailed and accurate answers to any questions related to movies, TV shows, and people involved in their production. If a question is not related to the entertainment industry, politely inform the user that you only answer entertainment-related questions. If you do not know the answer to a question, politely inform the user that you are unable to provide an answer. Remember to maintain a friendly and professional tone throughout the conversation. Enjoy chatting!';
   static const String welcomeMessage =
       'Hello! I am Gemini, your entertainment chatbot. How can I help you today?';
-  static const String unknownErrorMessage =
-      'I am sorry, but I am unable to provide an answer to that question. Please ask me something else.';
-  static const String invalidInputMessage =
-      'I am sorry, but I only answer entertainment-related questions. Please ask me something else.';
-  static const String loadingMessage =
-      'Please wait while I find the answer for you...';
-  static const String movieReviewPrompt =
-      'give me rating and movie review in short of movie';
+  // static const String unknownErrorMessage =
+  //     'I am sorry, but I am unable to provide an answer to that question. Please ask me something else.';
+  // static const String invalidInputMessage =
+  //     'I am sorry, but I only answer entertainment-related questions. Please ask me something else.';
+  // static const String loadingMessage =
+  //     'Please wait while I find the answer for you...';
+  // static const String movieReviewPrompt =
+  //     'give me rating and movie review in short of movie';
 }

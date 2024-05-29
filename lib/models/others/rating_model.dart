@@ -42,7 +42,6 @@ class _RatingModalState extends State<RatingModal> {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Container(
       height: mySize.height / 2.8,
-      // height: mySize.height / 2,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -140,7 +139,7 @@ class _RatingModalState extends State<RatingModal> {
       ),
     );
   }
-}
+} 
 
 class RatingGiven extends StatefulWidget {
   const RatingGiven({

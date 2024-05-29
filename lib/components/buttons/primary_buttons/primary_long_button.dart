@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:netflix/components/buttons/main_button_template/app_button.dart';
 
 class PrimaryLongButton extends StatelessWidget {
-  const PrimaryLongButton({super.key, required this.text, required this.func});
+  const PrimaryLongButton({
+    super.key,
+    required this.text,
+    required this.func,
+  }); 
 
   final String text;
   final VoidCallback func;
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     Size mySize = MediaQuery.sizeOf(context);
     return AppButton(

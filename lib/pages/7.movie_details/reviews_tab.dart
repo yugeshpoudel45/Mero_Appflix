@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,61 +30,87 @@ class _ReviewsTabState extends State<ReviewsTab> {
     apiKey: GeminiConstants.apiKey,
   );
 
-  String aiReview = "";
-
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    isLoading = true;
-    _sendInitialPrompt();
-    isLoading = false;
-    super.initState();
-  }
-
-  Future<void> _sendInitialPrompt() async {
+  Future<String> _sendInitialPrompt(String movie, String releaseYear) async {
     ChatSession session;
     session = model.startChat();
-    final response = await session.sendMessage(
-      Content.text(
-        "${GeminiConstants.movieReviewPrompt} PK ",
-      ),
-    );
-    setState(() {
-      aiReview = response.text!;
-    });
-    // try {
 
-    // } catch (e) {
-    //   log(e.toString());
-    //   if (context.mounted) {
-    //     ScaffoldMessenger.of(context)
-    //         .showSnackBar(SnackBar(content: Text(e.toString())));
-    //   }
-    // }
+    try {
+      final response = await session.sendMessage(
+        Content.text(
+            "You are a chatbot specialized in providing information about movies and TV shows.  The name and release year of a movie or TV show is $movie, $releaseYear. Your task is to identify whether it is a movie or TV show and provide AI generated rating and a short AI generated review. If you cannot find the information, politely inform the user."),
+      );
+      return response.text!.replaceAll('**', '');
+    } catch (e) {
+      return "Error in generating AI Review";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     TextTheme myTextTheme = Theme.of(context).textTheme;
-    return isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 16,
-                top: 16,
-                right: 16,
-              ),
-              child: widget.isMovie
-                  ? widget.state.movieDetailsModel.reviews!.results!.isEmpty
-                      ? const Center(
-                          child: ShowErrorMessage(
-                          errorMessage: "No Reviews given yet!",
-                          extraInfo: "😓",
-                        ))
+    Size mySize = MediaQuery.sizeOf(context);
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 16,
+          top: 16,
+          right: 16,
+        ),
+        child: widget.isMovie
+            ? Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(
+                      CupertinoIcons.ant_circle_fill,
+                    ),
+                    title: Text(
+                      "AI-Generated Review",
+                      style: myTextTheme.titleLarge!.copyWith(
+                        fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+                      ),
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: _sendInitialPrompt(
+                        widget.state.movieDetailsModel.title!,
+                        widget.state.movieDetailsModel.releaseDate!.year
+                            .toString(),
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const ShowErrorMessage(
+                              errorMessage: "Error in AI Review",
+                              extraInfo: "😓");
+                        } else {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: myColorScheme.secondaryContainer,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ReadMoreModel(
+                                trimLines: 4,
+                                text: snapshot.data.toString(),
+                                textStyle: myTextTheme.bodyMedium!,
+                              ),
+                            ),
+                          );
+                        }
+                      }),
+                  SizedBox(
+                    height: mySize.height / 64,
+                  ),
+                  const Divider(),
+                  widget.state.movieDetailsModel.reviews!.results!.isEmpty
+                      ? const SizedBox()
                       : Column(
                           children: [
                             Row(
@@ -123,8 +147,8 @@ class _ReviewsTabState extends State<ReviewsTab> {
                               children: List.generate(
                                   widget.state.movieDetailsModel.reviews!
                                               .results!.length >
-                                          2
-                                      ? 2
+                                          1
+                                      ? 1
                                       : widget.state.movieDetailsModel.reviews!
                                           .results!.length, (index) {
                                 final movieReviews =
@@ -146,42 +170,62 @@ class _ReviewsTabState extends State<ReviewsTab> {
                             ),
                           ],
                         )
-                  : widget.state.tvShowDetailsModel.reviews!.results!.isEmpty
-                      ? const Center(
-                          child: ShowErrorMessage(
-                            errorMessage: "No Reviews given yet!",
-                            extraInfo: "😣",
-                          ),
-                        )
-                      : Column(
-                          children: [
-                            ListTile(
-                              leading: const Icon(
-                                CupertinoIcons.ant_circle_fill,
-                              ),
-                              title: Text(
-                                "AI-Generated Review",
-                                style: myTextTheme.titleLarge!.copyWith(
-                                  fontFamily:
-                                      GoogleFonts.balsamiqSans().fontFamily!,
-                                ),
-                              ),
+                ],
+              )
+            : Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(
+                      CupertinoIcons.ant_circle_fill,
+                    ),
+                    title: Text(
+                      "AI-Generated Review",
+                      style: myTextTheme.titleLarge!.copyWith(
+                        fontFamily: GoogleFonts.balsamiqSans().fontFamily!,
+                      ),
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: _sendInitialPrompt(
+                        widget.state.tvShowDetailsModel.name!,
+                        widget.state.tvShowDetailsModel.firstAirDate!.year
+                            .toString(),
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const ShowErrorMessage(
+                              errorMessage: "Error in AI Review",
+                              extraInfo: "😓");
+                        } else {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: myColorScheme.secondaryContainer,
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16,
-                                right: 16,
-                                bottom: 16,
-                              ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
                               child: ReadMoreModel(
-                                text: aiReview.isEmpty
-                                    ? "No review found"
-                                    // : aiReview.replaceAll('*', ''),
-                                    : aiReview,
+                                trimLines: 4,
+                                text: snapshot.data.toString(),
                                 textStyle: myTextTheme.bodyMedium!,
                               ),
                             ),
-                            const Divider(),
+                          );
+                        }
+                      }),
+                  SizedBox(
+                    height: mySize.height / 64,
+                  ),
+                  const Divider(),
+                  widget.state.tvShowDetailsModel.reviews!.results!.isEmpty
+                      ? const SizedBox()
+                      : Column(
+                          children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -238,8 +282,10 @@ class _ReviewsTabState extends State<ReviewsTab> {
                               }),
                             ),
                           ],
-                        ),
-            ),
-          );
+                        )
+                ],
+              ),
+      ),
+    );
   }
 }

@@ -17,7 +17,7 @@ final class GuestSessionLoadedState extends GuestSessionState {
   const GuestSessionLoadedState({required this.guestSessionModel});
 
   @override
-  List<Object> get props => [guestSessionModel];
+  List<Object> get props => [guestSessionModel]; 
 }
 
 final class GuestSessionErrorState extends GuestSessionState {

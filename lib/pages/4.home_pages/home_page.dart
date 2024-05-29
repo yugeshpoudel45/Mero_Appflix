@@ -355,29 +355,9 @@ class __LocalCarouselModelState extends State<_LocalCarouselModel> {
                 SizedBox(
                   height: mySize.height / 40,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      AppAssets.appLogo,
-                      height: mySize.height / 24,
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          CupertinoIcons.search,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                        SizedBox(width: mySize.width / 20),
-                        const Icon(
-                          CupertinoIcons.bell,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                      ],
-                    ),
-                  ],
+                Image.asset(
+                  AppAssets.appLogo,
+                  height: mySize.height / 24,
                 ),
                 SizedBox(height: mySize.height / 8),
                 Text(

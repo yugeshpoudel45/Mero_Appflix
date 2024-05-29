@@ -2,10 +2,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
 
 import 'package:netflix/config/app_local_assets.dart';
+import 'package:netflix/cubit/delete_session_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../routes/app_route_constant.dart';
 
@@ -50,14 +54,14 @@ class ProfilePage extends StatelessWidget {
           title: 'General',
           items: [
             SettingsItem(
-              icon: Icons.person,
-              text: 'Personal Info',
-              onTap: () {},
-            ),
-            SettingsItem(
               icon: Icons.language,
               text: 'Language',
-              onTap: () {},
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "This feature is not available yet",
+                  backgroundColor: Colors.red,
+                );
+              },
             ),
             SettingsItem(
               icon: Icons.color_lens,
@@ -77,7 +81,7 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: mySize.height / 32,
+          height: mySize.height / 64,
         ),
         SettingsSection(
           title: 'About',
@@ -85,22 +89,118 @@ class ProfilePage extends StatelessWidget {
             SettingsItem(
               icon: Icons.help,
               text: 'Help Center',
-              onTap: () {},
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "This feature is not available yet",
+                  backgroundColor: Colors.red,
+                );
+              },
             ),
             SettingsItem(
               icon: Icons.privacy_tip,
               text: 'Privacy Policy',
-              onTap: () {},
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "This feature is not available yet",
+                  backgroundColor: Colors.red,
+                );
+              },
             ),
             SettingsItem(
               icon: Icons.info,
               text: 'About us',
-              onTap: () {},
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "This feature is not available yet",
+                  backgroundColor: Colors.red,
+                );
+              },
             ),
           ],
         ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: PrimaryLongButton(
+              text: "Log out",
+              func: () async {
+                const _SessionDeleted();
+                GoRouter.of(context).pushReplacementNamed(
+                  MyAppRouteConstants.loginPage,
+                );
+                Fluttertoast.showToast(
+                  msg: 'Logged Out!',
+                  backgroundColor: Colors.red,
+                );
+              }),
+        ),
       ],
     );
+  }
+}
+
+class _SessionDeleted extends StatefulWidget {
+  const _SessionDeleted();
+
+  @override
+  State<_SessionDeleted> createState() => __SessionDeletedState();
+}
+
+class __SessionDeletedState extends State<_SessionDeleted> {
+  String sessionId = "";
+  bool isGuest = true;
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 1), () async {
+      await getSharedPref();
+    });
+    isGuest
+        ? const SizedBox()
+        : context.read<DeleteSessionCubit>().onDeletingSession(
+              sessionId,
+            );
+    super.initState();
+  }
+
+  Future<void> getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    sessionId = prefs.getString('sessionId') ?? "";
+    isGuest = prefs.getBool('isGuest') ?? true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isGuest
+        ? const Column(
+            children: [
+              Text(
+                'Session Deleted!',
+              ),
+            ],
+          )
+        : BlocBuilder<DeleteSessionCubit, DeleteSessionState>(
+            builder: (context, state) {
+              if (state is DeleteSessionLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is DeleteSessionLoadedState) {
+                return const Column(
+                  children: [
+                    Text(
+                      'Session Deleted!',
+                    ),
+                  ],
+                );
+              } else if (state is DeleteSessionErrorState) {
+                return Center(
+                  child: Text(state.errorMessage),
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
+          );
   }
 }
 
@@ -164,13 +264,10 @@ class _SettingsItemState extends State<SettingsItem> {
     return ListTile(
       leading: Icon(
         widget.icon,
-        color: Colors.black,
       ),
       title: Text(
         widget.text,
-        style: myTextTheme.bodyLarge!.copyWith(
-          color: Colors.black,
-        ),
+        style: myTextTheme.bodyLarge!.copyWith(),
       ),
       trailing: widget.isSwitch
           ? CupertinoSwitch(

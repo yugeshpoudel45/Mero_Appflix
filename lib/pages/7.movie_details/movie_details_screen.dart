@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/components/local_storage/watchlater_helper.dart';
@@ -115,21 +116,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: mySize.width / 1.5,
-                                      child: Text(
-                                        movie.title!,
-                                        style: myTextTheme.headlineSmall,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    const Icon(Icons.share_outlined),
-                                  ],
+                                Text(
+                                  movie.title!,
+                                  style: myTextTheme.headlineSmall,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: mySize.height / 80),
                                 SingleChildScrollView(
@@ -207,20 +198,30 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                         icon: Icons.play_circle_fill_outlined,
                                         text: "Play",
                                         func: () {
-                                          GoRouter.of(context).pushNamed(
-                                            MyAppRouteConstants.playingPage,
-                                            extra: state,
-                                            pathParameters: {
-                                              'movieKey': state
-                                                  .movieDetailsModel
-                                                  .videos!
-                                                  .results![0]
-                                                  .key!,
-                                              'name': state.movieDetailsModel
-                                                  .videos!.results![0].name!,
-                                              'isMovie': 'true',
-                                            },
-                                          );
+                                          state.movieDetailsModel.videos!
+                                                  .results!.isEmpty
+                                              ? Fluttertoast.showToast(
+                                                  msg: "No Trailers Available!",
+                                                  backgroundColor: Colors.red,
+                                                )
+                                              : GoRouter.of(context).pushNamed(
+                                                  MyAppRouteConstants
+                                                      .playingPage,
+                                                  extra: state,
+                                                  pathParameters: {
+                                                    'movieKey': state
+                                                        .movieDetailsModel
+                                                        .videos!
+                                                        .results![0]
+                                                        .key!,
+                                                    'name': state
+                                                        .movieDetailsModel
+                                                        .videos!
+                                                        .results![0]
+                                                        .name!,
+                                                    'isMovie': 'true',
+                                                  },
+                                                );
                                         },
                                         height: mySize.height / 16,
                                         width: mySize.width / 2.3,

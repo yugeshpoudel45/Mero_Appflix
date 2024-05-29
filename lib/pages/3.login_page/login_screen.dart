@@ -321,7 +321,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         _storeGuestSessionId(
                           state.guestSessionModel.guestSessionId.toString(),
                         );
-                        return const SizedBox();
+                        return Text(
+                          "Continue as Guest",
+                          style: myTextTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
                       } else {
                         return const SizedBox();
                       }
