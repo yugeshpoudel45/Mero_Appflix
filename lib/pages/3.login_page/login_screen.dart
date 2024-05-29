@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/checkbox/app_checkbox.dart';
 import 'package:netflix/components/urls/url_launcher.dart';
@@ -214,6 +215,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is LoginSessionErrorState) {
+                    Fluttertoast.showToast(
+                      msg: 'Login Failed!',
+                      backgroundColor: Colors.green,
+                    );
                     return SizedBox(
                       height: mySize.height / 12,
                       child: const Center(
@@ -228,6 +233,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   } else if (state is LoginSessionLoadedState) {
                     _storeLoginSessionId(
                       state.loginSessionModel.sessionId.toString(),
+                    );
+                    Fluttertoast.showToast(
+                      msg: 'Login Successful!',
+                      backgroundColor: Colors.green,
                     );
                     Future.delayed(const Duration(seconds: 1), () {
                       GoRouter.of(context).pushReplacementNamed(
@@ -264,6 +273,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     context
                         .read<GuestSessionCubit>()
                         .onGeneratingGuestSession();
+                    Fluttertoast.showToast(
+                      msg: 'Login Successful!',
+                      backgroundColor: Colors.green,
+                    );
                     Future.delayed(const Duration(seconds: 1), () {
                       GoRouter.of(context).pushReplacementNamed(
                         MyAppRouteConstants.mainPage,
@@ -297,6 +310,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: CircularProgressIndicator(),
                         );
                       } else if (state is GuestSessionErrorState) {
+                        Fluttertoast.showToast(
+                          msg: "Login Failed!",
+                          backgroundColor: Colors.red,
+                        );
                         return Center(
                           child: Text(state.errorMessage),
                         );

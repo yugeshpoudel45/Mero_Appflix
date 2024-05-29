@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/pages/2.onboarding_screen/pages.dart';
 import 'package:netflix/pages/3.login_page/login_screen.dart';
-import 'package:netflix/pages/5.home_pages/main_page.dart';
-import 'package:netflix/pages/6.Inside_home_pages/trending_movies_page.dart';
-import 'package:netflix/pages/6.Inside_home_pages/trending_people_page.dart';
-import 'package:netflix/pages/6.Inside_home_pages/trending_tvshow_page.dart';
-import 'package:netflix/pages/7.%20Inside_profile_page.dart/themes_page.dart';
-import 'package:netflix/pages/8.movie_details/movie_details_screen.dart';
-import 'package:netflix/pages/8.movie_details/playing_screen.dart';
-import 'package:netflix/pages/8.movie_details/reviews_screen.dart';
-import 'package:netflix/pages/8.movie_details/tv_show_details_screen.dart';
+import 'package:netflix/pages/4.home_pages/main_page.dart';
+import 'package:netflix/pages/5.Inside_home_pages/trending_movies_page.dart';
+import 'package:netflix/pages/5.Inside_home_pages/trending_people_page.dart';
+import 'package:netflix/pages/5.Inside_home_pages/trending_tvshow_page.dart';
+import 'package:netflix/pages/6.%20Inside_profile_page.dart/themes_page.dart';
+import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
+import 'package:netflix/pages/7.movie_details/playing_screen.dart';
+import 'package:netflix/pages/7.movie_details/reviews_screen.dart';
+import 'package:netflix/pages/7.movie_details/tv_show_details_screen.dart';
 import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../cubit/trending_section_cubit.dart';
 import '../demo_error_page.dart';
 import '../demo_starting_page.dart';
-import '../pages/8.movie_details/people_details_screen.dart';
+import '../pages/7.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
   GoRouter router = GoRouter(
@@ -128,7 +128,7 @@ class MyAppRouter {
       GoRoute(
         name: MyAppRouteConstants.themesPage,
         path: '/themesPage',
-        pageBuilder: (context, state) => MaterialPage(
+        pageBuilder: (context, state) => const MaterialPage(
           child: ThemesPage(),
         ),
       ),

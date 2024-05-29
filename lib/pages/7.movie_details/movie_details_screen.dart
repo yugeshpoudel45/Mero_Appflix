@@ -11,7 +11,7 @@ import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/models/others/check_rating_model.dart';
 import 'package:netflix/models/others/movie_listtile_model.dart';
 import 'package:netflix/models/others/readmore_model.dart';
-import 'package:netflix/pages/8.movie_details/reviews_tab.dart';
+import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 
 import '../../../components/buttons/play_button/play_button.dart';
 import '../../../models/others/movie_carousel_model.dart';

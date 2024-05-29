@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyListHelper {
@@ -12,6 +14,10 @@ class MyListHelper {
     await prefs1.setStringList('movieId', movieId);
     await prefs1.setStringList('movieImage', movieImage);
     log('Movie Added to List');
+    Fluttertoast.showToast(
+      msg: 'Added to List!',
+      backgroundColor: Colors.green,
+    );
   }
 
   static Future<List<List<String>>> getMovieList() async {
@@ -41,6 +47,10 @@ class MyListHelper {
     Future.wait([
       prefs1.setStringList('movieId', movieId..remove(id)),
       prefs1.setStringList('movieImage', movieImage..remove(image)),
+      Fluttertoast.showToast(
+        msg: 'Removed from List!',
+        backgroundColor: Colors.red,
+      ),
     ]);
     log('Movie Removed from List');
   }
@@ -55,6 +65,10 @@ class MyListHelper {
     await prefs1.setStringList('tvShowId', tvShowId);
     await prefs1.setStringList('tvShowImage', tvShowImage);
     log('Tv Show Added to List');
+    Fluttertoast.showToast(
+      msg: 'Added to List!',
+      backgroundColor: Colors.green,
+    );
   }
 
   static Future<List<List<String>>> getTvShowList() async {
@@ -84,6 +98,10 @@ class MyListHelper {
     Future.wait([
       prefs1.setStringList('tvShowId', tvShowId..remove(id)),
       prefs1.setStringList('tvShowImage', tvShowImage..remove(image)),
+      Fluttertoast.showToast(
+        msg: 'Removed from List!',
+        backgroundColor: Colors.red,
+      )
     ]);
     log('Tv Show Removed from List');
   }

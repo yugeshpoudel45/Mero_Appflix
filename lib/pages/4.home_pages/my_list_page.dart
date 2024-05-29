@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/components/buttons/other_buttons/choosing_button.dart';
@@ -115,6 +116,10 @@ class _MyListPageState extends State<MyListPage> {
                                       setState(() {
                                         _storedDataFuture = getStoredData();
                                       });
+                                      Fluttertoast.showToast(
+                                        msg: 'List Cleared!',
+                                        backgroundColor: Colors.red,
+                                      );
                                       Navigator.pop(context);
                                     },
                                     child: const Text("Yes"),

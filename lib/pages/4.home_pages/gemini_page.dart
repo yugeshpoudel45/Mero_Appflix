@@ -48,14 +48,6 @@ class _GeminiPageState extends State<GeminiPage> {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     "Movie Talks with AI",
-      //     style: myTextTheme.headlineSmall,
-      //   ),
-      //   centerTitle: true,
-      //   automaticallyImplyLeading: false,
-      // ),
       body: Column(
         children: [
           Padding(

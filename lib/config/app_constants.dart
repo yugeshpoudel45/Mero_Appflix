@@ -20,4 +20,6 @@ class GeminiConstants {
       'I am sorry, but I only answer entertainment-related questions. Please ask me something else.';
   static const String loadingMessage =
       'Please wait while I find the answer for you...';
+  static const String movieReviewPrompt =
+      'give me rating and movie review in short of movie';
 }

@@ -15,14 +15,17 @@ class MovieReviewsModel extends StatefulWidget {
   final double rating;
   final DateTime datetime;
   final String avatar;
-  const MovieReviewsModel(
-      {super.key,
-      required this.name,
-      required this.userName,
-      required this.comment,
-      required this.rating,
-      required this.datetime,
-      required this.avatar});
+  final bool isAI;
+  const MovieReviewsModel({
+    super.key,
+    required this.name,
+    required this.userName,
+    required this.comment,
+    required this.rating,
+    required this.datetime,
+    required this.avatar,
+    this.isAI = false,
+  });
 
   @override
   State<MovieReviewsModel> createState() => _MovieReviewsModelState();
@@ -39,16 +42,20 @@ class _MovieReviewsModelState extends State<MovieReviewsModel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          leading: CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
-              "https://image.tmdb.org/t/p/original/${widget.avatar}",
-              cacheManager: CustomCacheManager.instance,
-              errorListener: (p0) => log(
-                "Error: $p0",
-                name: "CachedNetworkImage",
-              ),
-            ),
-          ),
+          leading: widget.isAI
+              ? const Icon(
+                  CupertinoIcons.ant_circle_fill,
+                )
+              : CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                    "https://image.tmdb.org/t/p/original/${widget.avatar}",
+                    cacheManager: CustomCacheManager.instance,
+                    errorListener: (p0) => log(
+                      "Error: $p0",
+                      name: "CachedNetworkImage",
+                    ),
+                  ),
+                ),
           title: Text(
             widget.name,
             style: myTextTheme.titleMedium!.copyWith(

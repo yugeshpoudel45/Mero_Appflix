@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
@@ -29,6 +30,10 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
           Center(
             child: ElevatedButton(
               onPressed: () {
+                Fluttertoast.showToast(
+                  msg: 'Welcome to the world of Netflix!',
+                  backgroundColor: Colors.green,
+                );
                 // log("Welcome to the World");
                 // GoRouter.of(context).pushNamed(
                 //   MyAppRouteConstants.practicePage,
@@ -49,6 +54,7 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
                 // );
               },
               child: const Text('Login'),
+              // Icon(CupertinoIcons.ant_circle_fill),
             ),
           ),
         ],
@@ -56,4 +62,3 @@ class _DemoStartingPageState extends State<DemoStartingPage> {
     );
   }
 }
-

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix/pages/5.home_pages/gemini_page.dart';
-import 'package:netflix/pages/5.home_pages/explore_page.dart';
-import 'package:netflix/pages/5.home_pages/home_page.dart';
-import 'package:netflix/pages/5.home_pages/my_list_page.dart';
-import 'package:netflix/pages/5.home_pages/profile_page.dart';
+import 'package:netflix/pages/4.home_pages/gemini_page.dart';
+import 'package:netflix/pages/4.home_pages/explore_page.dart';
+import 'package:netflix/pages/4.home_pages/home_page.dart';
+import 'package:netflix/pages/4.home_pages/my_list_page.dart';
+import 'package:netflix/pages/4.home_pages/profile_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

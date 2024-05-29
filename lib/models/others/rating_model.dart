@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/buttons/other_buttons/bottom_sheet_buttons.dart';
@@ -101,6 +102,10 @@ class _RatingModalState extends State<RatingModal> {
                 ratingGiven = false;
               });
               log("Rating Deleted");
+              Fluttertoast.showToast(
+                msg: 'Rating Deleted!',
+                backgroundColor: Colors.red,
+              );
               Navigator.of(context).pop();
             },
             func2: () {
@@ -108,6 +113,10 @@ class _RatingModalState extends State<RatingModal> {
                 ratingGiven = true;
                 ratingDeleted = false;
               });
+              Fluttertoast.showToast(
+                msg: 'Rating Submitted!',
+                backgroundColor: Colors.green,
+              );
               log("Rating Submitted");
               Navigator.of(context).pop();
             },
