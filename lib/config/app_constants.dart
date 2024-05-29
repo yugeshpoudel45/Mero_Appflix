@@ -1,5 +1,5 @@
 class AppConstants {
-  static const String appName = "Mero Netflix";
+  static const String appName = "Mero Appflix";
   static const String placeHolderImage = "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png";
 }
 

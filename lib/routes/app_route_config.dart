@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:netflix/components/Error/error_page.dart';
+import 'package:netflix/pages/1.splash_screen/splash.dart';
 import 'package:netflix/pages/2.onboarding_screen/pages.dart';
 import 'package:netflix/pages/3.login_page/login_screen.dart';
 import 'package:netflix/pages/4.home_pages/main_page.dart';
@@ -11,29 +13,21 @@ import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
 import 'package:netflix/pages/7.movie_details/playing_screen.dart';
 import 'package:netflix/pages/7.movie_details/reviews_screen.dart';
 import 'package:netflix/pages/7.movie_details/tv_show_details_screen.dart';
-import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../cubit/trending_section_cubit.dart';
-import '../demo_error_page.dart';
-import '../demo_starting_page.dart';
 import '../pages/7.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
   GoRouter router = GoRouter(
     routes: [
-      GoRoute(
-        name: MyAppRouteConstants.practicePage,
-        path: '/practice',
-        pageBuilder: (context, state) => const MaterialPage(child: Practice()),
-      ),
       //!--------------------------------------------------------------------------------------------------------------------------
       //!-------------------------------------------------This is home route-------------------------------------------------------
       GoRoute(
-        name: MyAppRouteConstants.demoStartingPageRouteName,
+        name: MyAppRouteConstants.splashScreen,
         path: '/',
         pageBuilder: (context, state) => const MaterialPage(
-          child: DemoStartingPage(),
+          child: SplashScreen(),
         ),
       ),
       //!--------------------------------------------------------------------------------------------------------------------------
@@ -135,8 +129,9 @@ class MyAppRouter {
     ],
     errorPageBuilder: (context, state) {
       return const MaterialPage(
-        child: ErrorPage(
+        child: ShowErrorMessage(
           errorMessage: "Something Went Wrong during Routing",
+          extraInfo: 'Please check the route name and path',
         ),
       );
     },

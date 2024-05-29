@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
 import 'package:netflix/pages/2.onboarding_screen/datas.dart';
+
+import '../../routes/app_route_constant.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -15,13 +18,16 @@ class OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
-//!
   // Function to automatically go to the next page
   void _goToNextPage() {
     if (_pageController.page! < 2) {
       // Check if not on the last page
       _pageController.nextPage(
-          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+        duration: const Duration(
+          seconds: 1,
+        ),
+        curve: Curves.ease,
+      );
     }
   }
 
@@ -47,7 +53,6 @@ class OnboardingPageState extends State<OnboardingPage> {
     _pageController.dispose();
     super.dispose();
   }
-  //!
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +60,12 @@ class OnboardingPageState extends State<OnboardingPage> {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Container(
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     image: AssetImage(onBoardingpages[_currentPage].imagePath),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
-        color: Colors.black,
-        //TODO Add the background image later on
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(onBoardingpages[_currentPage].imagePath),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -115,7 +118,9 @@ class OnboardingPageState extends State<OnboardingPage> {
               PrimaryLongButton(
                   text: "Get Started",
                   func: () {
-                    //TODO add functionality here
+                    GoRouter.of(context).pushNamed(
+                      MyAppRouteConstants.loginPage,
+                    );
                   }),
               SizedBox(height: mySize.height / 64),
             ],

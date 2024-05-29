@@ -1,7 +1,5 @@
 class MyAppRouteConstants {
-  static const String practicePage = "practice"; //Comment this later on
-  static const String demoStartingPageRouteName =
-      "demo"; //!Change this later on
+  static const String splashScreen = "splashScreen";
   static const String onBoardingPage = "onBoardingPage";
   static const String mainPage = "mainPage";
   static const String trendingMoviesPage = "trendingMoviesPage";

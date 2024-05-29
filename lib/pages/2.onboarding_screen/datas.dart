@@ -14,12 +14,12 @@ final List<OnBoardingModel> onBoardingpages = [
     title: "Your Ultimate Movie Companion",
     description:
         " Explore, discover, and enjoy endless cinematic adventures with ease!",
-    imagePath: AppAssets.onBoard1,
+    imagePath: AppAssets.onBoard2,
   ),
   OnBoardingModel(
     title: "Dive into the Magic of Cinema",
     description:
         "Unveil the magic of movies effortlessly with ${AppConstants.appName}.",
-    imagePath: AppAssets.onBoard1,
+    imagePath: AppAssets.onBoard3,
   ),
 ];

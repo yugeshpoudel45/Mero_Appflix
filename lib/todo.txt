@@ -5,5 +5,3 @@ Splash Screen (Create it later)
 
 Onboarding Screen
 -Add background image in it
-
---Add the AI generated reviews and rating section in the app
