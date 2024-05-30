@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netflix/cubit/network_cubit.dart';
+import 'package:netflix/cubit/network_state.dart';
 import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
@@ -69,217 +71,240 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
           String youtubeId = people.externalIds!.youtubeId.toString();
 
           return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  people.images!.profiles!.isNotEmpty
-                      ? AnimatedCarouselModel(
-                          height: mySize.height / 1.6,
-                          items: people.images!.profiles!
-                              .map((e) => e.filePath!)
-                              .toList())
-                      : SizedBox(
-                          height: mySize.height / 40,
-                        ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: mySize.width,
-                          child: Text(
-                            people.name!,
-                            style: myTextTheme.headlineMedium,
-                            textAlign: TextAlign.center,
+            body: BlocListener<NetworkCubit, NetworkState>(
+        listener: (context, state) {
+           if (state == NetworkState.disconnected) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'PLEASE CONNECT TO THE INTERNET',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                backgroundColor: Colors.red[400],
+                duration: const Duration(days: 1),
+                behavior: SnackBarBehavior.fixed,
+                dismissDirection: DismissDirection.none,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }
+        },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    people.images!.profiles!.isNotEmpty
+                        ? AnimatedCarouselModel(
+                            height: mySize.height / 1.6,
+                            items: people.images!.profiles!
+                                .map((e) => e.filePath!)
+                                .toList())
+                        : SizedBox(
+                            height: mySize.height / 40,
                           ),
-                        ),
-                        people.alsoKnownAs!.isNotEmpty
-                            ? SizedBox(
-                                width: mySize.width,
-                                child: Text(
-                                  "(${people.alsoKnownAs![0]})",
-                                  style: myTextTheme.titleMedium,
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            : const SizedBox(),
-                        SizedBox(height: mySize.height / 64),
-                        CupertinoListSection.insetGrouped(
-                          header: Text(
-                            'Personal Info',
-                            style: myTextTheme.titleLarge!.copyWith(
-                              fontFamily:
-                                  GoogleFonts.balsamiqSans().fontFamily!,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: mySize.width,
+                            child: Text(
+                              people.name!,
+                              style: myTextTheme.headlineMedium,
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                          margin: const EdgeInsets.all(4),
-                          children: [
-                            people.birthday != null
-                                ? _MyListTile(
-                                    title: "Born",
-                                    details:
-                                        "${people.birthday!.year}-${people.birthday!.month}-${people.birthday!.day}",
-                                  )
-                                : const SizedBox(),
-                            people.placeOfBirth != null &&
-                                    people.placeOfBirth!.length < 30
-                                ? _MyListTile(
-                                    title: "BirthPlace",
-                                    details: people.placeOfBirth.toString())
-                                : const SizedBox(),
-                            people.deathday != null
-                                ? _MyListTile(
-                                    title: "Died",
-                                    details:
-                                        "${people.deathday!.year}-${people.deathday!.month}-${people.deathday!.day}")
-                                : const SizedBox(),
-                            people.gender != null
-                                ? _MyListTile(
-                                    title: "Gender",
-                                    details:
-                                        people.gender == 1 ? "Female" : "Male",
-                                  )
-                                : const SizedBox(),
-                            people.knownForDepartment != null
-                                ? _MyListTile(
-                                    title: "Department",
-                                    details:
-                                        people.knownForDepartment.toString(),
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
-                        SizedBox(height: mySize.height / 40),
-                        people.biography!.isNotEmpty
-                            ? Text(
-                                'Biography',
-                                style: myTextTheme.titleLarge!.copyWith(
-                                  fontFamily:
-                                      GoogleFonts.balsamiqSans().fontFamily!,
-                                ),
-                              )
-                            : const SizedBox(),
-                        people.biography!.isNotEmpty
-                            ? ReadMoreModel(
-                                text: people.biography.toString(),
-                                textStyle: myTextTheme.bodyMedium!,
-                              )
-                            : const SizedBox(),
-                        SizedBox(height: mySize.height / 40),
-                        facebookId != "unavailable" ||
-                                instagramId != "unavailable" ||
-                                twitterId != "unavailable" ||
-                                tiktokId != "unavailable" ||
-                                youtubeId != "unavailable"
-                            ? Text(
-                                'Social Media Handles',
-                                style: myTextTheme.titleLarge!.copyWith(
-                                  fontFamily:
-                                      GoogleFonts.balsamiqSans().fontFamily!,
-                                ),
-                              )
-                            : const SizedBox(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            facebookId != "unavailable"
-                                ? SocialHandles(
-                                    id: facebookId,
-                                    socialMedia: "facebook",
-                                  )
-                                : const SizedBox(),
-                            instagramId != "unavailable"
-                                ? SocialHandles(
-                                    id: instagramId,
-                                    socialMedia: "instagram",
-                                  )
-                                : const SizedBox(),
-                            twitterId != "unavailable"
-                                ? SocialHandles(
-                                    id: twitterId,
-                                    socialMedia: "twitter",
-                                  )
-                                : const SizedBox(),
-                            tiktokId != "unavailable"
-                                ? SocialHandles(
-                                    id: tiktokId,
-                                    socialMedia: "tiktok",
-                                  )
-                                : const SizedBox(),
-                            youtubeId != "unavailable"
-                                ? SocialHandles(
-                                    id: youtubeId,
-                                    socialMedia: "youtube",
-                                  )
-                                : const SizedBox(),
-                          ],
-                        ),
-                        SizedBox(height: mySize.height / 40),
-                        combinedMovie.isNotEmpty
-                            ? Text(
-                                'Known For',
-                                style: myTextTheme.titleLarge!.copyWith(
-                                  fontFamily:
-                                      GoogleFonts.balsamiqSans().fontFamily!,
-                                ),
-                              )
-                            : const SizedBox(),
-                        combinedMovie.isNotEmpty
-                            ? SizedBox(height: mySize.height / 80)
-                            : const SizedBox(),
-                        combinedMovie.isNotEmpty
-                            ? SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SizedBox(
-                                  height: 200,
-                                  child: ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: combinedMovie.length > 5
-                                          ? 5
-                                          : combinedMovie.length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            combinedMovie[index]
-                                                        .mediaType
-                                                        .toString() ==
-                                                    "MediaType.MOVIE"
-                                                ? GoRouter.of(context)
-                                                    .pushNamed(
-                                                    MyAppRouteConstants
-                                                        .movieDetailsPage,
-                                                    extra:
-                                                        combinedMovie[index].id,
-                                                  )
-                                                : GoRouter.of(context)
-                                                    .pushNamed(
-                                                    MyAppRouteConstants
-                                                        .tvShowDetailsPage,
-                                                    extra:
-                                                        combinedMovie[index].id,
-                                                  );
-                                          },
-                                          child: MovieCarouselModel(
-                                            image: combinedMovie[index]
-                                                .posterPath
-                                                .toString(),
-                                            rating: combinedMovie[index]
-                                                .voteAverage!
-                                                .toDouble(),
-                                          ),
-                                        );
-                                      }),
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
+                          people.alsoKnownAs!.isNotEmpty
+                              ? SizedBox(
+                                  width: mySize.width,
+                                  child: Text(
+                                    "(${people.alsoKnownAs![0]})",
+                                    style: myTextTheme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              : const SizedBox(),
+                          SizedBox(height: mySize.height / 64),
+                          CupertinoListSection.insetGrouped(
+                            header: Text(
+                              'Personal Info',
+                              style: myTextTheme.titleLarge!.copyWith(
+                                fontFamily:
+                                    GoogleFonts.balsamiqSans().fontFamily!,
+                              ),
+                            ),
+                            margin: const EdgeInsets.all(4),
+                            children: [
+                              people.birthday != null
+                                  ? _MyListTile(
+                                      title: "Born",
+                                      details:
+                                          "${people.birthday!.year}-${people.birthday!.month}-${people.birthday!.day}",
+                                    )
+                                  : const SizedBox(),
+                              people.placeOfBirth != null &&
+                                      people.placeOfBirth!.length < 30
+                                  ? _MyListTile(
+                                      title: "BirthPlace",
+                                      details: people.placeOfBirth.toString())
+                                  : const SizedBox(),
+                              people.deathday != null
+                                  ? _MyListTile(
+                                      title: "Died",
+                                      details:
+                                          "${people.deathday!.year}-${people.deathday!.month}-${people.deathday!.day}")
+                                  : const SizedBox(),
+                              people.gender != null
+                                  ? _MyListTile(
+                                      title: "Gender",
+                                      details: people.gender == 1
+                                          ? "Female"
+                                          : "Male",
+                                    )
+                                  : const SizedBox(),
+                              people.knownForDepartment != null
+                                  ? _MyListTile(
+                                      title: "Department",
+                                      details:
+                                          people.knownForDepartment.toString(),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                          SizedBox(height: mySize.height / 40),
+                          people.biography!.isNotEmpty
+                              ? Text(
+                                  'Biography',
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                )
+                              : const SizedBox(),
+                          people.biography!.isNotEmpty
+                              ? ReadMoreModel(
+                                  text: people.biography.toString(),
+                                  textStyle: myTextTheme.bodyMedium!,
+                                )
+                              : const SizedBox(),
+                          SizedBox(height: mySize.height / 40),
+                          facebookId != "unavailable" ||
+                                  instagramId != "unavailable" ||
+                                  twitterId != "unavailable" ||
+                                  tiktokId != "unavailable" ||
+                                  youtubeId != "unavailable"
+                              ? Text(
+                                  'Social Media Handles',
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                )
+                              : const SizedBox(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              facebookId != "unavailable"
+                                  ? SocialHandles(
+                                      id: facebookId,
+                                      socialMedia: "facebook",
+                                    )
+                                  : const SizedBox(),
+                              instagramId != "unavailable"
+                                  ? SocialHandles(
+                                      id: instagramId,
+                                      socialMedia: "instagram",
+                                    )
+                                  : const SizedBox(),
+                              twitterId != "unavailable"
+                                  ? SocialHandles(
+                                      id: twitterId,
+                                      socialMedia: "twitter",
+                                    )
+                                  : const SizedBox(),
+                              tiktokId != "unavailable"
+                                  ? SocialHandles(
+                                      id: tiktokId,
+                                      socialMedia: "tiktok",
+                                    )
+                                  : const SizedBox(),
+                              youtubeId != "unavailable"
+                                  ? SocialHandles(
+                                      id: youtubeId,
+                                      socialMedia: "youtube",
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                          SizedBox(height: mySize.height / 40),
+                          combinedMovie.isNotEmpty
+                              ? Text(
+                                  'Known For',
+                                  style: myTextTheme.titleLarge!.copyWith(
+                                    fontFamily:
+                                        GoogleFonts.balsamiqSans().fontFamily!,
+                                  ),
+                                )
+                              : const SizedBox(),
+                          combinedMovie.isNotEmpty
+                              ? SizedBox(height: mySize.height / 80)
+                              : const SizedBox(),
+                          combinedMovie.isNotEmpty
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: SizedBox(
+                                    height: 200,
+                                    child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: combinedMovie.length > 5
+                                            ? 5
+                                            : combinedMovie.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              combinedMovie[index]
+                                                          .mediaType
+                                                          .toString() ==
+                                                      "MediaType.MOVIE"
+                                                  ? GoRouter.of(context)
+                                                      .pushNamed(
+                                                      MyAppRouteConstants
+                                                          .movieDetailsPage,
+                                                      extra:
+                                                          combinedMovie[index]
+                                                              .id,
+                                                    )
+                                                  : GoRouter.of(context)
+                                                      .pushNamed(
+                                                      MyAppRouteConstants
+                                                          .tvShowDetailsPage,
+                                                      extra:
+                                                          combinedMovie[index]
+                                                              .id,
+                                                    );
+                                            },
+                                            child: MovieCarouselModel(
+                                              image: combinedMovie[index]
+                                                  .posterPath
+                                                  .toString(),
+                                              rating: combinedMovie[index]
+                                                  .voteAverage!
+                                                  .toDouble(),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

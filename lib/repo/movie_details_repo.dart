@@ -24,7 +24,7 @@ class MoviesDetailsRepo {
             movieDetailsModelFromJson(response.body.toString());
         return movieDetailsModel;
       } else {
-        throw Exception("Failed to Load Movie Details"); 
+        throw Exception("Failed to Load Movie Details");
       }
     } catch (e) {
       log("Exception caught: $e");

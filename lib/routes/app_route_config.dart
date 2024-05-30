@@ -19,7 +19,7 @@ import '../cubit/trending_section_cubit.dart';
 import '../pages/7.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
-  GoRouter router = GoRouter(
+ GoRouter router = GoRouter(
     routes: [
       //!--------------------------------------------------------------------------------------------------------------------------
       //!-------------------------------------------------This is home route-------------------------------------------------------

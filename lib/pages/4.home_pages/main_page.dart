@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/cubit/network_cubit.dart';
+import 'package:netflix/cubit/network_state.dart';
 import 'package:netflix/pages/4.home_pages/gemini_page.dart';
 import 'package:netflix/pages/4.home_pages/explore_page.dart';
 import 'package:netflix/pages/4.home_pages/home_page.dart';
@@ -33,7 +36,27 @@ class _MainPageState extends State<MainPage> {
     ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: getBody(selectedIndex),
+      body: BlocListener<NetworkCubit, NetworkState>(
+        listener: (context, state) {
+          if (state == NetworkState.disconnected) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'PLEASE CONNECT TO THE INTERNET',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                backgroundColor: Colors.red[400],
+                duration: const Duration(days: 1),
+                behavior: SnackBarBehavior.fixed,
+                dismissDirection: DismissDirection.none,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }
+        },
+        child: getBody(selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         type: BottomNavigationBarType.fixed,

@@ -4,6 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/Error/error_page.dart';
 import 'package:netflix/components/local_storage/watchlater_helper.dart';
+import 'package:netflix/cubit/network_cubit.dart';
+import 'package:netflix/cubit/network_state.dart';
 import 'package:netflix/models/others/check_rating_model.dart';
 import 'package:netflix/pages/7.movie_details/reviews_tab.dart';
 import 'package:netflix/config/app_constants.dart';
@@ -89,254 +91,235 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                 return Future.value(true);
               },
               child: Scaffold(
-                body: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          movies.isNotEmpty
-                              ? AnimatedCarouselModel(
-                                  items: movies,
-                                  height: mySize.height / 2.5,
-                                )
-                              : SizedBox(
-                                  height: mySize.height / 2.5,
-                                  child: const Center(
-                                    child: Text("Image Not Found"),
+                body: BlocListener<NetworkCubit, NetworkState>(
+                  listener: (context, state) {
+                    if (state == NetworkState.disconnected) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'PLEASE CONNECT TO THE INTERNET',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                          backgroundColor: Colors.red[400],
+                          duration: const Duration(days: 1),
+                          behavior: SnackBarBehavior.fixed,
+                          dismissDirection: DismissDirection.none,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    }
+                  },
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            movies.isNotEmpty
+                                ? AnimatedCarouselModel(
+                                    items: movies,
+                                    height: mySize.height / 2.5,
+                                  )
+                                : SizedBox(
+                                    height: mySize.height / 2.5,
+                                    child: const Center(
+                                      child: Text("Image Not Found"),
+                                    ),
                                   ),
-                                ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16, right: 16, top: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  movie.name!,
-                                  style: myTextTheme.headlineSmall!,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: mySize.height / 80),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            context: context,
-                                            backgroundColor: Colors.transparent,
-                                            builder: (context) {
-                                              return RatingModal(
-                                                movieId: widget.movieId,
-                                                isMovie: false,
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            CheckRating(
-                                              rating: movie.voteAverage!,
-                                            ),
-                                            const SizedBox(width: 2),
-                                            Text(
-                                              movie.voteAverage.toString(),
-                                              style: myTextTheme.labelLarge!
-                                                  .copyWith(
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 16, right: 16, top: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    movie.name!,
+                                    style: myTextTheme.headlineSmall!,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: mySize.height / 80),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              builder: (context) {
+                                                return RatingModal(
+                                                  movieId: widget.movieId,
+                                                  isMovie: false,
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Row(
+                                            children: [
+                                              CheckRating(
+                                                rating: movie.voteAverage!,
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Text(
+                                                movie.voteAverage.toString(),
+                                                style: myTextTheme.labelLarge!
+                                                    .copyWith(
+                                                  color:
+                                                      myColorScheme.onTertiary,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 2),
+                                              Icon(
+                                                Icons.arrow_forward_ios_rounded,
                                                 color: myColorScheme.onTertiary,
                                               ),
-                                            ),
-                                            const SizedBox(width: 2),
-                                            Icon(
-                                              Icons.arrow_forward_ios_rounded,
-                                              color: myColorScheme.onTertiary,
-                                            ),
-                                            const SizedBox(width: 2),
-                                          ],
-                                        ),
-                                      ),
-                                      Text(movie.firstAirDate!.year.toString()),
-                                      movie.spokenLanguages!.isEmpty
-                                          ? const SizedBox()
-                                          : const SizedBox(width: 8),
-                                      movie.spokenLanguages!.isEmpty
-                                          ? const SizedBox()
-                                          : InfoButton(
-                                              text: movie.spokenLanguages![0]
-                                                  .englishName!,
-                                              func: () {},
-                                            ),
-                                      movie.productionCountries!.isEmpty
-                                          ? const SizedBox()
-                                          : const SizedBox(width: 8),
-                                      movie.productionCountries!.isEmpty
-                                          ? const SizedBox()
-                                          : InfoButton(
-                                              text: movie
-                                                  .productionCountries![0]
-                                                  .name!,
-                                              func: () {},
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      PlayButton(
-                                        icon: Icons.play_circle_fill_outlined,
-                                        text: "Play",
-                                        func: () {
-                                          state.tvShowDetailsModel.videos!
-                                                  .results!.isEmpty
-                                              ? Fluttertoast.showToast(
-                                                  msg: "No Trailers Available!",
-                                                  backgroundColor: Colors.red,
-                                                )
-                                              : GoRouter.of(context).pushNamed(
-                                                  MyAppRouteConstants
-                                                      .playingPage,
-                                                  extra: state,
-                                                  pathParameters: {
-                                                    'movieKey': state
-                                                        .tvShowDetailsModel
-                                                        .videos!
-                                                        .results![0]
-                                                        .key!,
-                                                    'name': state
-                                                        .tvShowDetailsModel
-                                                        .videos!
-                                                        .results![0]
-                                                        .name!,
-                                                    "isMovie": "false",
-                                                  },
-                                                );
-                                        },
-                                        height: mySize.height / 16,
-                                        width: mySize.width / 2.3,
-                                      ),
-                                      PlayButton(
-                                        icon: Icons.watch_later_outlined,
-                                        text: "Watch Later",
-                                        func: () {
-                                          Future.wait(
-                                            [
-                                              MyListHelper.tvShowExists(state
-                                                      .tvShowDetailsModel.id
-                                                      .toString())
-                                                  .then(
-                                                (checkMovie) {
-                                                  checkMovie
-                                                      ? MyListHelper
-                                                          .removeFromMovieList(state
-                                                              .tvShowDetailsModel
-                                                              .id
-                                                              .toString())
-                                                      : MyListHelper
-                                                          .addToMovieList([
-                                                          state
-                                                              .tvShowDetailsModel
-                                                              .id
-                                                              .toString(),
-                                                          state
-                                                              .tvShowDetailsModel
-                                                              .posterPath
-                                                              .toString(),
-                                                        ]);
-                                                },
-                                              ),
+                                              const SizedBox(width: 2),
                                             ],
-                                          );
-                                        },
-                                        height: mySize.height / 16,
-                                        width: mySize.width / 2.3,
-                                        isFilled: false,
-                                        isDownloadButton: true,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  "Genre: $genres",
-                                  style: myTextTheme.labelLarge!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                ReadMoreModel(
-                                  text: movie.overview.toString(),
-                                  textStyle: myTextTheme.bodyMedium!,
-                                ),
-                                SizedBox(height: mySize.height / 64),
-                                crews.isEmpty
-                                    ? const SizedBox()
-                                    : Text("Crew",
-                                        style: myTextTheme.titleMedium!),
-                                crews.isEmpty
-                                    ? const SizedBox()
-                                    : SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: SizedBox(
-                                          height: 72,
-                                          child: ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: (crews.length) > 5
-                                                ? 5
-                                                : crews.length,
-                                            itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  GoRouter.of(context)
-                                                      .pushNamed(
-                                                    MyAppRouteConstants
-                                                        .peopleDetailsPage,
-                                                    extra: crews[index].id,
-                                                  );
-                                                },
-                                                child: MovieCrewModel(
-                                                  image: crews[index]
-                                                      .profilePath
-                                                      .toString(),
-                                                  name: crews[index]
-                                                      .name
-                                                      .toString(),
-                                                  role: _checkDepartment(
-                                                      crews[index]
-                                                          .knownForDepartment!),
-                                                ),
-                                              );
-                                            },
                                           ),
                                         ),
-                                      ),
-                                casts.isEmpty
-                                    ? const SizedBox()
-                                    : Text("Cast",
-                                        style: myTextTheme.titleMedium!),
-                                casts.isEmpty
-                                    ? const SizedBox()
-                                    : SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: SizedBox(
-                                          height: 72,
-                                          child: ListView.builder(
+                                        Text(movie.firstAirDate!.year
+                                            .toString()),
+                                        movie.spokenLanguages!.isEmpty
+                                            ? const SizedBox()
+                                            : const SizedBox(width: 8),
+                                        movie.spokenLanguages!.isEmpty
+                                            ? const SizedBox()
+                                            : InfoButton(
+                                                text: movie.spokenLanguages![0]
+                                                    .englishName!,
+                                                func: () {},
+                                              ),
+                                        movie.productionCountries!.isEmpty
+                                            ? const SizedBox()
+                                            : const SizedBox(width: 8),
+                                        movie.productionCountries!.isEmpty
+                                            ? const SizedBox()
+                                            : InfoButton(
+                                                text: movie
+                                                    .productionCountries![0]
+                                                    .name!,
+                                                func: () {},
+                                              ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        PlayButton(
+                                          icon: Icons.play_circle_fill_outlined,
+                                          text: "Play",
+                                          func: () {
+                                            state.tvShowDetailsModel.videos!
+                                                    .results!.isEmpty
+                                                ? Fluttertoast.showToast(
+                                                    msg:
+                                                        "No Trailers Available!",
+                                                    backgroundColor: Colors.red,
+                                                  )
+                                                : GoRouter.of(context)
+                                                    .pushNamed(
+                                                    MyAppRouteConstants
+                                                        .playingPage,
+                                                    extra: state,
+                                                    pathParameters: {
+                                                      'movieKey': state
+                                                          .tvShowDetailsModel
+                                                          .videos!
+                                                          .results![0]
+                                                          .key!,
+                                                      'name': state
+                                                          .tvShowDetailsModel
+                                                          .videos!
+                                                          .results![0]
+                                                          .name!,
+                                                      "isMovie": "false",
+                                                    },
+                                                  );
+                                          },
+                                          height: mySize.height / 16,
+                                          width: mySize.width / 2.3,
+                                        ),
+                                        PlayButton(
+                                          icon: Icons.watch_later_outlined,
+                                          text: "Watch Later",
+                                          func: () {
+                                            Future.wait(
+                                              [
+                                                MyListHelper.tvShowExists(state
+                                                        .tvShowDetailsModel.id
+                                                        .toString())
+                                                    .then(
+                                                  (checkMovie) {
+                                                    checkMovie
+                                                        ? MyListHelper
+                                                            .removeFromMovieList(
+                                                                state
+                                                                    .tvShowDetailsModel
+                                                                    .id
+                                                                    .toString())
+                                                        : MyListHelper
+                                                            .addToMovieList([
+                                                            state
+                                                                .tvShowDetailsModel
+                                                                .id
+                                                                .toString(),
+                                                            state
+                                                                .tvShowDetailsModel
+                                                                .posterPath
+                                                                .toString(),
+                                                          ]);
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                          height: mySize.height / 16,
+                                          width: mySize.width / 2.3,
+                                          isFilled: false,
+                                          isDownloadButton: true,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    "Genre: $genres",
+                                    style: myTextTheme.labelLarge!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  ReadMoreModel(
+                                    text: movie.overview.toString(),
+                                    textStyle: myTextTheme.bodyMedium!,
+                                  ),
+                                  SizedBox(height: mySize.height / 64),
+                                  crews.isEmpty
+                                      ? const SizedBox()
+                                      : Text("Crew",
+                                          style: myTextTheme.titleMedium!),
+                                  crews.isEmpty
+                                      ? const SizedBox()
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: SizedBox(
+                                            height: 72,
+                                            child: ListView.builder(
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: (casts.length) > 5
+                                              itemCount: (crews.length) > 5
                                                   ? 5
-                                                  : casts.length,
+                                                  : crews.length,
                                               itemBuilder: (context, index) {
                                                 return GestureDetector(
                                                   onTap: () {
@@ -344,173 +327,223 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                                         .pushNamed(
                                                       MyAppRouteConstants
                                                           .peopleDetailsPage,
-                                                      extra: casts[index].id,
+                                                      extra: crews[index].id,
                                                     );
                                                   },
                                                   child: MovieCrewModel(
-                                                    image: casts[index]
+                                                    image: crews[index]
                                                         .profilePath
                                                         .toString(),
-                                                    name: casts[index]
+                                                    name: crews[index]
                                                         .name
                                                         .toString(),
-                                                    role: _checkDepartment(casts[
+                                                    role: _checkDepartment(crews[
                                                             index]
                                                         .knownForDepartment!),
                                                   ),
                                                 );
-                                              }),
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      backgroundColor: Colors.white,
-                      pinned: true,
-                      floating: true,
-                      snap: true,
-                      toolbarHeight: 0,
-                      expandedHeight: 0,
-                      titleSpacing: 0,
-                      collapsedHeight: 0,
-                      bottom: TabBar(
-                        isScrollable: true,
-                        tabs: [
-                          Tab(text: "Trailers"),
-                          Tab(text: "More Like This"),
-                          Tab(text: "Reviews"),
-                        ],
-                      ),
-                    ),
-                    SliverFillRemaining(
-                      //!Issue: While Scrolling tabbarView is going inside the tab bar in flutter
-                      child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          //-------------------------------Movie Trailers Section-------------------------------------------
-                          SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16,
-                                top: 16,
-                                right: 16,
-                              ),
-                              child: state.tvShowDetailsModel.videos!.results!
-                                      .isEmpty
-                                  ? const Center(
-                                      child: ShowErrorMessage(
-                                        errorMessage: "No Trailers Available!",
-                                        extraInfo: "😅",
-                                      ),
-                                    )
-                                  : Column(
-                                      children: List.generate(
-                                          (state.tvShowDetailsModel.videos!
-                                                      .results!.length >
-                                                  6)
-                                              ? 6
-                                              : state.tvShowDetailsModel.videos!
-                                                  .results!.length, (index) {
-                                        final movieVidoes =
-                                            state.tvShowDetailsModel.videos!;
-                                        return GestureDetector(
-                                          onTap: () {
-                                            GoRouter.of(context).pushNamed(
-                                              MyAppRouteConstants.playingPage,
-                                              extra: state,
-                                              pathParameters: {
-                                                'movieKey': movieVidoes
-                                                    .results![index].key!,
-                                                'name': movieVidoes
-                                                    .results![index].name!,
-                                                'isMovie': 'false',
                                               },
-                                            );
-                                          },
-                                          child: MovieListTileModel(
-                                            image: state.tvShowDetailsModel
-                                                .backdropPath!,
-                                            name: movieVidoes
-                                                .results![index].name!,
-                                            description: movieVidoes
-                                                .results![index].size
-                                                .toString(),
-                                            date: movieVidoes.results![index]
-                                                .publishedAt!.year
-                                                .toString(),
-                                            tag: movieVidoes
-                                                .results![index].type!,
+                                            ),
                                           ),
-                                        );
-                                      }),
-                                    ),
-                            ),
-                          ),
-                          // -------------------------------Similar Movies Section-------------------------------------------
-                          SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16,
-                                top: 16,
-                                right: 8,
-                                bottom: 8,
+                                        ),
+                                  casts.isEmpty
+                                      ? const SizedBox()
+                                      : Text("Cast",
+                                          style: myTextTheme.titleMedium!),
+                                  casts.isEmpty
+                                      ? const SizedBox()
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: SizedBox(
+                                            height: 72,
+                                            child: ListView.builder(
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: (casts.length) > 5
+                                                    ? 5
+                                                    : casts.length,
+                                                itemBuilder: (context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      GoRouter.of(context)
+                                                          .pushNamed(
+                                                        MyAppRouteConstants
+                                                            .peopleDetailsPage,
+                                                        extra: casts[index].id,
+                                                      );
+                                                    },
+                                                    child: MovieCrewModel(
+                                                      image: casts[index]
+                                                          .profilePath
+                                                          .toString(),
+                                                      name: casts[index]
+                                                          .name
+                                                          .toString(),
+                                                      role: _checkDepartment(casts[
+                                                              index]
+                                                          .knownForDepartment!),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                ],
                               ),
-                              child: state.tvShowDetailsModel.similar!.results!
-                                      .isEmpty
-                                  ? const Center(
-                                      child: ShowErrorMessage(
-                                        errorMessage:
-                                            "No Similar Tv Shows Found!!",
-                                        extraInfo: "😣",
-                                      ),
-                                    )
-                                  : Wrap(
-                                      children: List.generate(6, (int index) {
-                                        var tvShow = state.tvShowDetailsModel
-                                            .similar!.results!
-                                            .where((element) =>
-                                                element.posterPath !=
-                                                AppConstants.placeHolderImage)
-                                            .toList();
-                                        return GestureDetector(
-                                          onTap: () {
-                                            GoRouter.of(context).pushNamed(
-                                              MyAppRouteConstants
-                                                  .tvShowDetailsPage,
-                                              extra: tvShow[index].id,
-                                            );
-                                          },
-                                          child: MovieCarouselModel(
-                                            width: mySize.width / 2.25,
-                                            height: mySize.height / 3.2,
-                                            image: tvShow[index]
-                                                .posterPath
-                                                .toString(),
-                                            rating: tvShow[index]
-                                                .voteAverage!
-                                                .toDouble(),
-                                          ),
-                                        );
-                                      }),
-                                    ),
                             ),
-                          ),
-                          //-----------------------------Movie Reviews Tab here----------------------------------
-                          ReviewsTab(
-                            state: state,
-                            isMovie: false,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      const SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        backgroundColor: Colors.white,
+                        pinned: true,
+                        floating: true,
+                        snap: true,
+                        toolbarHeight: 0,
+                        expandedHeight: 0,
+                        titleSpacing: 0,
+                        collapsedHeight: 0,
+                        bottom: TabBar(
+                          isScrollable: true,
+                          tabs: [
+                            Tab(text: "Trailers"),
+                            Tab(text: "More Like This"),
+                            Tab(text: "Reviews"),
+                          ],
+                        ),
+                      ),
+                      SliverFillRemaining(
+                        //!Issue: While Scrolling tabbarView is going inside the tab bar in flutter
+                        child: TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            //-------------------------------Movie Trailers Section-------------------------------------------
+                            SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  top: 16,
+                                  right: 16,
+                                ),
+                                child: state.tvShowDetailsModel.videos!.results!
+                                        .isEmpty
+                                    ? const Center(
+                                        child: ShowErrorMessage(
+                                          errorMessage:
+                                              "No Trailers Available!",
+                                          extraInfo: "😅",
+                                        ),
+                                      )
+                                    : Column(
+                                        children: List.generate(
+                                            (state.tvShowDetailsModel.videos!
+                                                        .results!.length >
+                                                    6)
+                                                ? 6
+                                                : state
+                                                    .tvShowDetailsModel
+                                                    .videos!
+                                                    .results!
+                                                    .length, (index) {
+                                          final movieVidoes =
+                                              state.tvShowDetailsModel.videos!;
+                                          return GestureDetector(
+                                            onTap: () {
+                                              GoRouter.of(context).pushNamed(
+                                                MyAppRouteConstants.playingPage,
+                                                extra: state,
+                                                pathParameters: {
+                                                  'movieKey': movieVidoes
+                                                      .results![index].key!,
+                                                  'name': movieVidoes
+                                                      .results![index].name!,
+                                                  'isMovie': 'false',
+                                                },
+                                              );
+                                            },
+                                            child: MovieListTileModel(
+                                              image: state.tvShowDetailsModel
+                                                  .backdropPath!,
+                                              name: movieVidoes
+                                                  .results![index].name!,
+                                              description: movieVidoes
+                                                  .results![index].size
+                                                  .toString(),
+                                              date: movieVidoes.results![index]
+                                                  .publishedAt!.year
+                                                  .toString(),
+                                              tag: movieVidoes
+                                                  .results![index].type!,
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                              ),
+                            ),
+                            // -------------------------------Similar Movies Section-------------------------------------------
+                            SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                  top: 16,
+                                  right: 8,
+                                  bottom: 8,
+                                ),
+                                child: state.tvShowDetailsModel.similar!
+                                        .results!.isEmpty
+                                    ? const Center(
+                                        child: ShowErrorMessage(
+                                          errorMessage:
+                                              "No Similar Tv Shows Found!!",
+                                          extraInfo: "😣",
+                                        ),
+                                      )
+                                    : Wrap(
+                                        children: List.generate(6, (int index) {
+                                          var tvShow = state.tvShowDetailsModel
+                                              .similar!.results!
+                                              .where((element) =>
+                                                  element.posterPath !=
+                                                  AppConstants.placeHolderImage)
+                                              .toList();
+                                          return GestureDetector(
+                                            onTap: () {
+                                              GoRouter.of(context).pushNamed(
+                                                MyAppRouteConstants
+                                                    .tvShowDetailsPage,
+                                                extra: tvShow[index].id,
+                                              );
+                                            },
+                                            child: MovieCarouselModel(
+                                              width: mySize.width / 2.25,
+                                              height: mySize.height / 3.2,
+                                              image: tvShow[index]
+                                                  .posterPath
+                                                  .toString(),
+                                              rating: tvShow[index]
+                                                  .voteAverage!
+                                                  .toDouble(),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                              ),
+                            ),
+                            //-----------------------------Movie Reviews Tab here----------------------------------
+                            ReviewsTab(
+                              state: state,
+                              isMovie: false,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

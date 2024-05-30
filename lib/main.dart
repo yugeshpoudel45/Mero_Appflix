@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:netflix/cubit/guest_session_cubit.dart';
 import 'package:netflix/cubit/login_session_cubit.dart';
 import 'package:netflix/cubit/movie_details_cubit.dart';
 import 'package:netflix/cubit/movie_rating_cubit.dart';
+import 'package:netflix/cubit/network_cubit.dart';
 import 'package:netflix/cubit/people_details_cubit.dart';
 import 'package:netflix/cubit/search_section_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_cubit.dart';
@@ -74,6 +76,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeCubit(),
         ),
+        BlocProvider(
+          create: (context) => NetworkCubit(Connectivity()),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {
@@ -90,4 +95,4 @@ class MyApp extends StatelessWidget {
 }
 
 
-//Release garda app bundle banauna matra baki aba
+//Release garda app bundle banauna matra baki aba  

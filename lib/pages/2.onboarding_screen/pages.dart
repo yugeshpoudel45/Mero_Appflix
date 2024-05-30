@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/components/buttons/primary_buttons/primary_long_button.dart';
+import 'package:netflix/cubit/network_cubit.dart';
+import 'package:netflix/cubit/network_state.dart';
 import 'package:netflix/pages/2.onboarding_screen/datas.dart';
 
 import '../../routes/app_route_constant.dart';
@@ -59,71 +62,91 @@ class OnboardingPageState extends State<OnboardingPage> {
     Size mySize = MediaQuery.sizeOf(context);
     TextTheme myTextTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(onBoardingpages[_currentPage].imagePath),
-            fit: BoxFit.cover,
+      body: BlocListener<NetworkCubit, NetworkState>(
+        listener: (context, state) {
+          if (state == NetworkState.disconnected) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text(
+                  'PLEASE CONNECT TO THE INTERNET',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                backgroundColor: Colors.red[400],
+                duration: const Duration(days: 1),
+                behavior: SnackBarBehavior.fixed,
+                dismissDirection: DismissDirection.none,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(onBoardingpages[_currentPage].imagePath),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: onBoardingpages.length,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const Expanded(
-                          child: SizedBox(),
-                        ),
-                        Text(
-                          onBoardingpages[index].title,
-                          textAlign: TextAlign.center,
-                          style: myTextTheme.displaySmall!.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: onBoardingpages.length,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const Expanded(
+                            child: SizedBox(),
                           ),
-                        ),
-                        SizedBox(height: mySize.height / 64),
-                        Text(
-                          onBoardingpages[index].description,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          Text(
+                            onBoardingpages[index].title,
+                            textAlign: TextAlign.center,
+                            style: myTextTheme.displaySmall!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                          SizedBox(height: mySize.height / 64),
+                          Text(
+                            onBoardingpages[index].description,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: mySize.height / 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  onBoardingpages.length,
-                  (index) => buildDot(index, context),
+                SizedBox(height: mySize.height / 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    onBoardingpages.length,
+                    (index) => buildDot(index, context),
+                  ),
                 ),
-              ),
-              SizedBox(height: mySize.height / 32),
-              PrimaryLongButton(
-                  text: "Get Started",
-                  func: () {
-                    GoRouter.of(context).pushReplacementNamed(
-                      MyAppRouteConstants.loginPage,
-                    );
-                  }),
-              SizedBox(height: mySize.height / 64),
-            ],
+                SizedBox(height: mySize.height / 32),
+                PrimaryLongButton(
+                    text: "Get Started",
+                    func: () {
+                      GoRouter.of(context).pushReplacementNamed(
+                        MyAppRouteConstants.loginPage,
+                      );
+                    }),
+                SizedBox(height: mySize.height / 64),
+              ],
+            ),
           ),
         ),
       ),
