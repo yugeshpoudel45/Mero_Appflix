@@ -1,4 +1,4 @@
-
+![1](https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/b633e200-217c-49a1-9702-11115c53355c)
 # Mero Appflix
 
 Welcome to our movie watching app repository on GitHub! Our app is designed to provide you with the ultimate movie-watching experience using the the movie database (TMDB). With seamless integration of the Gemini platform, enjoy personalized recommendations, high-quality streaming, and a user-friendly interface. It's your one-stop solution for all your entertainment needs.
@@ -66,12 +66,23 @@ Welcome to our movie watching app repository on GitHub! Our app is designed to p
 - [Flutter ColorPicker](https://pub.dev/packages/flutter_colorpicker)
 - [Lottie](https://pub.dev/packages/lottie)
 - [Connectivity Plus](https://pub.dev/packages/connectivity_plus)
-## Screenshots
 
+
+
+
+## Screenshots
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/7481ef9d-ba62-493a-b009-6d3acc9786bb" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/f23343df-aa6e-41e0-873b-36118102e8d2" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/b69f3043-b8d4-4a9a-8a40-11ee563fda2f" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/821707c0-9005-4e55-ae65-54ed83d59e5b" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/d6a87e32-f8da-4eaa-8763-7ae3e40227b9" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/edf7d664-7217-402e-b5b6-f47b6d11f7f2" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/e36d4a36-e969-4423-9861-a699ed4cbb63" width="24%" height="auto" >
+<img src="https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/79b95c5b-4cdf-42d3-9b3d-a327cf291e2c" width="24%" height="auto" >
 
 
 
 ## 🔗Demo Video Link
 [Mero Appflix Demo]()
 ## 🔗App Link
-[Mero Appflix](https://drive.google.com/file/d/13Dl77cUwj1xwus8OBM1McvW6WRKVAhFS/view?usp=sharing)
+[Mero Appflix](https://drive.google.com/file/d/1-JCXtTVXe6ZcixSpzOuA5VnWllEedHhG/view?usp=sharing)
