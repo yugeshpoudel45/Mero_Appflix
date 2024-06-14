@@ -1,4 +1,3 @@
-![1](https://github.com/yugeshpoudel45/Mero_Appflix/assets/104973762/b633e200-217c-49a1-9702-11115c53355c)
 # Mero Appflix
 
 Welcome to our movie watching app repository on GitHub! Our app is designed to provide you with the ultimate movie-watching experience using the the movie database (TMDB). With seamless integration of the Gemini platform, enjoy personalized recommendations, high-quality streaming, and a user-friendly interface. It's your one-stop solution for all your entertainment needs.
