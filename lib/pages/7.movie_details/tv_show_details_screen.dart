@@ -52,8 +52,9 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
           );
         } else if (state is TvShowDetailsErrorState) {
           return Scaffold(
-            body: Center(
-              child: Text(state.errorMessage),
+            body: ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
             ),
           );
         } else if (state is TvShowDetailsLoadedState) {

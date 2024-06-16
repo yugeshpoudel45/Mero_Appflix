@@ -8,6 +8,7 @@ import 'package:netflix/cubit/network_state.dart';
 import 'package:netflix/models/others/animated_carousel_model.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
+import '../../components/Error/error_page.dart';
 import '../../components/urls/url_launcher.dart';
 import '../../config/app_constants.dart';
 import '../../cubit/people_details_cubit.dart';
@@ -48,8 +49,9 @@ class _PeopleDetailsScreenState extends State<PeopleDetailsScreen> {
           );
         } else if (state is PeopleDetailsErrorState) {
           return Scaffold(
-            body: Center(
-              child: Text(state.errorMessage),
+            body: ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
             ),
           );
         } else if (state is PeopleDetailsLoadedState) {

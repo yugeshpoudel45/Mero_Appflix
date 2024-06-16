@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:netflix/components/Error/error_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/buttons/other_buttons/bottom_sheet_buttons.dart';
@@ -139,7 +140,7 @@ class _RatingModalState extends State<RatingModal> {
       ),
     );
   }
-} 
+}
 
 class RatingGiven extends StatefulWidget {
   const RatingGiven({
@@ -232,8 +233,9 @@ class _RatingGivenState extends State<RatingGiven> {
             ],
           );
         } else if (state is MovieRatingErrorState) {
-          return Center(
-            child: Text(state.errorMessage),
+          return ShowErrorMessage(
+            errorMessage: state.errorMessage,
+            extraInfo: "😞",
           );
         } else {
           return const SizedBox();

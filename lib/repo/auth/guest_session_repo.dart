@@ -29,6 +29,7 @@ class GuestSessionRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to generate guest session");
+    throw Exception(
+        "Please relaunch the app :   Failed to generate guest session");
   }
 }

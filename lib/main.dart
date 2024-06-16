@@ -93,6 +93,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-//Release garda app bundle banauna matra baki aba   

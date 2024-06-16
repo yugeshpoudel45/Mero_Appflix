@@ -34,7 +34,7 @@ class SearchRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load Search Movies");
+    throw Exception("Please relaunch the app :   Failed to Load Search Movies");
   }
 
   Future<TvShowSearchModel> fetchSearchTvShow(
@@ -63,7 +63,8 @@ class SearchRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load Search Tv Shows");
+    throw Exception(
+        "Please relaunch the app :   Failed to Load Search Tv Shows");
   }
 
   Future<PeopleSearchModel> fetchSearchPeople(
@@ -91,6 +92,6 @@ class SearchRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load Search People");
+    throw Exception("Please relaunch the app :   Failed to Load Search People");
   }
 }

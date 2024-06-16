@@ -39,7 +39,7 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to give Movie Rating");
+    throw Exception("Please relaunch the app :   Failed to give Movie Rating");
   }
 
 //--------------------------------------For User--------------------------------------
@@ -74,7 +74,7 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to give Movie Rating");
+    throw Exception("Please relaunch the app :   Failed to give Movie Rating");
   }
 
 //--------------------------------------Delete Rating For Guest--------------------------------------
@@ -105,7 +105,8 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to delete Movie Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to delete Movie Rating");
   }
 
 //------------------------Deleting rating for User---------------------------------------
@@ -136,7 +137,8 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to delete Movie Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to delete Movie Rating");
   }
 
   //!-------------------------TV Shows-------------------------
@@ -173,7 +175,8 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to give Tv Show Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to give Tv Show Rating");
   }
 
 //--------------------------------------For User--------------------------------------
@@ -208,7 +211,8 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to give Tv Show Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to give Tv Show Rating");
   }
 
 //--------------------------------------Delete Rating For Guest--------------------------------------
@@ -239,7 +243,8 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to delete Tv Show Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to delete Tv Show Rating");
   }
 
 //------------------------Deleting rating for User---------------------------------------
@@ -270,6 +275,7 @@ class MovieRatingRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to delete Tv Show Rating");
+    throw Exception(
+        "Please relaunch the app :   Failed to delete Tv Show Rating");
   }
 }

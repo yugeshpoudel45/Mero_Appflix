@@ -29,6 +29,7 @@ class TvShowDetailsRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load Tv Show Details ");
+    throw Exception(
+        "Please relaunch the app :   Failed to Load Tv Show Details ");
   }
 }

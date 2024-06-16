@@ -12,6 +12,7 @@ import 'package:netflix/cubit/delete_session_cubit.dart';
 import 'package:netflix/cubit/theme_cubit_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/Error/error_page.dart';
 import '../../components/local_storage/watchlater_helper.dart';
 import '../../routes/app_route_constant.dart';
 
@@ -198,9 +199,10 @@ class __SessionDeletedState extends State<_SessionDeleted> {
                   ],
                 );
               } else if (state is DeleteSessionErrorState) {
-                return Center(
-                  child: Text(state.errorMessage),
-                );
+                return ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
+            );
               } else {
                 return const SizedBox();
               }

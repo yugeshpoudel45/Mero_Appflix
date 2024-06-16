@@ -29,6 +29,7 @@ class MoviesDetailsRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load Movie Details ");
+    throw Exception(
+        "Please relaunch the app :   Failed to Load Movie Details ");
   }
 }

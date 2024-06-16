@@ -57,8 +57,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           );
         } else if (state is MovieDetailsErrorState) {
           return Scaffold(
-            body: Center(
-              child: Text(state.errorMessage),
+            body: ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
             ),
           );
         } else if (state is MovieDetailsLoadedState) {
@@ -97,24 +98,24 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
               },
               child: Scaffold(
                 body: BlocListener<NetworkCubit, NetworkState>(
-        listener: (context, state) {
-           if (state == NetworkState.disconnected) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text(
-                  'PLEASE CONNECT TO THE INTERNET',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                backgroundColor: Colors.red[400],
-                duration: const Duration(days: 1),
-                behavior: SnackBarBehavior.fixed,
-                dismissDirection: DismissDirection.none,
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          }
-        },
+                  listener: (context, state) {
+                    if (state == NetworkState.disconnected) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'PLEASE CONNECT TO THE INTERNET',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                          backgroundColor: Colors.red[400],
+                          duration: const Duration(days: 1),
+                          behavior: SnackBarBehavior.fixed,
+                          dismissDirection: DismissDirection.none,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    }
+                  },
                   child: CustomScrollView(
                     slivers: [
                       SliverToBoxAdapter(

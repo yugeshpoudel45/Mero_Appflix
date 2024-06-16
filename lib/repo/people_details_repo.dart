@@ -29,6 +29,7 @@ class PeopleDetailsRepo {
     } catch (e) {
       log("Exception caught: $e");
     }
-    throw Exception("Outer Exception: Failed to Load People Details ");
+    throw Exception(
+        "Please relaunch the app :   Failed to Load People Details ");
   }
 }

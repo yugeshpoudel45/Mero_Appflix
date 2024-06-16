@@ -188,9 +188,10 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
           child: CircularProgressIndicator(),
         );
       } else if (state is SearchSectionErrorState) {
-        return Center(
-          child: Text(state.errorMessage),
-        );
+        return ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
+            );
       } else if (state is SearchSectionLoadedState) {
         var movie = state.movieSearchModel.results!
             .where((element) =>
@@ -496,9 +497,10 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
           child: CircularProgressIndicator(),
         );
       } else if (state is TrendingSectionErrorState) {
-        return Center(
-          child: Text(state.errorMessage),
-        );
+        return ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
+            );
       } else if (state is TrendingSectionLoadedState) {
         var movie = state.trendingMovieModel.results!
             .where((element) =>

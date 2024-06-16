@@ -10,6 +10,7 @@ import 'package:netflix/components/images/cache_network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
+import '../../components/Error/error_page.dart';
 import '../../components/buttons/play_button/play_button.dart';
 import '../../cubit/trending_section_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
@@ -40,9 +41,10 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is TrendingSectionErrorState) {
-          return Center(
-            child: Text(state.errorMessage),
-          );
+          return ShowErrorMessage(
+              errorMessage: state.errorMessage,
+              extraInfo: "😞",
+            );
         } else if (state is TrendingSectionLoadedState) {
           var movie = state.trendingMovieModel.results!
               .where((element) =>

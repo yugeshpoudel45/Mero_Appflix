@@ -10,6 +10,7 @@ import 'package:netflix/cubit/network_cubit.dart';
 import 'package:netflix/cubit/network_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/Error/error_page.dart';
 import '../../config/app_local_assets.dart';
 import '../../cubit/login_session_cubit.dart';
 import '../../routes/app_route_constant.dart';
@@ -338,8 +339,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             msg: "Login Failed!",
                             backgroundColor: Colors.red,
                           );
-                          return Center(
-                            child: Text(state.errorMessage),
+                          return ShowErrorMessage(
+                            errorMessage: state.errorMessage,
+                            extraInfo: "😞",
                           );
                         } else if (state is GuestSessionLoadedState) {
                           _storeGuestSessionId(
