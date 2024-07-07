@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/Error/error_page.dart';
 import '../../components/local_storage/watchlater_helper.dart';
+import '../../components/urls/url_launcher.dart';
 import '../../routes/app_route_constant.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -23,123 +24,122 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     Size mySize = MediaQuery.sizeOf(context);
-    return ListView(
-      padding: const EdgeInsets.symmetric(
-        vertical: 40,
-      ),
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          child: Row(
-            children: [
-              Image.asset(
-                AppAssets.appLogo,
-                height: mySize.height / 24,
-              ),
-              SizedBox(
-                width: mySize.width / 32,
-              ),
-              Text(
-                "Setting",
-                style: myTextTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
+    return Scaffold(
+      body: ListView(
+        padding: const EdgeInsets.symmetric(
+          vertical: 40,
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: Row(
+              children: [
+                Image.asset(
+                  AppAssets.appLogo,
+                  height: mySize.height / 24,
                 ),
+                SizedBox(
+                  width: mySize.width / 32,
+                ),
+                Text(
+                  "Setting",
+                  style: myTextTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: mySize.height / 32,
+          ),
+          SettingsSection(
+            title: 'General',
+            items: [
+              SettingsItem(
+                icon: Icons.language,
+                text: 'Language',
+                onTap: () {
+                  Fluttertoast.showToast(
+                    msg: "This feature is not available yet",
+                    backgroundColor: Colors.red,
+                  );
+                },
+              ),
+              SettingsItem(
+                icon: Icons.color_lens,
+                text: 'Themes',
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    MyAppRouteConstants.themesPage,
+                  );
+                },
+              ),
+              SettingsItem(
+                icon: Icons.dark_mode,
+                text: 'Dark Mode',
+                isSwitch: true,
+                onTap: () {},
               ),
             ],
           ),
-        ),
-        SizedBox(
-          height: mySize.height / 32,
-        ),
-        SettingsSection(
-          title: 'General',
-          items: [
-            SettingsItem(
-              icon: Icons.language,
-              text: 'Language',
-              onTap: () {
-                Fluttertoast.showToast(
-                  msg: "This feature is not available yet",
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
-            SettingsItem(
-              icon: Icons.color_lens,
-              text: 'Themes',
-              onTap: () {
-                GoRouter.of(context).pushNamed(
-                  MyAppRouteConstants.themesPage,
-                );
-              },
-            ),
-            SettingsItem(
-              icon: Icons.dark_mode,
-              text: 'Dark Mode',
-              isSwitch: true,
-              onTap: () {},
-            ),
-          ],
-        ),
-        SizedBox(
-          height: mySize.height / 64,
-        ),
-        SettingsSection(
-          title: 'About',
-          items: [
-            SettingsItem(
-              icon: Icons.help,
-              text: 'Help Center',
-              onTap: () {
-                Fluttertoast.showToast(
-                  msg: "This feature is not available yet",
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
-            SettingsItem(
-              icon: Icons.privacy_tip,
-              text: 'Privacy Policy',
-              onTap: () {
-                Fluttertoast.showToast(
-                  msg: "This feature is not available yet",
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
-            SettingsItem(
-              icon: Icons.info,
-              text: 'About us',
-              onTap: () {
-                Fluttertoast.showToast(
-                  msg: "This feature is not available yet",
-                  backgroundColor: Colors.red,
-                );
-              },
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: PrimaryLongButton(
-              text: "Log out",
-              func: () async {
-                const _SessionDeleted();
-                MyListHelper.clearMovieList();
-                MyListHelper.clearTvShowList();
-                MyLogin.isLoggedIn(false);
-                GoRouter.of(context).pushReplacementNamed(
-                  MyAppRouteConstants.loginPage,
-                );
-                Fluttertoast.showToast(
-                  msg: 'Logged Out!',
-                  backgroundColor: Colors.red,
-                );
-              }),
-        ),
-      ],
+          SizedBox(
+            height: mySize.height / 64,
+          ),
+          SettingsSection(
+            title: 'About',
+            items: [
+              SettingsItem(
+                icon: Icons.help,
+                text: 'Help Center',
+                onTap: () {
+                  Fluttertoast.showToast(
+                    msg: "This feature is not available yet",
+                    backgroundColor: Colors.red,
+                  );
+                },
+              ),
+              SettingsItem(
+                icon: Icons.privacy_tip,
+                text: 'Privacy Policy',
+                onTap: () {
+                  launchURL(
+                      "https://github.com/yugeshpoudel45/appflix_privacy_policy/blob/main/privacy-policy");
+                },
+              ),
+              SettingsItem(
+                icon: Icons.info,
+                text: 'About us',
+                onTap: () {
+                  GoRouter.of(context).pushNamed(
+                    MyAppRouteConstants.aboutUsPage,
+                  );
+                },
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: PrimaryLongButton(
+                text: "Log out",
+                func: () async {
+                  const _SessionDeleted();
+                  MyListHelper.clearMovieList();
+                  MyListHelper.clearTvShowList();
+                  MyLogin.isLoggedIn(false);
+                  GoRouter.of(context).pushReplacementNamed(
+                    MyAppRouteConstants.loginPage,
+                  );
+                  Fluttertoast.showToast(
+                    msg: 'Logged Out!',
+                    backgroundColor: Colors.red,
+                  );
+                }),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -200,9 +200,9 @@ class __SessionDeletedState extends State<_SessionDeleted> {
                 );
               } else if (state is DeleteSessionErrorState) {
                 return ShowErrorMessage(
-              errorMessage: state.errorMessage,
-              extraInfo: "😞",
-            );
+                  errorMessage: state.errorMessage,
+                  extraInfo: "😞",
+                );
               } else {
                 return const SizedBox();
               }
@@ -278,7 +278,7 @@ class _SettingsItemState extends State<SettingsItem> {
       ),
       trailing: widget.isSwitch
           ? CupertinoSwitch(
-              activeColor: myColorScheme.onTertiary,
+              activeColor: myColorScheme.primary,
               value: themeCubit.state.themeData.brightness == Brightness.dark,
               onChanged: (val) {
                 themeCubit.toggleTheme(

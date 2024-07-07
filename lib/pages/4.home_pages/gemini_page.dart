@@ -72,7 +72,7 @@ class _GeminiPageState extends State<GeminiPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
+              ], 
             ),
           ),
           // SizedBox(

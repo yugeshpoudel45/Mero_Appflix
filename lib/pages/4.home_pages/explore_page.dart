@@ -27,11 +27,11 @@ class _ExplorePageState extends State<ExplorePage> {
   String searchedText = "";
   bool searched = false;
 
-  @override
-  void dispose() {
-    super.dispose();
-    _searchController.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _searchController.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,6 @@ class _ExplorePageState extends State<ExplorePage> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          
           SizedBox(
             height: mySize.height / 16,
           ),
@@ -77,9 +76,10 @@ class _ExplorePageState extends State<ExplorePage> {
                     },
                     onChanged: (value) {
                       setState(() {
-                        if (value.isEmpty) {
-                          searched = false;
-                        }
+                        // if (value.isEmpty) {
+                        //   searched = false;
+                        // }
+                        searched = false;
                       });
                     },
                     onSuffixTap: () {
@@ -90,6 +90,9 @@ class _ExplorePageState extends State<ExplorePage> {
                       searched = false;
                     },
                     onSubmitted: (value) {
+                      if (value.isEmpty) {
+                        return;
+                      }
                       setState(() {
                         searchedText = value;
                         searched = true;
@@ -124,6 +127,22 @@ class _ExplorePageState extends State<ExplorePage> {
                         return const SearchFilterModal();
                       },
                     );
+                    searchedText = _searchController.text;
+                    if (result == null) {
+                      searched = false;
+                      _searchController.clear();
+                    } else if (result!.isEmpty) {
+                      searched = false;
+                      _searchController.clear();
+                    } else if (result![0] == 0 &&
+                        result![1] == 0 &&
+                        result![2] == 0) {
+                      searched = false;
+                      _searchController.clear();
+                    } else {
+                      searched = true;
+                    }
+                    // result!.isNotEmpty ? searched = true : searched = false;
                     setState(() {});
                   },
                   icon: const Icon(
@@ -140,9 +159,11 @@ class _ExplorePageState extends State<ExplorePage> {
               ? Expanded(
                   child: _ActualSearchScreen(
                     searchedText: searchedText,
-                    result: result != null && result!.isNotEmpty
-                        ? result!
-                        : [1, 2, -1],
+                    result: result == null
+                        ? [1, 2, -1]
+                        : result!.isNotEmpty
+                            ? result!
+                            : [1, 2, -1],
                   ),
                 )
               : const _SearchPagePlaceHolder()
@@ -189,9 +210,9 @@ class __ActualSearchScreenState extends State<_ActualSearchScreen> {
         );
       } else if (state is SearchSectionErrorState) {
         return ShowErrorMessage(
-              errorMessage: state.errorMessage,
-              extraInfo: "😞",
-            );
+          errorMessage: state.errorMessage,
+          extraInfo: "😞",
+        );
       } else if (state is SearchSectionLoadedState) {
         var movie = state.movieSearchModel.results!
             .where((element) =>
@@ -498,9 +519,9 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
         );
       } else if (state is TrendingSectionErrorState) {
         return ShowErrorMessage(
-              errorMessage: state.errorMessage,
-              extraInfo: "😞",
-            );
+          errorMessage: state.errorMessage,
+          extraInfo: "😞",
+        );
       } else if (state is TrendingSectionLoadedState) {
         var movie = state.trendingMovieModel.results!
             .where((element) =>

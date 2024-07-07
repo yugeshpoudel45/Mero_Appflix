@@ -15,7 +15,7 @@ class _ThemesPageState extends State<ThemesPage> {
     Colors.red,
     Colors.blue,
     Colors.green,
-    Colors.yellow,
+    Colors.indigo,
     Colors.orange,
     Colors.purple,
     Colors.teal,

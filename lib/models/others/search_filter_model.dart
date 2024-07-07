@@ -154,7 +154,7 @@ class _SearchFilterModalState extends State<SearchFilterModal> {
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 12,
-                          ), 
+                          ),
                         )
                       : const SizedBox(),
                 ),
@@ -221,11 +221,7 @@ class _SearchFilterModalState extends State<SearchFilterModal> {
                   ? releaseYear = int.parse(_releaseYear.text)
                   : releaseYear = 0;
               Navigator.of(context).pop(
-                [
-                  _selectCategory,
-                  _selectAdult,
-                  releaseYear,
-                ],
+                [_selectCategory, _selectAdult, releaseYear],
               );
             },
           ),

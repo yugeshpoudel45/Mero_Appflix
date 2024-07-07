@@ -8,6 +8,7 @@ import 'package:netflix/pages/4.home_pages/main_page.dart';
 import 'package:netflix/pages/5.Inside_home_pages/trending_movies_page.dart';
 import 'package:netflix/pages/5.Inside_home_pages/trending_people_page.dart';
 import 'package:netflix/pages/5.Inside_home_pages/trending_tvshow_page.dart';
+import 'package:netflix/pages/6.%20Inside_profile_page.dart/about_us_page.dart';
 import 'package:netflix/pages/6.%20Inside_profile_page.dart/themes_page.dart';
 import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
 import 'package:netflix/pages/7.movie_details/playing_screen.dart';
@@ -19,8 +20,9 @@ import '../cubit/trending_section_cubit.dart';
 import '../pages/7.movie_details/people_details_screen.dart';
 
 class MyAppRouter {
- GoRouter router = GoRouter(
+  GoRouter router = GoRouter(
     routes: [
+    
       //!--------------------------------------------------------------------------------------------------------------------------
       //!-------------------------------------------------This is home route-------------------------------------------------------
       GoRoute(
@@ -124,6 +126,13 @@ class MyAppRouter {
         path: '/themesPage',
         pageBuilder: (context, state) => const MaterialPage(
           child: ThemesPage(),
+        ),
+      ),
+      GoRoute(
+        name: MyAppRouteConstants.aboutUsPage,
+        path: '/aboutUsPage',
+        pageBuilder: (context, state) => const MaterialPage(
+          child: AboutUs(),
         ),
       ),
     ],
