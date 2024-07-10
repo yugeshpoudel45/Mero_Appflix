@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/components/local_storage/watchlater_helper.dart';
+import 'package:netflix/components/shimmers/shimmer_widget.dart';
 import 'package:netflix/config/app_constants.dart';
 
 import 'package:netflix/components/images/cache_network_image.dart';
 import 'package:netflix/config/app_local_assets.dart';
 import 'package:netflix/routes/app_route_constant.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../components/Error/error_page.dart';
 import '../../components/buttons/play_button/play_button.dart';
@@ -37,14 +39,15 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<TrendingSectionCubit, TrendingSectionState>(
       builder: (context, state) {
         if (state is TrendingSectionLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Shimmer.fromColors(
+              baseColor: myColorScheme.primaryContainer,
+              highlightColor: myColorScheme.background,
+              child: const _HomePageShimmer());
         } else if (state is TrendingSectionErrorState) {
           return ShowErrorMessage(
-              errorMessage: state.errorMessage,
-              extraInfo: "😞",
-            );
+            errorMessage: state.errorMessage,
+            extraInfo: "😞",
+          );
         } else if (state is TrendingSectionLoadedState) {
           var movie = state.trendingMovieModel.results!
               .where((element) =>
@@ -143,7 +146,11 @@ class _HomePageState extends State<HomePage> {
                 tvShow.isEmpty
                     ? const SizedBox()
                     : Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 16,
+                        ),
                         child: Column(
                           children: [
                             Row(
@@ -294,6 +301,98 @@ class _HomePageState extends State<HomePage> {
           return const SizedBox();
         }
       },
+    );
+  }
+}
+
+class _HomePageShimmer extends StatelessWidget {
+  const _HomePageShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    Size mySize = MediaQuery.sizeOf(context);
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShimmerWidget(
+            height: mySize.height / 2.5,
+            width: mySize.width,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ShimmerWidget(
+              height: mySize.height / 24,
+              width: mySize.width / 1.5,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                height: 200,
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: ShimmerWidget(
+                            height: 200,
+                            width: 144,
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ShimmerWidget(
+              height: mySize.height / 24,
+              width: mySize.width / 1.5,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                height: 200,
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        child: const Padding(
+                          padding: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: ShimmerWidget(
+                            height: 200,
+                            width: 144,
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

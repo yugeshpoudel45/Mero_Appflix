@@ -29,6 +29,7 @@ class ThemeState {
       colorScheme: ColorScheme.fromSeed(
         seedColor: color,
         onTertiary: color,
+        primaryContainer: Colors.grey[300],
         brightness: Brightness.light,
       ),
     );
@@ -47,12 +48,12 @@ class ThemeState {
       colorScheme: ColorScheme.fromSeed(
         seedColor: color,
         onTertiary: color,
+        primaryContainer: Colors.grey[750],
         brightness: Brightness.dark,
       ),
     );
     return theme;
   }
-
 
   Map<String, dynamic> toJson() {
     return {

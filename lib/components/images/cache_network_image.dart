@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix/components/shimmers/shimmer_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import 'cache_image_manager.dart';
 
 class AppNetworkImage extends StatelessWidget {
@@ -21,6 +23,7 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return CachedNetworkImage(
       cacheManager: CustomCacheManager.instance,
       key: UniqueKey(),
@@ -37,8 +40,13 @@ class AppNetworkImage extends StatelessWidget {
         ),
       ),
       progressIndicatorBuilder: (context, url, downloadProgress) =>
-          const Center(
-        child: CircularProgressIndicator(),
+          Shimmer.fromColors(
+        baseColor: myColorScheme.primaryContainer,
+        highlightColor: myColorScheme.background,
+        child: ShimmerWidget(
+          height: height,
+          width: width,
+        ),
       ),
       errorWidget: (context, url, error) {
         log("Error loading image: $error");

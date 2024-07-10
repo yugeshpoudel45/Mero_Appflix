@@ -1,4 +1,6 @@
 class MyAppRouteConstants {
+  static const String practice = "practiceScreen";
+  // ---------------------------------------------------
   static const String splashScreen = "splashScreen";
   static const String onBoardingPage = "onBoardingPage";
   static const String mainPage = "mainPage";

@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:netflix/cubit/search_section_cubit.dart';
 import 'package:netflix/config/app_constants.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../components/Error/error_page.dart';
+import '../../components/shimmers/shimmer_widget.dart';
 import '../../cubit/trending_section_cubit.dart';
 import '../../models/others/movie_carousel_model.dart';
 import '../../models/others/movie_listtile_model.dart';
@@ -511,12 +513,14 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
+    ColorScheme myColorScheme = Theme.of(context).colorScheme;
     return BlocBuilder<TrendingSectionCubit, TrendingSectionState>(
         builder: (context, state) {
       if (state is TrendingSectionLoadingState) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return Shimmer.fromColors(
+            baseColor: myColorScheme.primaryContainer,
+            highlightColor: myColorScheme.background,
+            child: const _ExploreShimmer());
       } else if (state is TrendingSectionErrorState) {
         return ShowErrorMessage(
           errorMessage: state.errorMessage,
@@ -584,5 +588,63 @@ class _SearchPagePlaceHolderState extends State<_SearchPagePlaceHolder> {
         return const SizedBox();
       }
     });
+  }
+}
+
+class _ExploreShimmer extends StatelessWidget {
+  const _ExploreShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    Size mySize = MediaQuery.sizeOf(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShimmerWidget(
+            height: mySize.height / 24,
+            width: mySize.width / 1.5,
+          ),
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 16,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ShimmerWidget(
+                        height: mySize.height / 8,
+                        width: mySize.width / 3,
+                      ),
+                      SizedBox(width: mySize.width / 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ShimmerWidget(
+                            height: mySize.height / 48,
+                            width: mySize.width / 2,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          ShimmerWidget(
+                            height: mySize.height / 48,
+                            width: mySize.width / 2.5,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
