@@ -14,7 +14,6 @@ import 'package:netflix/pages/7.movie_details/movie_details_screen.dart';
 import 'package:netflix/pages/7.movie_details/playing_screen.dart';
 import 'package:netflix/pages/7.movie_details/reviews_screen.dart';
 import 'package:netflix/pages/7.movie_details/tv_show_details_screen.dart';
-import 'package:netflix/practice.dart';
 import 'package:netflix/routes/app_route_constant.dart';
 
 import '../cubit/trending_section_cubit.dart';
@@ -23,13 +22,6 @@ import '../pages/7.movie_details/people_details_screen.dart';
 class MyAppRouter {
   GoRouter router = GoRouter(
     routes: [
-      // GoRoute(
-      //   name: MyAppRouteConstants.practice,
-      //   path: '/',
-      //   pageBuilder: (context, state) => const MaterialPage(
-      //     child: Practice(),
-      //   ),
-      // ),
       //!--------------------------------------------------------------------------------------------------------------------------
       //!-------------------------------------------------This is home route-------------------------------------------------------
       GoRoute(
