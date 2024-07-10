@@ -483,8 +483,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               );
                                             },
                                             child: MovieListTileModel(
-                                              image: state.movieDetailsModel
-                                                  .backdropPath!,
+                                              // image: state.movieDetailsModel
+                                              //     .backdropPath!,
+                                              image: index % 2 == 0
+                                                  ? state.movieDetailsModel
+                                                      .backdropPath!
+                                                  : state.movieDetailsModel
+                                                      .posterPath!,
                                               name: movieVidoes
                                                   .results![index].name!,
                                               description: movieVidoes

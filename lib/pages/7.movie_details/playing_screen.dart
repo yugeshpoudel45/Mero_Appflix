@@ -113,24 +113,24 @@ class PlayingPageState extends State<PlayingPage> {
             maxLines: 1,
           )),
           body: BlocListener<NetworkCubit, NetworkState>(
-        listener: (context, state) {
-           if (state == NetworkState.disconnected) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text(
-                  'PLEASE CONNECT TO THE INTERNET',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                backgroundColor: Colors.red[400],
-                duration: const Duration(days: 1),
-                behavior: SnackBarBehavior.fixed,
-                dismissDirection: DismissDirection.none,
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          }
-        },
+            listener: (context, state) {
+              if (state == NetworkState.disconnected) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text(
+                      'PLEASE CONNECT TO THE INTERNET',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    backgroundColor: Colors.red[400],
+                    duration: const Duration(days: 1),
+                    behavior: SnackBarBehavior.fixed,
+                    dismissDirection: DismissDirection.none,
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              }
+            },
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,10 +214,16 @@ class PlayingPageState extends State<PlayingPage> {
                           },
                           child: MovieListTileModel(
                             image: widget.isMovie
-                                ? widget
-                                    .loadedState.movieDetailsModel.backdropPath!
-                                : widget.loadedState.tvShowDetailsModel
-                                    .backdropPath!,
+                                ? index % 2 == 0
+                                    ? widget.loadedState.movieDetailsModel
+                                        .backdropPath!
+                                    : widget.loadedState.movieDetailsModel
+                                        .posterPath!
+                                : index % 2 == 0
+                                    ? widget.loadedState.tvShowDetailsModel
+                                        .backdropPath!
+                                    : widget.loadedState.tvShowDetailsModel
+                                        .posterPath!,
                             name: movieVidoes.results![index].name!,
                             description:
                                 movieVidoes.results![index].size.toString(),

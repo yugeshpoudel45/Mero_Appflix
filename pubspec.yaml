@@ -39,8 +39,8 @@ dependencies:
   shimmer: ^3.0.0
 
 flutter_native_splash:
-  color: "#000000"
-  image: assets/images/appLogo.png
+  color: "#ffffff"
+  image: assets/images/playstore.png
 
 dev_dependencies:
   flutter_test:

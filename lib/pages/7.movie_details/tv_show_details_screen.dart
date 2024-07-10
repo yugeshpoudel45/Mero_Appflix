@@ -417,7 +417,6 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                         ),
                       ),
                       SliverFillRemaining(
-                        //!Issue: While Scrolling tabbarView is going inside the tab bar in flutter
                         child: TabBarView(
                           physics: const NeverScrollableScrollPhysics(),
                           children: <Widget>[
@@ -467,8 +466,13 @@ class _TvShowDetailsScreenState extends State<TvShowDetailsScreen> {
                                               );
                                             },
                                             child: MovieListTileModel(
-                                              image: state.tvShowDetailsModel
-                                                  .backdropPath!,
+                                              // image: state.tvShowDetailsModel
+                                              //     .backdropPath!,
+                                              image: index % 2 == 0
+                                                  ? state.tvShowDetailsModel
+                                                      .backdropPath!
+                                                  : state.tvShowDetailsModel
+                                                      .posterPath!,
                                               name: movieVidoes
                                                   .results![index].name!,
                                               description: movieVidoes

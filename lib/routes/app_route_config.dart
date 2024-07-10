@@ -28,7 +28,7 @@ class MyAppRouter {
         name: MyAppRouteConstants.splashScreen,
         path: '/',
         pageBuilder: (context, state) => const MaterialPage(
-          child: MainPage(),
+          child: SplashScreen(),
         ),
       ),
       //!--------------------------------------------------------------------------------------------------------------------------
