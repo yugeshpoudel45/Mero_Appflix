@@ -65,6 +65,7 @@ Welcome to our movie watching app repository on GitHub! Our app is designed to p
 - [Flutter ColorPicker](https://pub.dev/packages/flutter_colorpicker)
 - [Lottie](https://pub.dev/packages/lottie)
 - [Connectivity Plus](https://pub.dev/packages/connectivity_plus)
+- [Shimmer](https://pub.dev/packages/shimmer)
 
 
 
@@ -84,4 +85,4 @@ Welcome to our movie watching app repository on GitHub! Our app is designed to p
 ## 🔗Demo Video Link
 [Mero Appflix Demo]()
 ## 🔗App Link
-[Mero Appflix](https://drive.google.com/file/d/1-JCXtTVXe6ZcixSpzOuA5VnWllEedHhG/view?usp=sharing)
+[Mero Appflix](https://drive.google.com/file/d/1Cp1j54aeqqgOTVT_PU_8kUn5RifcJS_1/view?usp=drive_link)
