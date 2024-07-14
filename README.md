@@ -83,6 +83,6 @@ Welcome to our movie watching app repository on GitHub! Our app is designed to p
 
 
 ## 🔗Demo Video Link
-[Mero Appflix Demo]()
+[Mero Appflix Demo](https://youtu.be/Bv2RJ9jIBrE?si=0rOhURQq9rBjluiQ)
 ## 🔗Play Store Download Link
 [Mero Appflix](https://play.google.com/store/apps/details?id=com.yugeshpoudel45.meroappflix)
