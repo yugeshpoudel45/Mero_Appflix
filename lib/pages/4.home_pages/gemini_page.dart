@@ -20,7 +20,7 @@ class _GeminiPageState extends State<GeminiPage> {
   bool isButtonPressed = false;
 
   final GenerativeModel model = GenerativeModel(
-    model: 'gemini-1.5-flash-latest',
+    model: 'gemini-1.5-flash',
     apiKey: GeminiConstants.apiKey,
   );
 
@@ -72,7 +72,7 @@ class _GeminiPageState extends State<GeminiPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ], 
+              ],
             ),
           ),
           // SizedBox(

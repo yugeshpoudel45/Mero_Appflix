@@ -29,7 +29,7 @@ class TrendingMoviesPage extends StatelessWidget {
       ),
       body: BlocListener<NetworkCubit, NetworkState>(
         listener: (context, state) {
-           if (state == NetworkState.disconnected) {
+          if (state == NetworkState.disconnected) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: const Text(

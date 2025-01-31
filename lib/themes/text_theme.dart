@@ -9,4 +9,3 @@ TextTheme myTextTheme = TextTheme(
   headlineMedium: TextStyle(fontFamily: GoogleFonts.balsamiqSans().fontFamily!),
   headlineSmall: TextStyle(fontFamily: GoogleFonts.balsamiqSans().fontFamily!),
 );
- 

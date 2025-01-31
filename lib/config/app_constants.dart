@@ -9,7 +9,8 @@ const String accessToken =
 
 class GeminiConstants {
   //!Hide this apiKey later on
-  static const String apiKey = 'AIzaSyA86iKJa9xpp7WfKdRpIHbVTKzAeuMQJKo';
+  // static const String apiKey = 'AIzaSyA86iKJa9xpp7WfKdRpIHbVTKzAeuMQJKo';
+  static const String apiKey = 'AIzaSyCPSy1WLGJd92ceESmxnsLVdoaDDG-u3cQ';
   static const String prompt =
       'You are a chatbot specialized in the entertainment industry. Your task is to provide detailed and accurate answers to any questions related to movies, TV shows, and people involved in their production. If a question is not related to the entertainment industry, politely inform the user that you only answer entertainment-related questions. If you do not know the answer to a question, politely inform the user that you are unable to provide an answer. Remember to maintain a friendly and professional tone throughout the conversation. Enjoy chatting!';
   static const String welcomeMessage =

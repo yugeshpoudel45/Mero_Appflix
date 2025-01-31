@@ -6,10 +6,10 @@ class AnimatedCarouselModel extends StatefulWidget {
   final List<String> items;
   final double height;
   const AnimatedCarouselModel({
-    Key? key,
+    super.key,
     required this.items,
     this.height = 200,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedCarouselModel> createState() => _AnimatedCarouselModelState();
@@ -17,7 +17,7 @@ class AnimatedCarouselModel extends StatefulWidget {
 
 class _AnimatedCarouselModelState extends State<AnimatedCarouselModel> {
   int currentPage = 0;
-  final controller = CarouselController();
+  final controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

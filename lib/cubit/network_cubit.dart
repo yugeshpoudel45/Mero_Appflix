@@ -10,8 +10,8 @@ class NetworkCubit extends Cubit<NetworkState> {
     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
-  void _updateConnectionStatus(ConnectivityResult result) {
-    if (result == ConnectivityResult.none) {
+  void _updateConnectionStatus(List<ConnectivityResult> results) {
+    if (results.contains(ConnectivityResult.none)) {
       emit(NetworkState.disconnected);
     } else {
       emit(NetworkState.connected);

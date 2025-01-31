@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         if (state is TrendingSectionLoadingState) {
           return Shimmer.fromColors(
               baseColor: myColorScheme.primaryContainer,
-              highlightColor: myColorScheme.background,
+              highlightColor: myColorScheme.surface,
               child: const _HomePageShimmer());
         } else if (state is TrendingSectionErrorState) {
           return ShowErrorMessage(
@@ -414,7 +414,7 @@ class _LocalCarouselModel extends StatefulWidget {
 
 class __LocalCarouselModelState extends State<_LocalCarouselModel> {
   int currentPage = 0;
-  final controller = CarouselController();
+  final controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {
